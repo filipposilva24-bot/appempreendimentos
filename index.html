@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Controle de Leads</title>
+    <title>CRM de Vendas - Imóveis</title>
     <style>
         :root {
             --primary-color: #0A66C2;
@@ -16,6 +16,8 @@
             --alert-color: #EF4444;
             --alert-bg: #FEF2F2;
             --success-color: #10B981;
+            --success-bg: #ECFDF5;
+            --whatsapp-color: #25D366;
             --radius-md: 12px;
             --radius-lg: 20px;
         }
@@ -122,7 +124,34 @@
         }
         .btn-sair:hover { background-color: var(--alert-bg); color: var(--alert-color); }
 
-        /* Lista de Empreendimentos Cadastrados */
+        /* Filtros Rápidos */
+        .filtros-rapidos {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0 15px 0;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        .filtro-btn {
+            background: #E5E7EB;
+            color: #374151;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: none;
+            margin: 0;
+            width: auto;
+        }
+        .filtro-btn.ativo {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Chips de Empreendimentos */
         .tag-empreendimento-container {
             display: flex;
             flex-wrap: wrap;
@@ -146,18 +175,15 @@
             font-weight: bold;
             font-size: 15px;
         }
-        .tag-empreendimento span:hover { color: #DC2626; }
 
         .busca-container { 
-            margin: 35px 0 20px 0; 
+            margin: 20px 0 15px 0; 
             position: relative;
         }
-        
         .busca-container input {
             padding-left: 40px;
             border-radius: 30px;
         }
-
         .busca-icon {
             position: absolute;
             left: 14px;
@@ -166,6 +192,7 @@
             color: var(--text-muted);
         }
 
+        /* Cards CRM */
         .card { 
             background: var(--card-bg); 
             padding: 18px; 
@@ -175,7 +202,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
             position: relative;
         }
-        
         .card.alerta { border-left: 4px solid var(--alert-color); }
         
         .card-header {
@@ -190,9 +216,25 @@
         .card h3 { margin: 0; font-size: 16px; color: var(--text-dark); border: none; padding: 0; }
         .card p { margin: 6px 0; font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .card strong { color: var(--text-dark); font-weight: 600; }
+
+        /* Badges de Status */
+        .badge-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .status-em-contato { background: #FEF3C7; color: #D97706; }
+        .status-aguardando-doc { background: #E0E7FF; color: #4338CA; }
+        .status-credito-aprovado { background: #ECFDF5; color: #059669; }
+        .status-vendido { background: #D1FAE5; color: #065F46; }
+        .status-perdido { background: #FEE2E2; color: #B91C1C; }
         
         .tag-alerta { 
-            display: inline-block; 
+            display: block; 
             background-color: var(--alert-bg); 
             color: var(--alert-color); 
             padding: 6px 10px; 
@@ -200,25 +242,82 @@
             font-size: 12px; 
             font-weight: 700; 
             margin-top: 10px; 
-            width: 100%;
-            box-sizing: border-box;
             text-align: center;
         }
+
+        /* Histórico de interações dentro do card */
+        .historico-box {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        .historico-item {
+            margin-bottom: 6px;
+            border-bottom: 1px dashed #E2E8F0;
+            padding-bottom: 4px;
+        }
+        .historico-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* Ações do Card (Whats e Excluir) */
+        .card-acoes {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .btn-whats {
+            background-color: var(--whatsapp-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            flex: 1;
+            margin-top: 0;
+            box-shadow: none;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-whats:hover { background-color: #20ba5a; transform: none; }
+
+        .btn-add-obs {
+            background-color: #4B5563;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: none;
+            width: 100%;
+        }
+        .btn-add-obs:hover { background-color: #374151; transform: none; }
 
         .btn-excluir {
             background-color: transparent;
             color: var(--alert-color);
             border: 1px solid var(--alert-color);
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 8px 12px;
+            font-size: 13px;
             font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
             width: auto;
-            margin-top: 12px;
+            margin-top: 0;
             box-shadow: none;
-            display: block;
-            margin-left: auto;
         }
         .btn-excluir:hover { background-color: var(--alert-bg); transform: none; }
 
@@ -247,7 +346,7 @@
 
 <!-- TELA PRINCIPAL DO APP -->
 <div class="container" id="telaApp">
-    <h2>Registro de Contatos</h2>
+    <h2>CRM de Vendas</h2>
     
     <!-- FORMULÁRIO DE CLIENTES -->
     <form id="formContato">
@@ -279,6 +378,17 @@
         </div>
 
         <div class="form-group">
+            <label for="status">Status da Venda (Funil)</label>
+            <select id="status">
+                <option value="Em Contato">🟡 Em Contato</option>
+                <option value="Aguardando Documento">🔵 Aguardando Documento</option>
+                <option value="Crédito Aprovado">🟢 Crédito Aprovado</option>
+                <option value="Vendido">⭐ Vendido / Fechado</option>
+                <option value="Perdido">🔴 Perdido / Desistiu</option>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="obstaculo">Obstáculo Identificado</label>
             <select id="obstaculo">
                 <option value="Nenhum">✅ Nenhum obstáculo</option>
@@ -288,18 +398,16 @@
         </div>
 
         <div class="form-group">
-            <label for="obs">Observações Adicionais</label>
-            <textarea id="obs" rows="3" placeholder="Detalhes da conversa, status da aprovação..."></textarea>
+            <label for="obs">Primeira Observação / Detalhe</label>
+            <textarea id="obs" rows="2" placeholder="Detalhes da conversa inicial..."></textarea>
         </div>
 
-        <button type="submit">Salvar Cliente</button>
+        <button type="submit">Salvar Cliente no CRM</button>
     </form>
 
     <!-- GERENCIAMENTO DE EMPREENDIMENTOS -->
     <h3>Gerenciar Empreendimentos</h3>
-    <div class="tag-empreendimento-container" id="listaEmpreendimentosChips">
-        <!-- Tags dinâmicas aparecem aqui -->
-    </div>
+    <div class="tag-empreendimento-container" id="listaEmpreendimentosChips"></div>
     
     <form id="formNovoEmpreendimento" style="margin-top: 10px;">
         <div class="form-group" style="margin-bottom: 10px;">
@@ -307,6 +415,13 @@
         </div>
         <button type="submit" class="btn-secundario">Adicionar Empreendimento</button>
     </form>
+
+    <!-- FILTRAGEM E BUSCA -->
+    <div class="filtros-rapidos">
+        <button class="filtro-btn ativo" onclick="filtrarStatus('TODOS', this)">Todos</button>
+        <button class="filtro-btn" onclick="filtrarStatus('HOJE', this)">🚨 Ligar Hoje</button>
+        <button class="filtro-btn" onclick="filtrarStatus('OBSTACULO', this)">⚠️ Com Obstáculos</button>
+    </div>
 
     <div class="busca-container">
         <span class="busca-icon">🔍</span>
@@ -322,7 +437,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -341,6 +456,7 @@
     const empreendimentosRef = collection(db, "empreendimentos");
 
     let contatosBaixados = [];
+    let filtroAtual = 'TODOS';
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
 
@@ -363,10 +479,7 @@
         if (user) {
             document.getElementById('telaLogin').style.display = 'none';
             document.getElementById('telaApp').style.display = 'block';
-            
-            // Popula dados iniciais se a coleção estiver vazia (primeiro acesso)
             await inicializarEmpreendimentosPadrao();
-
             carregarDadosDoBanco();
             carregarEmpreendimentos();
             document.getElementById('data').valueAsDate = new Date();
@@ -402,18 +515,11 @@
 
     document.getElementById('btnSair').addEventListener('click', () => signOut(auth));
 
-    // --- GERENCIAMENTO DE EMPREENDIMENTOS ---
+    // --- EMPREENDIMENTOS ---
     async function inicializarEmpreendimentosPadrao() {
         const snapshot = await getDocs(empreendimentosRef);
         if (snapshot.empty) {
-            const padroes = [
-                "Mais Butantã", 
-                "Plano Leopodina", 
-                "Praça Pirituba", 
-                "Ares do Horto", 
-                "Duetto São Domingos", 
-                "Plano Jaçana"
-            ];
+            const padroes = ["Mais Butantã", "Plano Leopodina", "Praça Pirituba", "Ares do Horto", "Duetto São Domingos", "Plano Jaçana"];
             for (let nome of padroes) {
                 await addDoc(empreendimentosRef, { nome });
             }
@@ -433,13 +539,11 @@
                 const emp = docSnap.data();
                 const id = docSnap.id;
 
-                // Adiciona no select do formulário de clientes
                 const opt = document.createElement('option');
                 opt.value = emp.nome;
                 opt.textContent = emp.nome;
                 selectEmpreendimento.appendChild(opt);
 
-                // Adiciona na listagem visual de gerenciamento (com botão de excluir)
                 const chip = document.createElement('div');
                 chip.className = 'tag-empreendimento';
                 chip.innerHTML = `${emp.nome} <span onclick="excluirEmpreendimento('${id}', '${emp.nome}')" title="Excluir">&times;</span>`;
@@ -448,70 +552,104 @@
         });
     }
 
-    // Adicionar novo empreendimento
     document.getElementById('formNovoEmpreendimento').addEventListener('submit', async function(e) {
         e.preventDefault();
         const input = document.getElementById('novoEmpreendimentoNome');
         const nome = input.value.trim();
-
         if(nome) {
-            try {
-                await addDoc(empreendimentosRef, { nome });
-                input.value = '';
-            } catch (error) {
-                alert("Erro ao adicionar empreendimento: " + error.message);
-            }
+            await addDoc(empreendimentosRef, { nome });
+            input.value = '';
         }
     });
 
-    // Excluir empreendimento
     window.excluirEmpreendimento = async function(id, nome) {
-        if(confirm(`Deseja realmente excluir o empreendimento "${nome}"?`)) {
-            try {
-                await deleteDoc(doc(db, "empreendimentos", id));
-            } catch (error) {
-                alert("Erro ao excluir: " + error.message);
-            }
+        if(confirm(`Deseja excluir o empreendimento "${nome}"?`)) {
+            await deleteDoc(doc(db, "empreendimentos", id));
         }
     };
 
-    // --- LÓGICA DE CONTATOS ---
+    // --- LÓGICA DE DATAS E ALERTAS ---
     function calcularDataRetorno(dataBase, dias) {
         if (!dias) return null;
-        let data = new Date(dataBase);
-        data.setMinutes(data.getMinutes() + data.getTimezoneOffset());
+        let data = new Date(dataBase + 'T00:00:00');
         data.setDate(data.getDate() + dias);
-        return data.toLocaleDateString('pt-BR');
+        return data; // Retorna objeto Date para comparação
     }
 
+    // --- RENDERIZAÇÃO DO CRM ---
     function renderizarLista(lista) {
         const divLista = document.getElementById('listaContatos');
         divLista.innerHTML = '';
         
         if(lista.length === 0) {
-            divLista.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin-top:20px;">Nenhum cliente registrado ainda.</p>';
+            divLista.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin-top:20px;">Nenhum cliente encontrado.</p>';
             return;
         }
 
+        const hoje = new Date();
+        hoje.setHours(0,0,0,0);
+
         lista.forEach(cliente => {
             const card = document.createElement('div');
-            card.className = cliente.dataRetorno ? 'card alerta' : 'card';
             
+            // Verifica se vence hoje ou antes
+            let deveLigarHoje = false;
+            if (cliente.diasRetorno && cliente.dataStr) {
+                const dataBase = new Date(cliente.dataStr + 'T00:00:00');
+                dataBase.setDate(dataBase.getDate() + cliente.diasRetorno);
+                if (dataBase <= hoje) {
+                    deveLigarHoje = true;
+                }
+            }
+
+            card.className = deveLigarHoje ? 'card alerta' : 'card';
+            
+            // Classe de cor do Status Badge
+            let classeStatus = 'status-em-contato';
+            if (cliente.status === 'Aguardando Documento') classeStatus = 'status-aguardando-doc';
+            if (cliente.status === 'Crédito Aprovado') classeStatus = 'status-credito-aprovado';
+            if (cliente.status === 'Vendido') classeStatus = 'status-vendido';
+            if (cliente.status === 'Perdido') classeStatus = 'status-perdido';
+
+            // Formatação do link do WhatsApp (limpa caracteres não numéricos)
+            const telLimpo = cliente.contato.replace(/\D/g, '');
+            const msgWhats = encodeURIComponent(`Olá ${cliente.nome}, tudo bem? Estou entrando em contato referente ao empreendimento ${cliente.empreendimento}.`);
+            const linkWhats = `https://wa.me/55${telLimpo}?text=${msgWhats}`;
+
+            // Monta o histórico de interações
+            let historicoHtml = '';
+            if (cliente.historico && cliente.historico.length > 0) {
+                historicoHtml = '<div class="historico-box">';
+                cliente.historico.forEach(h => {
+                    historicoHtml += `<div class="historico-item"><small style="color:#64748B">${h.data}:</small> ${h.texto}</div>`;
+                });
+                historicoHtml += '</div>';
+            }
+
             let htmlCard = `
                 <div class="card-header">
                     <h3>👤 ${cliente.nome}</h3>
-                    <small style="color:#6b7280">${cliente.dataFormatada}</small>
+                    <span class="badge-status ${classeStatus}">${cliente.status || 'Em Contato'}</span>
                 </div>
                 <p><strong>📞 Contato:</strong> ${cliente.contato}</p>
-                <p><strong>🏢 Ref:</strong> ${cliente.empreendimento}</p>
+                <p><strong>🏢 Empreendimento:</strong> ${cliente.empreendimento}</p>
                 <p><strong>💰 Valor:</strong> ${cliente.valor}</p>
-                <p><strong>📝 Obs:</strong> ${cliente.obs}</p>
+                <p><strong>⚠️ Obstáculo:</strong> ${cliente.obstaculo}</p>
+                ${historicoHtml}
             `;
-            if (cliente.dataRetorno) {
-                htmlCard += `<div class="tag-alerta">⏰ Ligar de novo em: ${cliente.dataRetorno}</div>`;
+
+            if (cliente.dataRetornoFormatada) {
+                htmlCard += `<div class="tag-alerta">⏰ Retorno agendado para: ${cliente.dataRetornoFormatada}</div>`;
             }
-            
-            htmlCard += `<button class="btn-excluir" onclick="excluirCliente('${cliente.id}')">Excluir Cliente</button>`;
+
+            htmlCard += `
+                <button class="btn-add-obs" onclick="adicionarInteracao('${cliente.id}')">➕ Adicionar Nova Anotação</button>
+                <div class="card-acoes">
+                    <a href="${linkWhats}" target="_blank" class="btn-whats">💬 WhatsApp</a>
+                    <button class="btn-excluir" onclick="excluirCliente('${cliente.id}')">Excluir</button>
+                </div>
+            `;
+
             card.innerHTML = htmlCard;
             divLista.appendChild(card);
         });
@@ -524,26 +662,76 @@
             snapshot.forEach((doc) => {
                 contatosBaixados.push({ id: doc.id, ...doc.data() });
             });
-            
-            const termoBusca = document.getElementById('busca').value.toLowerCase();
-            if(termoBusca) {
-                filtrarEBuscar(termoBusca);
-            } else {
-                renderizarLista(contatosBaixados);
-            }
+            aplicarFiltrosEBusca();
         });
     }
 
-    window.excluirCliente = async function(id) {
-        if (confirm("Tem certeza que deseja excluir este cliente?")) {
+    // --- FILTROS RÁPIDOS ---
+    window.filtrarStatus = function(tipo, btn) {
+        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
+        btn.classList.add('ativo');
+        filtroAtual = tipo;
+        aplicarFiltrosEBusca();
+    }
+
+    document.getElementById('busca').addEventListener('input', () => {
+        aplicarFiltrosEBusca();
+    });
+
+    function aplicarFiltrosEBusca() {
+        const termo = document.getElementById('busca').value.toLowerCase();
+        const hoje = new Date();
+        hoje.setHours(0,0,0,0);
+
+        let filtrados = contatosBaixados.filter(c => {
+            const matchBusca = c.nome.toLowerCase().includes(termo) || 
+                               c.contato.includes(termo) || 
+                               c.empreendimento.toLowerCase().includes(termo);
+            return matchBusca;
+        });
+
+        if (filtroAtual === 'HOJE') {
+            filtrados = filtrados.filter(c => {
+                if (!c.diasRetorno || !c.dataStr) return false;
+                const dataBase = new Date(c.dataStr + 'T00:00:00');
+                dataBase.setDate(dataBase.getDate() + c.diasRetorno);
+                return dataBase <= hoje;
+            });
+        } else if (filtroAtual === 'OBSTACULO') {
+            filtrados = filtrados.filter(c => c.obstaculo && c.obstaculo !== 'Nenhum');
+        }
+
+        renderizarLista(filtrados);
+    }
+
+    // --- ADICIONAR HISTÓRICO / ANOTAÇÃO ---
+    window.adicionarInteracao = async function(id) {
+        const novaNota = prompt("Digite a nova observação ou andamento da conversa:");
+        if (novaNota && novaNota.trim() !== "") {
+            const dataHoje = new Date().toLocaleDateString('pt-BR');
+            const itemHistorico = {
+                data: dataHoje,
+                texto: novaNota.trim()
+            };
             try {
-                await deleteDoc(doc(db, "clientes", id));
+                const docRef = doc(db, "clientes", id);
+                await updateDoc(docRef, {
+                    historico: arrayUnion(itemHistorico)
+                });
             } catch (error) {
-                alert("Erro ao excluir: " + error.message);
+                alert("Erro ao adicionar nota: " + error.message);
             }
+        }
+    };
+
+    // --- EXCLUIR CLIENTE ---
+    window.excluirCliente = async function(id) {
+        if (confirm("Deseja realmente excluir este cliente do CRM?")) {
+            await deleteDoc(doc(db, "clientes", id));
         }
     }
 
+    // --- SALVAR NOVO CLIENTE ---
     document.getElementById('formContato').addEventListener('submit', async function(e) {
         e.preventDefault(); 
         const botao = this.querySelector('button');
@@ -552,10 +740,28 @@
 
         const dataStr = document.getElementById('data').value;
         const obstaculo = document.getElementById('obstaculo').value;
+        const obsInicial = document.getElementById('obs').value.trim();
         
         let diasParaRetorno = 0;
         if (obstaculo === 'Nome Sujo') diasParaRetorno = 30;
         else if (obstaculo === 'Outros') diasParaRetorno = 15;
+
+        // Calcula a data legível de retorno
+        let dataRetornoFormatada = null;
+        if (diasParaRetorno > 0) {
+            let dataRet = new Date(dataStr + 'T00:00:00');
+            dataRet.setDate(dataRet.getDate() + diasParaRetorno);
+            dataRetornoFormatada = dataRet.toLocaleDateString('pt-BR');
+        }
+
+        // Cria array de histórico inicial se houver observação
+        let historicoInicial = [];
+        if (obsInicial) {
+            historicoInicial.push({
+                data: new Date(dataStr + 'T00:00:00').toLocaleDateString('pt-BR'),
+                texto: obsInicial
+            });
+        }
 
         try {
             await addDoc(contatosRef, {
@@ -565,9 +771,11 @@
                 contato: document.getElementById('contato').value,
                 empreendimento: document.getElementById('empreendimento').value,
                 valor: document.getElementById('valor').value,
+                status: document.getElementById('status').value,
                 obstaculo: obstaculo,
-                obs: document.getElementById('obs').value || '-',
-                dataRetorno: calcularDataRetorno(dataStr, diasParaRetorno),
+                diasRetorno: diasParaRetorno,
+                dataRetornoFormatada: dataRetornoFormatada,
+                historico: historicoInicial,
                 timestamp: serverTimestamp()
             });
 
@@ -575,24 +783,11 @@
             document.getElementById('data').valueAsDate = new Date();
             document.getElementById('valor').value = ''; 
         } catch (error) {
-            alert("Erro ao salvar. Verifique sua conexão.");
+            alert("Erro ao salvar: " + error.message);
         } finally {
-            botao.innerText = "Salvar Cliente";
+            botao.innerText = "Salvar Cliente no CRM";
             botao.disabled = false;
         }
-    });
-
-    function filtrarEBuscar(termo) {
-        const filtrados = contatosBaixados.filter(c => 
-            c.nome.toLowerCase().includes(termo) || 
-            c.contato.includes(termo) || 
-            c.empreendimento.toLowerCase().includes(termo)
-        );
-        renderizarLista(filtrados);
-    }
-
-    document.getElementById('busca').addEventListener('input', function(e) {
-        filtrarEBuscar(e.target.value.toLowerCase());
     });
 </script>
 </body>
