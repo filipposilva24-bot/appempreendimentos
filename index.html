@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Controle de Leads</title>
     <style>
-        /* Variáveis de Cores e Estilos (Design System) */
         :root {
             --primary-color: #0A66C2;
             --primary-hover: #004182;
@@ -16,6 +15,7 @@
             --border-color: #E5E7EB;
             --alert-color: #EF4444;
             --alert-bg: #FEF2F2;
+            --success-color: #10B981;
             --radius-md: 12px;
             --radius-lg: 20px;
         }
@@ -46,6 +46,14 @@
             letter-spacing: -0.5px;
         }
 
+        h3 {
+            font-size: 16px;
+            color: var(--text-dark);
+            margin: 25px 0 12px 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
         .form-group { margin-bottom: 18px; }
         
         label { 
@@ -58,7 +66,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Inputs estilosos e tamanho 16px para evitar zoom no iOS */
         input, select, textarea { 
             width: 100%; 
             padding: 14px 16px; 
@@ -78,7 +85,6 @@
             box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.1); 
         }
 
-        /* Ajuste visual para o input de data desabilitado/automático */
         input[type="date"] { color: var(--text-muted); }
 
         button { 
@@ -101,6 +107,12 @@
             transform: translateY(-1px);
         }
 
+        .btn-secundario {
+            background-color: #4B5563;
+            box-shadow: 0 4px 12px rgba(75, 85, 99, 0.2);
+        }
+        .btn-secundario:hover { background-color: #374151; }
+
         .btn-sair { 
             background-color: transparent; 
             color: var(--alert-color);
@@ -110,7 +122,32 @@
         }
         .btn-sair:hover { background-color: var(--alert-bg); color: var(--alert-color); }
 
-        /* Divisória e Busca */
+        /* Lista de Empreendimentos Cadastrados */
+        .tag-empreendimento-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .tag-empreendimento {
+            background: #E0F2FE;
+            color: #0369A1;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tag-empreendimento span {
+            cursor: pointer;
+            color: #EF4444;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .tag-empreendimento span:hover { color: #DC2626; }
+
         .busca-container { 
             margin: 35px 0 20px 0; 
             position: relative;
@@ -118,7 +155,7 @@
         
         .busca-container input {
             padding-left: 40px;
-            border-radius: 30px; /* Busca mais redonda */
+            border-radius: 30px;
         }
 
         .busca-icon {
@@ -129,7 +166,6 @@
             color: var(--text-muted);
         }
 
-        /* Lista de Contatos */
         .card { 
             background: var(--card-bg); 
             padding: 18px; 
@@ -137,7 +173,7 @@
             border-radius: var(--radius-md); 
             margin-bottom: 15px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
-            transition: transform 0.2s;
+            position: relative;
         }
         
         .card.alerta { border-left: 4px solid var(--alert-color); }
@@ -151,7 +187,7 @@
             padding-bottom: 8px;
         }
 
-        .card h3 { margin: 0; font-size: 16px; color: var(--text-dark); }
+        .card h3 { margin: 0; font-size: 16px; color: var(--text-dark); border: none; padding: 0; }
         .card p { margin: 6px 0; font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .card strong { color: var(--text-dark); font-weight: 600; }
         
@@ -169,7 +205,23 @@
             text-align: center;
         }
 
-        /* Controle de Telas */
+        .btn-excluir {
+            background-color: transparent;
+            color: var(--alert-color);
+            border: 1px solid var(--alert-color);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: auto;
+            margin-top: 12px;
+            box-shadow: none;
+            display: block;
+            margin-left: auto;
+        }
+        .btn-excluir:hover { background-color: var(--alert-bg); transform: none; }
+
         #telaApp { display: none; }
         #msgErro { color: var(--alert-color); text-align: center; margin-top: 15px; font-weight: 600; display: none; font-size: 14px; }
     </style>
@@ -195,7 +247,9 @@
 
 <!-- TELA PRINCIPAL DO APP -->
 <div class="container" id="telaApp">
-    <h2>Novo Contato</h2>
+    <h2>Registro de Contatos</h2>
+    
+    <!-- FORMULÁRIO DE CLIENTES -->
     <form id="formContato">
         <div class="form-group">
             <label for="data">Data do Contato</label>
@@ -215,13 +269,7 @@
         <div class="form-group">
             <label for="empreendimento">Empreendimento de Interesse</label>
             <select id="empreendimento" required>
-                <option value="" disabled selected>Selecione uma opção...</option>
-                <option value="Mais Butantã">Mais Butantã</option>
-                <option value="Plano Leopodina">Plano Leopodina</option>
-                <option value="Praça Pirituba">Praça Pirituba</option>
-                <option value="Ares do Horto">Ares do Horto</option>
-                <option value="Duetto São Domingos">Duetto São Domingos</option>
-                <option value="Plano Jaçana">Plano Jaçana</option>
+                <option value="" disabled selected>Carregando empreendimentos...</option>
             </select>
         </div>
 
@@ -247,13 +295,26 @@
         <button type="submit">Salvar Cliente</button>
     </form>
 
+    <!-- GERENCIAMENTO DE EMPREENDIMENTOS -->
+    <h3>Gerenciar Empreendimentos</h3>
+    <div class="tag-empreendimento-container" id="listaEmpreendimentosChips">
+        <!-- Tags dinâmicas aparecem aqui -->
+    </div>
+    
+    <form id="formNovoEmpreendimento" style="margin-top: 10px;">
+        <div class="form-group" style="margin-bottom: 10px;">
+            <input type="text" id="novoEmpreendimentoNome" placeholder="Nome do novo empreendimento..." required autocomplete="off">
+        </div>
+        <button type="submit" class="btn-secundario">Adicionar Empreendimento</button>
+    </form>
+
     <div class="busca-container">
         <span class="busca-icon">🔍</span>
         <input type="text" id="busca" placeholder="Buscar cliente, tel ou empreendimento...">
     </div>
 
     <div class="lista-contatos" id="listaContatos">
-        <p style="text-align:center; color: var(--text-muted); margin-top:30px;">Carregando contatos...</p>
+        <p style="text-align:center; color: var(--text-muted); margin-top:20px;">Carregando contatos...</p>
     </div>
 
     <button id="btnSair" class="btn-sair">Sair da Conta</button>
@@ -261,7 +322,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -277,11 +338,13 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
     const contatosRef = collection(db, "clientes");
+    const empreendimentosRef = collection(db, "empreendimentos");
 
     let contatosBaixados = [];
-    let unsubscribeSnapshot = null;
+    let unsubContatos = null;
+    let unsubEmpreendimentos = null;
 
-    // --- MÁSCARAS DE UX (TELEFONE E MOEDA) ---
+    // --- MÁSCARAS ---
     document.getElementById('contato').addEventListener('input', function (e) {
         let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
         e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -296,16 +359,22 @@
     });
 
     // --- AUTENTICAÇÃO ---
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             document.getElementById('telaLogin').style.display = 'none';
             document.getElementById('telaApp').style.display = 'block';
+            
+            // Popula dados iniciais se a coleção estiver vazia (primeiro acesso)
+            await inicializarEmpreendimentosPadrao();
+
             carregarDadosDoBanco();
+            carregarEmpreendimentos();
             document.getElementById('data').valueAsDate = new Date();
         } else {
             document.getElementById('telaLogin').style.display = 'block';
             document.getElementById('telaApp').style.display = 'none';
-            if(unsubscribeSnapshot) unsubscribeSnapshot(); 
+            if(unsubContatos) unsubContatos(); 
+            if(unsubEmpreendimentos) unsubEmpreendimentos();
         }
     });
 
@@ -333,7 +402,80 @@
 
     document.getElementById('btnSair').addEventListener('click', () => signOut(auth));
 
-    // --- LÓGICA DO APP ---
+    // --- GERENCIAMENTO DE EMPREENDIMENTOS ---
+    async function inicializarEmpreendimentosPadrao() {
+        const snapshot = await getDocs(empreendimentosRef);
+        if (snapshot.empty) {
+            const padroes = [
+                "Mais Butantã", 
+                "Plano Leopodina", 
+                "Praça Pirituba", 
+                "Ares do Horto", 
+                "Duetto São Domingos", 
+                "Plano Jaçana"
+            ];
+            for (let nome of padroes) {
+                await addDoc(empreendimentosRef, { nome });
+            }
+        }
+    }
+
+    function carregarEmpreendimentos() {
+        const q = query(empreendimentosRef, orderBy("nome", "asc"));
+        unsubEmpreendimentos = onSnapshot(q, (snapshot) => {
+            const selectEmpreendimento = document.getElementById('empreendimento');
+            const chipsContainer = document.getElementById('listaEmpreendimentosChips');
+            
+            selectEmpreendimento.innerHTML = '<option value="" disabled selected>Selecione uma opção...</option>';
+            chipsContainer.innerHTML = '';
+
+            snapshot.forEach((docSnap) => {
+                const emp = docSnap.data();
+                const id = docSnap.id;
+
+                // Adiciona no select do formulário de clientes
+                const opt = document.createElement('option');
+                opt.value = emp.nome;
+                opt.textContent = emp.nome;
+                selectEmpreendimento.appendChild(opt);
+
+                // Adiciona na listagem visual de gerenciamento (com botão de excluir)
+                const chip = document.createElement('div');
+                chip.className = 'tag-empreendimento';
+                chip.innerHTML = `${emp.nome} <span onclick="excluirEmpreendimento('${id}', '${emp.nome}')" title="Excluir">&times;</span>`;
+                chipsContainer.appendChild(chip);
+            });
+        });
+    }
+
+    // Adicionar novo empreendimento
+    document.getElementById('formNovoEmpreendimento').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const input = document.getElementById('novoEmpreendimentoNome');
+        const nome = input.value.trim();
+
+        if(nome) {
+            try {
+                await addDoc(empreendimentosRef, { nome });
+                input.value = '';
+            } catch (error) {
+                alert("Erro ao adicionar empreendimento: " + error.message);
+            }
+        }
+    });
+
+    // Excluir empreendimento
+    window.excluirEmpreendimento = async function(id, nome) {
+        if(confirm(`Deseja realmente excluir o empreendimento "${nome}"?`)) {
+            try {
+                await deleteDoc(doc(db, "empreendimentos", id));
+            } catch (error) {
+                alert("Erro ao excluir: " + error.message);
+            }
+        }
+    };
+
+    // --- LÓGICA DE CONTATOS ---
     function calcularDataRetorno(dataBase, dias) {
         if (!dias) return null;
         let data = new Date(dataBase);
@@ -347,7 +489,7 @@
         divLista.innerHTML = '';
         
         if(lista.length === 0) {
-            divLista.innerHTML = '<p style="text-align:center; color:#6b7280; margin-top:20px;">Nenhum cliente registrado ainda.</p>';
+            divLista.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin-top:20px;">Nenhum cliente registrado ainda.</p>';
             return;
         }
 
@@ -368,6 +510,8 @@
             if (cliente.dataRetorno) {
                 htmlCard += `<div class="tag-alerta">⏰ Ligar de novo em: ${cliente.dataRetorno}</div>`;
             }
+            
+            htmlCard += `<button class="btn-excluir" onclick="excluirCliente('${cliente.id}')">Excluir Cliente</button>`;
             card.innerHTML = htmlCard;
             divLista.appendChild(card);
         });
@@ -375,7 +519,7 @@
 
     function carregarDadosDoBanco() {
         const q = query(contatosRef, orderBy("timestamp", "desc"));
-        unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
+        unsubContatos = onSnapshot(q, (snapshot) => {
             contatosBaixados = [];
             snapshot.forEach((doc) => {
                 contatosBaixados.push({ id: doc.id, ...doc.data() });
@@ -388,6 +532,16 @@
                 renderizarLista(contatosBaixados);
             }
         });
+    }
+
+    window.excluirCliente = async function(id) {
+        if (confirm("Tem certeza que deseja excluir este cliente?")) {
+            try {
+                await deleteDoc(doc(db, "clientes", id));
+            } catch (error) {
+                alert("Erro ao excluir: " + error.message);
+            }
+        }
     }
 
     document.getElementById('formContato').addEventListener('submit', async function(e) {
@@ -410,7 +564,7 @@
                 nome: document.getElementById('nome').value,
                 contato: document.getElementById('contato').value,
                 empreendimento: document.getElementById('empreendimento').value,
-                valor: document.getElementById('valor').value, // Já vai formatado com R$
+                valor: document.getElementById('valor').value,
                 obstaculo: obstaculo,
                 obs: document.getElementById('obs').value || '-',
                 dataRetorno: calcularDataRetorno(dataStr, diasParaRetorno),
