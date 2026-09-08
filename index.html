@@ -21,6 +21,16 @@
             --radius-lg: 16px;
         }
 
+        /* Variáveis do Modo Escuro */
+        body.dark-mode {
+            --bg-color: #111827;
+            --card-bg: #1F2937;
+            --text-dark: #F9FAFB;
+            --text-muted: #9CA3AF;
+            --border-color: #374151;
+            --alert-bg: #7F1D1D;
+        }
+
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--bg-color); 
@@ -28,6 +38,7 @@
             padding: 12px 10px; 
             color: var(--text-dark);
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container { 
@@ -37,14 +48,62 @@
             border-radius: var(--radius-lg); 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
             margin: auto; 
+            transition: background-color 0.3s ease;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         h2 { 
-            text-align: center; 
             font-size: 20px;
             font-weight: 700;
-            margin: 0 0 15px 0;
+            margin: 0;
             letter-spacing: -0.5px;
+        }
+
+        .btn-tema {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            width: auto;
+            margin: 0;
+            box-shadow: none;
+        }
+
+        /* Dashboard de Métricas (Item 1) */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .dash-card {
+            background: rgba(10, 102, 194, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 6px;
+            text-align: center;
+        }
+        body.dark-mode .dash-card { background: rgba(255, 255, 255, 0.03); }
+        .dash-card span {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .dash-card strong {
+            font-size: 14px;
+            color: var(--primary-color);
         }
 
         h3 {
@@ -67,7 +126,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Padronização rígida para inputs e correções específicas do iOS no input date */
         input, select, textarea { 
             width: 100% !important; 
             max-width: 100% !important;
@@ -76,21 +134,18 @@
             border-radius: var(--radius-md) !important; 
             box-sizing: border-box !important; 
             font-size: 15px !important;
-            background-color: #F9FAFB !important;
-            color: var(--text-dark);
+            background-color: var(--bg-color) !important;
+            color: var(--text-dark) !important;
             display: block;
             appearance: none;
             -webkit-appearance: none;
         }
 
-        input[type="date"] {
-            min-height: 45px;
-        }
+        input[type="date"], input[type="time"] { min-height: 45px; }
 
         input:focus, select:focus, textarea:focus { 
             outline: none !important; 
             border-color: var(--primary-color) !important; 
-            background-color: var(--card-bg) !important;
             box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1) !important; 
         }
 
@@ -108,10 +163,7 @@
             margin-top: 8px;
             box-shadow: 0 4px 10px rgba(10, 102, 194, 0.2);
         }
-
-        button:hover, button:active { 
-            background-color: var(--primary-hover); 
-        }
+        button:hover { background-color: var(--primary-hover); }
 
         .btn-secundario {
             background-color: #4B5563;
@@ -136,8 +188,8 @@
             padding-bottom: 4px;
         }
         .filtro-btn {
-            background: #E5E7EB;
-            color: #374151;
+            background: var(--border-color);
+            color: var(--text-dark);
             border: none;
             padding: 6px 12px;
             border-radius: 20px;
@@ -161,8 +213,8 @@
             margin-bottom: 10px;
         }
         .tag-empreendimento {
-            background: #E0F2FE;
-            color: #0369A1;
+            background: rgba(3, 105, 161, 0.1);
+            color: var(--primary-color);
             padding: 5px 8px;
             border-radius: 6px;
             font-size: 12px;
@@ -170,10 +222,11 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            border: 1px solid var(--border-color);
         }
         .tag-empreendimento span {
             cursor: pointer;
-            color: #EF4444;
+            color: var(--alert-color);
             font-weight: bold;
             font-size: 14px;
         }
@@ -247,8 +300,8 @@
         }
 
         .historico-box {
-            background: #F8FAFC;
-            border: 1px solid #E2E8F0;
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px;
             margin-top: 8px;
@@ -256,7 +309,7 @@
         }
         .historico-item {
             margin-bottom: 4px;
-            border-bottom: 1px dashed #E2E8F0;
+            border-bottom: 1px dashed var(--border-color);
             padding-bottom: 3px;
         }
         .historico-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
@@ -325,7 +378,7 @@
 <!-- TELA DE LOGIN -->
 <div class="container" id="telaLogin">
     <h2>Acesso ao Sistema</h2>
-    <form id="formLogin">
+    <form id="formLogin" style="margin-top: 15px;">
         <div class="form-group">
             <label for="emailLogin">E-mail de Acesso</label>
             <input type="email" id="emailLogin" placeholder="seu@email.com" required>
@@ -341,13 +394,38 @@
 
 <!-- TELA PRINCIPAL DO APP -->
 <div class="container" id="telaApp">
-    <h2>CRM de Vendas</h2>
+    <div class="header-top">
+        <h2>CRM de Vendas</h2>
+        <button class="btn-tema" id="btnAlternarTema" onclick="alternarTema()">🌙 Tema</button>
+    </div>
+
+    <!-- DASHBOARD DE MÉTRICAS (Item 1) -->
+    <div class="dashboard">
+        <div class="dash-card">
+            <span>Ativos</span>
+            <strong id="dashTotal">0</strong>
+        </div>
+        <div class="dash-card">
+            <span>🚨 Ligar Hoje</span>
+            <strong id="dashHoje" style="color: var(--alert-color);">0</strong>
+        </div>
+        <div class="dash-card">
+            <span>⭐ VGV Fechado</span>
+            <strong id="dashVGV" style="font-size: 12px;">R$ 0</strong>
+        </div>
+    </div>
     
     <!-- FORMULÁRIO DE CLIENTES -->
     <form id="formContato">
-        <div class="form-group">
-            <label for="data">Data do Contato</label>
-            <input type="date" id="data" required>
+        <div style="display: flex; gap: 8px;">
+            <div class="form-group" style="flex: 2;">
+                <label for="data">Data do Contato</label>
+                <input type="date" id="data" required>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="horario">Horário</label>
+                <input type="time" id="horario">
+            </div>
         </div>
         
         <div class="form-group">
@@ -367,9 +445,21 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="valor">Valor Acordado</label>
-            <input type="text" id="valor" placeholder="R$ 0,00" required autocomplete="off">
+        <div style="display: flex; gap: 8px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="valor">Valor Acordado</label>
+                <input type="text" id="valor" placeholder="R$ 0,00" required autocomplete="off">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="origem">Origem do Lead</label>
+                <select id="origem">
+                    <option value="Instagram / Anúncio">📱 Instagram / Anúncio</option>
+                    <option value="Indicação">🤝 Indicação</option>
+                    <option value="Placa na Rua">🏠 Placa na Rua</option>
+                    <option value="Plantão de Vendas">🏢 Plantão de Vendas</option>
+                    <option value="Outros">📌 Outros</option>
+                </select>
+            </div>
         </div>
 
         <div class="form-group">
@@ -455,6 +545,23 @@
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
 
+    // --- MODO ESCURO (Dark Mode) ---
+    window.alternarTema = function() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('crm_tema', isDark ? 'dark' : 'light');
+        document.getElementById('btnAlternarTema').innerText = isDark ? '☀️ Tema' : '🌙 Tema';
+    }
+
+    // Carrega tema salvo
+    if(localStorage.getItem('crm_tema') === 'dark') {
+        document.body.classList.add('dark-mode');
+        setTimeout(() => {
+            const btn = document.getElementById('btnAlternarTema');
+            if(btn) btn.innerText = '☀️ Tema';
+        }, 100);
+    }
+
     document.getElementById('contato').addEventListener('input', function (e) {
         let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
         e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -476,6 +583,10 @@
             carregarDadosDoBanco();
             carregarEmpreendimentos();
             document.getElementById('data').valueAsDate = new Date();
+            // Preenche horário atual
+            const agora = new Date();
+            const horaStr = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
+            document.getElementById('horario').value = horaStr;
         } else {
             document.getElementById('telaLogin').style.display = 'block';
             document.getElementById('telaApp').style.display = 'none';
@@ -560,6 +671,43 @@
         }
     };
 
+    // --- ATUALIZAÇÃO DO DASHBOARD (MÉTRICAS) ---
+    function atualizarDashboard(listaCompleta) {
+        const hoje = new Date();
+        hoje.setHours(0,0,0,0);
+
+        let totalAtivos = listaCompleta.length;
+        let ligarHojeCount = 0;
+        let vgvTotal = 0;
+
+        listaCompleta.forEach(c => {
+            // Verifica se vence hoje
+            if (c.diasRetorno && c.dataStr) {
+                const dataBase = new Date(c.dataStr + 'T00:00:00');
+                dataBase.setDate(dataBase.getDate() + c.diasRetorno);
+                if (dataBase <= hoje) {
+                    ligarHojeCount++;
+                }
+            }
+
+            // Calcula VGV (soma apenas Vendido ou Crédito Aprovado)
+            if (c.status === 'Vendido' || c.status === 'Crédito Aprovado') {
+                if (c.valor) {
+                    // Transforma string "R$ 250.000,00" em número
+                    let numLimpo = c.valor.replace('R$', '').replaceAll('.', '').replace(',', '.').trim();
+                    let valNum = parseFloat(numLimpo);
+                    if (!isNaN(valNum)) vgvTotal += valNum;
+                }
+            }
+        });
+
+        document.getElementById('dashTotal').innerText = totalAtivos;
+        document.getElementById('dashHoje').innerText = ligarHojeCount;
+        
+        // Formata VGV para Real compactado (ex: R$ 1.2M ou formatado padrão)
+        document.getElementById('dashVGV').innerText = vgvTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+    }
+
     function renderizarLista(lista) {
         const divLista = document.getElementById('listaContatos');
         divLista.innerHTML = '';
@@ -600,10 +748,12 @@
             if (cliente.historico && cliente.historico.length > 0) {
                 historicoHtml = '<div class="historico-box">';
                 cliente.historico.forEach(h => {
-                    historicoHtml += `<div class="historico-item"><small style="color:#64748B">${h.data}:</small> ${h.texto}</div>`;
+                    historicoHtml += `<div class="historico-item"><small style="opacity:0.7">${h.data}:</small> ${h.texto}</div>`;
                 });
                 historicoHtml += '</div>';
             }
+
+            let horarioInfo = cliente.horario ? `às ${cliente.horario}` : '';
 
             let htmlCard = `
                 <div class="card-header">
@@ -612,7 +762,8 @@
                 </div>
                 <p><strong>📞 Contato:</strong> ${cliente.contato}</p>
                 <p><strong>🏢 Empreendimento:</strong> ${cliente.empreendimento}</p>
-                <p><strong>💰 Valor:</strong> ${cliente.valor}</p>
+                <p><strong>💰 Valor:</strong> ${cliente.valor} | <small>Origem: ${cliente.origem || 'N/D'}</small></p>
+                <p><strong>📅 Contato em:</strong> ${cliente.dataFormatada} ${horarioInfo}</p>
                 <p><strong>⚠️ Obstáculo:</strong> ${cliente.obstaculo}</p>
                 ${historicoHtml}
             `;
@@ -641,6 +792,7 @@
             snapshot.forEach((doc) => {
                 contatosBaixados.push({ id: doc.id, ...doc.data() });
             });
+            atualizarDashboard(contatosBaixados);
             aplicarFiltrosEBusca();
         });
     }
@@ -709,6 +861,7 @@
         botao.disabled = true;
 
         const dataStr = document.getElementById('data').value;
+        const horario = document.getElementById('horario').value;
         const obstaculo = document.getElementById('obstaculo').value;
         const obsInicial = document.getElementById('obs').value.trim();
         
@@ -734,11 +887,13 @@
         try {
             await addDoc(contatosRef, {
                 dataStr: dataStr,
+                horario: horario || '',
                 dataFormatada: dataStr.split('-').reverse().join('/'),
                 nome: document.getElementById('nome').value,
                 contato: document.getElementById('contato').value,
                 empreendimento: document.getElementById('empreendimento').value,
                 valor: document.getElementById('valor').value,
+                origem: document.getElementById('origem').value,
                 status: document.getElementById('status').value,
                 obstaculo: obstaculo,
                 diasRetorno: diasParaRetorno,
@@ -749,6 +904,8 @@
 
             this.reset();
             document.getElementById('data').valueAsDate = new Date();
+            const agora = new Date();
+            document.getElementById('horario').value = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
             document.getElementById('valor').value = ''; 
         } catch (error) {
             alert("Erro ao salvar: " + error.message);
