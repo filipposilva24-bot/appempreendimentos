@@ -178,6 +178,20 @@
         }
         .btn-sair:hover { background-color: var(--alert-bg); }
 
+        /* Caixa de Ficha Técnica Inteligente */
+        .ficha-tecnica-box {
+            background: rgba(10, 102, 194, 0.04);
+            border: 1.5px dashed var(--primary-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+            display: none;
+        }
+        body.dark-mode .ficha-tecnica-box { background: rgba(10, 102, 194, 0.1); }
+        .ficha-tecnica-box strong { color: var(--primary-color); }
+
         .filtros-rapidos {
             display: flex;
             gap: 6px;
@@ -246,14 +260,14 @@
             z-index: 10;
         }
 
-        /* --- KANBAN COM ROLAGEM INDEPENDENTE --- */
+        /* --- KANBAN COM ROLAGEM INTERNA --- */
         .kanban-board {
             display: flex;
             gap: 12px;
             overflow-x: auto;
             padding-bottom: 10px;
             margin-top: 10px;
-            scroll-snap-type: x mandatory; /* Deixa o deslizar entre colunas bem suave no celular */
+            scroll-snap-type: x mandatory;
         }
         .kanban-coluna {
             min-width: 260px;
@@ -282,20 +296,13 @@
             z-index: 5;
         }
 
-        /* Contêiner interno com altura fixa e rolagem própria */
         .kanban-cards-container {
             max-height: 420px;
             overflow-y: auto;
             padding-right: 4px;
         }
-        /* Estilização da barra de rolagem interna */
-        .kanban-cards-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        .kanban-cards-container::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
+        .kanban-cards-container::-webkit-scrollbar { width: 4px; }
+        .kanban-cards-container::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
 
         .card { 
             background: var(--card-bg); 
@@ -488,9 +495,13 @@
 
         <div class="form-group">
             <label for="empreendimento">Empreendimento de Interesse</label>
-            <select id="empreendimento" required>
+            <select id="empreendimento" required onchange="mostrarFichaTecnica(this.value)">
                 <option value="" disabled selected>Carregando empreendimentos...</option>
             </select>
+            <!-- Ficha Técnica Inteligente -->
+            <div class="ficha-tecnica-box" id="fichaTecnicaBox">
+                <span id="fichaConteudo">Selecione um empreendimento para ver os detalhes.</span>
+            </div>
         </div>
 
         <div style="display: flex; gap: 8px;">
@@ -571,10 +582,8 @@
         <input type="text" id="busca" placeholder="Buscar cliente, tel ou empreendimento...">
     </div>
 
-    <!-- KANBAN BOARD COM ROLAGEM INTERNA -->
-    <div class="kanban-board" id="kanbanBoard">
-        <!-- Colunas geradas via JS -->
-    </div>
+    <!-- KANBAN BOARD -->
+    <div class="kanban-board" id="kanbanBoard"></div>
 
     <button id="btnSair" class="btn-sair">Sair da Conta</button>
 </div>
@@ -603,6 +612,28 @@
     let filtroAtual = 'TODOS';
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
+
+    // --- BANCO DE DADOS DE FICHAS TÉCNICAS (Inteligência dos Imóveis) ---
+    const fichasTecnicas = {
+        "Mais Butantã": "🏢 <strong>Cury Máximo Butantã</strong><br>📍 <em>Rua Prof. Máximo Ribeiro Nunes, Butantã (Zona Oeste)</em><br>📐 Aptos de 2 dorms (opção com suíte/terraço).<br>🏊‍♂️ Lazer: Salão de festas, churrasqueira, quadra, pet care.",
+        "Plano Leopodina": "🏢 <strong>Nova Leopoldina Condomínio Art (Cury)</strong><br>📍 <em>Rua Othão, Vila Leopoldina (Perto da Estação Ceasa e Villa-Lobos)</em><br>📐 1 e 2 dorms (37m² a 42m²) com terraço. A partir de R$ 275k.<br>🏊‍♂️ Lazer: Fitness, coworking, piscinas, churrasqueiras, pet care.",
+        "Praça Pirituba": "🏢 <strong>Lyne Pirituba (Cury)</strong><br>📍 <em>Av. Raimundo Pereira de Magalhães, 5028 (Frente à Estação Pirituba)</em><br>📐 2 dorms com opção de terraço e vaga.<br>🏊‍♂️ Lazer: Piscina, lavanderia, fitness, solarium, espaço pet.",
+        "Ares do Horto": "🏢 <strong>Ares do Horto (Cury)</strong><br>📍 <em>Estrada do Campo Limpo, Horto do Ipê (Zona Sul)</em><br>📐 Aptos de 1 e 2 dormitórios.<br>🏊‍♂️ Lazer: Piscina com solarium, academia, salão de festas, quadra.",
+        "Duetto São Domingos": "🏢 <strong>Duetto São Domingos (Plano&Plano)</strong><br>📍 <em>Rua Frederico Jacobi, Parque São Domingos (Zona Oeste)</em><br>📐 1 e 2 dorms com varanda (26m² a 35m²). Perto do Shopping e Estação.<br>🏊‍♂️ Lazer: Piscinas adulto/infantil, coworking, pet care, minimercado.",
+        "Plano Jaçana": "🏢 <strong>Plano&Jaçanã (Plano&Plano)</strong><br>📍 <em>Av. Luís Stamatis, Jaçanã (Zona Norte, perto do Tucuruvi)</em><br>📐 2 dorms com terraço (cerca de 34m²).<br>🏊‍♂️ Lazer: Piscinas, coworking, salão de festas, sportbar, quadra de areia."
+    };
+
+    window.mostrarFichaTecnica = function(nomeEmpreendimento) {
+        const box = document.getElementById('fichaTecnicaBox');
+        const conteudo = document.getElementById('fichaConteudo');
+        
+        if (fichasTecnicas[nomeEmpreendimento]) {
+            conteudo.innerHTML = fichasTecnicas[nomeEmpreendimento];
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    };
 
     window.alternarTema = function() {
         document.body.classList.toggle('dark-mode');
@@ -690,6 +721,7 @@
             const selectEmpreendimento = document.getElementById('empreendimento');
             const chipsContainer = document.getElementById('listaEmpreendimentosChips');
             
+            const valorAtual = selectEmpreendimento.value;
             selectEmpreendimento.innerHTML = '<option value="" disabled selected>Selecione uma opção...</option>';
             chipsContainer.innerHTML = '';
 
@@ -707,6 +739,7 @@
                 chip.innerHTML = `${emp.nome} <span onclick="excluirEmpreendimento('${id}', '${emp.nome}')" title="Excluir">&times;</span>`;
                 chipsContainer.appendChild(chip);
             });
+            if(valorAtual) selectEmpreendimento.value = valorAtual;
         });
     }
 
@@ -754,7 +787,6 @@
         document.getElementById('dashVGV').innerText = vgvTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
     }
 
-    // --- RENDERIZAÇÃO DO KANBAN COM ROLAGEM INTERNA NAS COLUNAS ---
     function renderizarKanban(lista) {
         const board = document.getElementById('kanbanBoard');
         board.innerHTML = '';
@@ -777,7 +809,6 @@
             divColuna.className = 'kanban-coluna';
             divColuna.innerHTML = `<h4>${col.titulo} <span>(${clientesColuna.length})</span></h4>`;
 
-            // Contêiner com rolagem interna restrita
             const cardsContainer = document.createElement('div');
             cardsContainer.className = 'kanban-cards-container';
 
@@ -984,6 +1015,7 @@
             const agora = new Date();
             document.getElementById('horario').value = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
             document.getElementById('valor').value = ''; 
+            document.getElementById('fichaTecnicaBox').style.display = 'none';
         } catch (error) {
             alert("Erro ao salvar: " + error.message);
         } finally {
