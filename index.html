@@ -41,7 +41,7 @@
         }
 
         .container { 
-            max-width: 600px; /* Um pouco mais largo para acomodar o Kanban */
+            max-width: 600px; 
             background: var(--card-bg); 
             padding: 18px 15px; 
             border-radius: var(--radius-lg); 
@@ -246,23 +246,25 @@
             z-index: 10;
         }
 
-        /* --- ESTILO KANBAN (COLUNAS) --- */
+        /* --- KANBAN COM ROLAGEM INDEPENDENTE --- */
         .kanban-board {
             display: flex;
             gap: 12px;
             overflow-x: auto;
             padding-bottom: 10px;
             margin-top: 10px;
+            scroll-snap-type: x mandatory; /* Deixa o deslizar entre colunas bem suave no celular */
         }
         .kanban-coluna {
             min-width: 260px;
-            max-width: 280px;
+            max-width: 260px;
             background: rgba(0,0,0,0.02);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             padding: 10px;
             display: flex;
             flex-direction: column;
+            scroll-snap-align: start;
         }
         body.dark-mode .kanban-coluna { background: rgba(255,255,255,0.01); }
         
@@ -274,6 +276,25 @@
             border-bottom: 2px solid var(--border-color);
             display: flex;
             justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            z-index: 5;
+        }
+
+        /* Contêiner interno com altura fixa e rolagem própria */
+        .kanban-cards-container {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        /* Estilização da barra de rolagem interna */
+        .kanban-cards-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .kanban-cards-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
         .card { 
@@ -290,7 +311,6 @@
         .card h3 { margin: 0 0 6px 0; font-size: 14px; color: var(--text-dark); border: none; padding: 0; }
         .card p { margin: 3px 0; font-size: 12px; color: var(--text-muted); line-height: 1.3; }
 
-        /* Termômetro de Temperatura */
         .badge-temp {
             display: inline-block;
             font-size: 10px;
@@ -551,7 +571,7 @@
         <input type="text" id="busca" placeholder="Buscar cliente, tel ou empreendimento...">
     </div>
 
-    <!-- KANBAN BOARD (COLUNAS DO FUNIL) -->
+    <!-- KANBAN BOARD COM ROLAGEM INTERNA -->
     <div class="kanban-board" id="kanbanBoard">
         <!-- Colunas geradas via JS -->
     </div>
@@ -734,7 +754,7 @@
         document.getElementById('dashVGV').innerText = vgvTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
     }
 
-    // --- RENDERIZAÇÃO DO KANBAN (COLUNAS) ---
+    // --- RENDERIZAÇÃO DO KANBAN COM ROLAGEM INTERNA NAS COLUNAS ---
     function renderizarKanban(lista) {
         const board = document.getElementById('kanbanBoard');
         board.innerHTML = '';
@@ -757,10 +777,12 @@
             divColuna.className = 'kanban-coluna';
             divColuna.innerHTML = `<h4>${col.titulo} <span>(${clientesColuna.length})</span></h4>`;
 
+            // Contêiner com rolagem interna restrita
             const cardsContainer = document.createElement('div');
+            cardsContainer.className = 'kanban-cards-container';
 
             if (clientesColuna.length === 0) {
-                cardsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:11px; margin:10px 0;">Nenhum lead</p>';
+                cardsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:11px; margin:15px 0;">Nenhum lead</p>';
             } else {
                 clientesColuna.forEach(cliente => {
                     let deveLigarHoje = false;
@@ -803,7 +825,6 @@
                         htmlCard += `<div class="tag-alerta">⏰ Retorno: ${cliente.dataRetornoFormatada}</div>`;
                     }
 
-                    // Botões de mover entre colunas
                     let botoesMover = '';
                     if (col.anterior) {
                         botoesMover += `<button class="btn-mover" onclick="mudarStatus('${cliente.id}', '${col.anterior}')">⬅️ Voltar</button>`;
@@ -843,7 +864,6 @@
         });
     }
 
-    // Mudar status direto pelo Kanban
     window.mudarStatus = async function(id, novoStatus) {
         try {
             const docRef = doc(db, "clientes", id);
