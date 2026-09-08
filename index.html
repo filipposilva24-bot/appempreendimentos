@@ -16,17 +16,16 @@
             --alert-color: #EF4444;
             --alert-bg: #FEF2F2;
             --success-color: #10B981;
-            --success-bg: #ECFDF5;
             --whatsapp-color: #25D366;
-            --radius-md: 12px;
-            --radius-lg: 20px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
         }
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--bg-color); 
             margin: 0; 
-            padding: 20px 15px; 
+            padding: 12px 10px; 
             color: var(--text-dark);
             -webkit-font-smoothing: antialiased;
         }
@@ -34,47 +33,47 @@
         .container { 
             max-width: 480px; 
             background: var(--card-bg); 
-            padding: 25px 20px; 
+            padding: 18px 15px; 
             border-radius: var(--radius-lg); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
             margin: auto; 
         }
 
         h2 { 
             text-align: center; 
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
-            margin: 0 0 25px 0;
+            margin: 0 0 15px 0;
             letter-spacing: -0.5px;
         }
 
         h3 {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-dark);
-            margin: 25px 0 12px 0;
+            margin: 20px 0 10px 0;
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 6px;
+            padding-bottom: 4px;
         }
 
-        .form-group { margin-bottom: 18px; }
+        .form-group { margin-bottom: 12px; }
         
         label { 
             display: block; 
-            font-size: 12px; 
+            font-size: 11px; 
             font-weight: 700; 
             color: var(--text-muted); 
-            margin-bottom: 6px; 
+            margin-bottom: 4px; 
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         input, select, textarea { 
             width: 100%; 
-            padding: 14px 16px; 
+            padding: 11px 14px; 
             border: 1.5px solid var(--border-color); 
             border-radius: var(--radius-md); 
             box-sizing: border-box; 
-            font-size: 16px;
+            font-size: 15px;
             background-color: #F9FAFB;
             transition: all 0.2s ease;
             color: var(--text-dark);
@@ -84,34 +83,31 @@
             outline: none; 
             border-color: var(--primary-color); 
             background-color: var(--card-bg);
-            box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.1); 
+            box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1); 
         }
-
-        input[type="date"] { color: var(--text-muted); }
 
         button { 
             width: 100%; 
-            padding: 16px; 
+            padding: 14px; 
             background-color: var(--primary-color); 
             color: white; 
             border: none; 
             border-radius: var(--radius-md); 
             cursor: pointer; 
-            font-size: 16px; 
+            font-size: 15px; 
             font-weight: 600; 
             transition: all 0.2s ease;
-            margin-top: 10px;
-            box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
+            margin-top: 8px;
+            box-shadow: 0 4px 10px rgba(10, 102, 194, 0.2);
         }
 
         button:hover, button:active { 
             background-color: var(--primary-hover); 
-            transform: translateY(-1px);
         }
 
         .btn-secundario {
             background-color: #4B5563;
-            box-shadow: 0 4px 12px rgba(75, 85, 99, 0.2);
+            box-shadow: 0 4px 10px rgba(75, 85, 99, 0.2);
         }
         .btn-secundario:hover { background-color: #374151; }
 
@@ -120,25 +116,25 @@
             color: var(--alert-color);
             border: 1.5px solid var(--alert-color);
             box-shadow: none;
-            margin-top: 30px; 
+            margin-top: 25px; 
         }
-        .btn-sair:hover { background-color: var(--alert-bg); color: var(--alert-color); }
+        .btn-sair:hover { background-color: var(--alert-bg); }
 
         /* Filtros Rápidos */
         .filtros-rapidos {
             display: flex;
-            gap: 8px;
-            margin: 20px 0 15px 0;
+            gap: 6px;
+            margin: 15px 0 10px 0;
             overflow-x: auto;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
         }
         .filtro-btn {
             background: #E5E7EB;
             color: #374151;
             border: none;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
@@ -155,50 +151,50 @@
         .tag-empreendimento-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 6px;
+            margin-bottom: 10px;
         }
         .tag-empreendimento {
             background: #E0F2FE;
             color: #0369A1;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         .tag-empreendimento span {
             cursor: pointer;
             color: #EF4444;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .busca-container { 
-            margin: 20px 0 15px 0; 
+            margin: 15px 0 10px 0; 
             position: relative;
         }
         .busca-container input {
-            padding-left: 40px;
+            padding-left: 36px;
             border-radius: 30px;
         }
         .busca-icon {
             position: absolute;
-            left: 14px;
-            top: 15px;
-            font-size: 18px;
+            left: 12px;
+            top: 13px;
+            font-size: 16px;
             color: var(--text-muted);
         }
 
         /* Cards CRM */
         .card { 
             background: var(--card-bg); 
-            padding: 18px; 
+            padding: 14px; 
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md); 
-            margin-bottom: 15px; 
+            margin-bottom: 12px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
             position: relative;
         }
@@ -208,24 +204,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
-        .card h3 { margin: 0; font-size: 16px; color: var(--text-dark); border: none; padding: 0; }
-        .card p { margin: 6px 0; font-size: 14px; color: var(--text-muted); line-height: 1.4; }
+        .card h3 { margin: 0; font-size: 15px; color: var(--text-dark); border: none; padding: 0; }
+        .card p { margin: 4px 0; font-size: 13px; color: var(--text-muted); line-height: 1.3; }
         .card strong { color: var(--text-dark); font-weight: 600; }
 
         /* Badges de Status */
         .badge-status {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .status-em-contato { background: #FEF3C7; color: #D97706; }
         .status-aguardando-doc { background: #E0E7FF; color: #4338CA; }
@@ -237,46 +233,40 @@
             display: block; 
             background-color: var(--alert-bg); 
             color: var(--alert-color); 
-            padding: 6px 10px; 
+            padding: 5px 8px; 
             border-radius: 6px; 
-            font-size: 12px; 
+            font-size: 11px; 
             font-weight: 700; 
-            margin-top: 10px; 
+            margin-top: 8px; 
             text-align: center;
         }
 
-        /* Histórico de interações dentro do card */
         .historico-box {
             background: #F8FAFC;
             border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 13px;
+            border-radius: 6px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 12px;
         }
         .historico-item {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             border-bottom: 1px dashed #E2E8F0;
-            padding-bottom: 4px;
+            padding-bottom: 3px;
         }
-        .historico-item:last-child {
-            margin-bottom: 0;
-            border-bottom: none;
-            padding-bottom: 0;
-        }
+        .historico-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
 
-        /* Ações do Card (Whats e Excluir) */
         .card-acoes {
             display: flex;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 6px;
+            margin-top: 10px;
         }
         .btn-whats {
             background-color: var(--whatsapp-color);
             color: white;
             border: none;
-            padding: 8px 12px;
-            font-size: 13px;
+            padding: 7px 10px;
+            font-size: 12px;
             font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
@@ -287,31 +277,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
         }
-        .btn-whats:hover { background-color: #20ba5a; transform: none; }
+        .btn-whats:hover { background-color: #20ba5a; }
 
         .btn-add-obs {
             background-color: #4B5563;
             color: white;
             border: none;
-            padding: 8px 12px;
-            font-size: 13px;
+            padding: 7px 10px;
+            font-size: 12px;
             font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 6px;
             box-shadow: none;
             width: 100%;
         }
-        .btn-add-obs:hover { background-color: #374151; transform: none; }
+        .btn-add-obs:hover { background-color: #374151; }
 
         .btn-excluir {
             background-color: transparent;
             color: var(--alert-color);
             border: 1px solid var(--alert-color);
-            padding: 8px 12px;
-            font-size: 13px;
+            padding: 7px 10px;
+            font-size: 12px;
             font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
@@ -319,10 +309,10 @@
             margin-top: 0;
             box-shadow: none;
         }
-        .btn-excluir:hover { background-color: var(--alert-bg); transform: none; }
+        .btn-excluir:hover { background-color: var(--alert-bg); }
 
         #telaApp { display: none; }
-        #msgErro { color: var(--alert-color); text-align: center; margin-top: 15px; font-weight: 600; display: none; font-size: 14px; }
+        #msgErro { color: var(--alert-color); text-align: center; margin-top: 12px; font-weight: 600; display: none; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -409,8 +399,8 @@
     <h3>Gerenciar Empreendimentos</h3>
     <div class="tag-empreendimento-container" id="listaEmpreendimentosChips"></div>
     
-    <form id="formNovoEmpreendimento" style="margin-top: 10px;">
-        <div class="form-group" style="margin-bottom: 10px;">
+    <form id="formNovoEmpreendimento" style="margin-top: 8px;">
+        <div class="form-group" style="margin-bottom: 8px;">
             <input type="text" id="novoEmpreendimentoNome" placeholder="Nome do novo empreendimento..." required autocomplete="off">
         </div>
         <button type="submit" class="btn-secundario">Adicionar Empreendimento</button>
@@ -429,7 +419,7 @@
     </div>
 
     <div class="lista-contatos" id="listaContatos">
-        <p style="text-align:center; color: var(--text-muted); margin-top:20px;">Carregando contatos...</p>
+        <p style="text-align:center; color: var(--text-muted); margin-top:15px;">Carregando contatos...</p>
     </div>
 
     <button id="btnSair" class="btn-sair">Sair da Conta</button>
@@ -460,7 +450,6 @@
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
 
-    // --- MÁSCARAS ---
     document.getElementById('contato').addEventListener('input', function (e) {
         let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
         e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -474,7 +463,6 @@
         e.target.value = valor ? 'R$ ' + valor : '';
     });
 
-    // --- AUTENTICAÇÃO ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             document.getElementById('telaLogin').style.display = 'none';
@@ -515,7 +503,6 @@
 
     document.getElementById('btnSair').addEventListener('click', () => signOut(auth));
 
-    // --- EMPREENDIMENTOS ---
     async function inicializarEmpreendimentosPadrao() {
         const snapshot = await getDocs(empreendimentosRef);
         if (snapshot.empty) {
@@ -568,21 +555,12 @@
         }
     };
 
-    // --- LÓGICA DE DATAS E ALERTAS ---
-    function calcularDataRetorno(dataBase, dias) {
-        if (!dias) return null;
-        let data = new Date(dataBase + 'T00:00:00');
-        data.setDate(data.getDate() + dias);
-        return data; // Retorna objeto Date para comparação
-    }
-
-    // --- RENDERIZAÇÃO DO CRM ---
     function renderizarLista(lista) {
         const divLista = document.getElementById('listaContatos');
         divLista.innerHTML = '';
         
         if(lista.length === 0) {
-            divLista.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin-top:20px;">Nenhum cliente encontrado.</p>';
+            divLista.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin-top:15px;">Nenhum cliente encontrado.</p>';
             return;
         }
 
@@ -592,7 +570,6 @@
         lista.forEach(cliente => {
             const card = document.createElement('div');
             
-            // Verifica se vence hoje ou antes
             let deveLigarHoje = false;
             if (cliente.diasRetorno && cliente.dataStr) {
                 const dataBase = new Date(cliente.dataStr + 'T00:00:00');
@@ -604,19 +581,16 @@
 
             card.className = deveLigarHoje ? 'card alerta' : 'card';
             
-            // Classe de cor do Status Badge
             let classeStatus = 'status-em-contato';
             if (cliente.status === 'Aguardando Documento') classeStatus = 'status-aguardando-doc';
             if (cliente.status === 'Crédito Aprovado') classeStatus = 'status-credito-aprovado';
             if (cliente.status === 'Vendido') classeStatus = 'status-vendido';
             if (cliente.status === 'Perdido') classeStatus = 'status-perdido';
 
-            // Formatação do link do WhatsApp (limpa caracteres não numéricos)
             const telLimpo = cliente.contato.replace(/\D/g, '');
             const msgWhats = encodeURIComponent(`Olá ${cliente.nome}, tudo bem? Estou entrando em contato referente ao empreendimento ${cliente.empreendimento}.`);
             const linkWhats = `https://wa.me/55${telLimpo}?text=${msgWhats}`;
 
-            // Monta o histórico de interações
             let historicoHtml = '';
             if (cliente.historico && cliente.historico.length > 0) {
                 historicoHtml = '<div class="historico-box">';
@@ -666,7 +640,6 @@
         });
     }
 
-    // --- FILTROS RÁPIDOS ---
     window.filtrarStatus = function(tipo, btn) {
         document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
         btn.classList.add('ativo');
@@ -684,10 +657,9 @@
         hoje.setHours(0,0,0,0);
 
         let filtrados = contatosBaixados.filter(c => {
-            const matchBusca = c.nome.toLowerCase().includes(termo) || 
-                               c.contato.includes(termo) || 
-                               c.empreendimento.toLowerCase().includes(termo);
-            return matchBusca;
+            return c.nome.toLowerCase().includes(termo) || 
+                   c.contato.includes(termo) || 
+                   c.empreendimento.toLowerCase().includes(termo);
         });
 
         if (filtroAtual === 'HOJE') {
@@ -704,19 +676,14 @@
         renderizarLista(filtrados);
     }
 
-    // --- ADICIONAR HISTÓRICO / ANOTAÇÃO ---
     window.adicionarInteracao = async function(id) {
         const novaNota = prompt("Digite a nova observação ou andamento da conversa:");
         if (novaNota && novaNota.trim() !== "") {
             const dataHoje = new Date().toLocaleDateString('pt-BR');
-            const itemHistorico = {
-                data: dataHoje,
-                texto: novaNota.trim()
-            };
             try {
                 const docRef = doc(db, "clientes", id);
                 await updateDoc(docRef, {
-                    historico: arrayUnion(itemHistorico)
+                    historico: arrayUnion({ data: dataHoje, texto: novaNota.trim() })
                 });
             } catch (error) {
                 alert("Erro ao adicionar nota: " + error.message);
@@ -724,14 +691,12 @@
         }
     };
 
-    // --- EXCLUIR CLIENTE ---
     window.excluirCliente = async function(id) {
         if (confirm("Deseja realmente excluir este cliente do CRM?")) {
             await deleteDoc(doc(db, "clientes", id));
         }
     }
 
-    // --- SALVAR NOVO CLIENTE ---
     document.getElementById('formContato').addEventListener('submit', async function(e) {
         e.preventDefault(); 
         const botao = this.querySelector('button');
@@ -746,7 +711,6 @@
         if (obstaculo === 'Nome Sujo') diasParaRetorno = 30;
         else if (obstaculo === 'Outros') diasParaRetorno = 15;
 
-        // Calcula a data legível de retorno
         let dataRetornoFormatada = null;
         if (diasParaRetorno > 0) {
             let dataRet = new Date(dataStr + 'T00:00:00');
@@ -754,13 +718,13 @@
             dataRetornoFormatada = dataRet.toLocaleDateString('pt-BR');
         }
 
-        // Cria array de histórico inicial se houver observação
         let historicoInicial = [];
         if (obsInicial) {
-            historicoInicial.push({
+            historicoInitiate = {
                 data: new Date(dataStr + 'T00:00:00').toLocaleDateString('pt-BR'),
                 texto: obsInicial
-            });
+            };
+            historicoInicial.push(historicoInitiate);
         }
 
         try {
