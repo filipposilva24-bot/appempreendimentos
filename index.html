@@ -178,7 +178,6 @@
         }
         .btn-sair:hover { background-color: var(--alert-bg); }
 
-        /* Caixa de Ficha Técnica Inteligente */
         .ficha-tecnica-box {
             background: rgba(10, 102, 194, 0.04);
             border: 1.5px dashed var(--primary-color);
@@ -260,7 +259,6 @@
             z-index: 10;
         }
 
-        /* --- KANBAN COM ROLAGEM INTERNA --- */
         .kanban-board {
             display: flex;
             gap: 12px;
@@ -498,7 +496,7 @@
             <select id="empreendimento" required onchange="mostrarFichaTecnica(this.value)">
                 <option value="" disabled selected>Carregando empreendimentos...</option>
             </select>
-            <!-- Ficha Técnica Inteligente -->
+            <!-- Ficha Técnica Inteligente (Funciona com os padrões e novos) -->
             <div class="ficha-tecnica-box" id="fichaTecnicaBox">
                 <span id="fichaConteudo">Selecione um empreendimento para ver os detalhes.</span>
             </div>
@@ -613,14 +611,14 @@
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
 
-    // --- BANCO DE DADOS DE FICHAS TÉCNICAS (Inteligência dos Imóveis) ---
+    // --- BANCO DE DADOS DE FICHAS TÉCNICAS INTELIGENTES ---
     const fichasTecnicas = {
         "Mais Butantã": "🏢 <strong>Cury Máximo Butantã</strong><br>📍 <em>Rua Prof. Máximo Ribeiro Nunes, Butantã (Zona Oeste)</em><br>📐 Aptos de 2 dorms (opção com suíte/terraço).<br>🏊‍♂️ Lazer: Salão de festas, churrasqueira, quadra, pet care.",
-        "Plano Leopodina": "🏢 <strong>Nova Leopoldina Condomínio Art (Cury)</strong><br>📍 <em>Rua Othão, Vila Leopoldina (Perto da Estação Ceasa e Villa-Lobos)</em><br>📐 1 e 2 dorms (37m² a 42m²) com terraço. A partir de R$ 275k.<br>🏊‍♂️ Lazer: Fitness, coworking, piscinas, churrasqueiras, pet care.",
+        "Plano Leopodina": "🏢 <strong>Nova Leopoldina Condomínio Art (Cury)</strong><br>📍 <em>Rua Othão, Vila Leopoldina (Perto da Estação Ceasa)</em><br>📐 1 e 2 dorms (37m² a 42m²) com terraço.<br>🏊‍♂️ Lazer: Fitness, coworking, piscinas, churrasqueiras.",
         "Praça Pirituba": "🏢 <strong>Lyne Pirituba (Cury)</strong><br>📍 <em>Av. Raimundo Pereira de Magalhães, 5028 (Frente à Estação Pirituba)</em><br>📐 2 dorms com opção de terraço e vaga.<br>🏊‍♂️ Lazer: Piscina, lavanderia, fitness, solarium, espaço pet.",
-        "Ares do Horto": "🏢 <strong>Ares do Horto (Cury)</strong><br>📍 <em>Estrada do Campo Limpo, Horto do Ipê (Zona Sul)</em><br>📐 Aptos de 1 e 2 dormitórios.<br>🏊‍♂️ Lazer: Piscina com solarium, academia, salão de festas, quadra.",
-        "Duetto São Domingos": "🏢 <strong>Duetto São Domingos (Plano&Plano)</strong><br>📍 <em>Rua Frederico Jacobi, Parque São Domingos (Zona Oeste)</em><br>📐 1 e 2 dorms com varanda (26m² a 35m²). Perto do Shopping e Estação.<br>🏊‍♂️ Lazer: Piscinas adulto/infantil, coworking, pet care, minimercado.",
-        "Plano Jaçana": "🏢 <strong>Plano&Jaçanã (Plano&Plano)</strong><br>📍 <em>Av. Luís Stamatis, Jaçanã (Zona Norte, perto do Tucuruvi)</em><br>📐 2 dorms com terraço (cerca de 34m²).<br>🏊‍♂️ Lazer: Piscinas, coworking, salão de festas, sportbar, quadra de areia."
+        "Ares do Horto": "🏢 <strong>Ares do Horto (Cury)</strong><br>📍 <em>Estrada do Campo Limpo, Horto do Ipê (Zona Sul)</em><br>📐 Aptos de 1 e 2 dormitórios.<br>🏊‍♂️ Lazer: Piscina com solarium, academia, salão de festas.",
+        "Duetto São Domingos": "🏢 <strong>Duetto São Domingos (Plano&Plano)</strong><br>📍 <em>Rua Frederico Jacobi, Parque São Domingos (Zona Oeste)</em><br>📐 1 e 2 dorms com varanda (26m² a 35m²).<br>🏊‍♂️ Lazer: Piscinas adulto/infantil, coworking, pet care.",
+        "Plano Jaçana": "🏢 <strong>Plano&Jaçanã (Plano&Plano)</strong><br>📍 <em>Av. Luís Stamatis, Jaçanã (Zona Norte, perto do Tucuruvi)</em><br>📐 2 dorms com terraço (cerca de 34m²).<br>🏊‍♂️ Lazer: Piscinas, coworking, salão de festas, quadra de areia."
     };
 
     window.mostrarFichaTecnica = function(nomeEmpreendimento) {
@@ -631,7 +629,9 @@
             conteudo.innerHTML = fichasTecnicas[nomeEmpreendimento];
             box.style.display = 'block';
         } else {
-            box.style.display = 'none';
+            // Se for um empreendimento novo cadastrado pelo usuário, exibe uma ficha genérica útil
+            conteudo.innerHTML = `🏢 <strong>Empreendimento: ${nomeEmpreendimento}</strong><br>📍 <em>Novo projeto cadastrado no sistema.</em><br>💡 Dica: Anote as metragens e condições principais nas observações do cliente!`;
+            box.style.display = 'block';
         }
     };
 
