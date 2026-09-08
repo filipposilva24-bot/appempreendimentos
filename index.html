@@ -2,32 +2,176 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Controle de Leads</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
-        .container { max-width: 500px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin: auto; }
-        h2 { text-align: center; color: #1a1a1a; margin-top: 0; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 5px; color: #444; font-size: 14px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #0056b3; box-shadow: 0 0 0 2px rgba(0,86,179,0.2); }
-        button { width: 100%; padding: 14px; background-color: #0056b3; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
-        button:hover { background-color: #004494; }
-        
-        /* Estilos do Botão Sair */
-        .btn-sair { background-color: #e74c3c; margin-top: 30px; }
-        .btn-sair:hover { background-color: #c0392b; }
+        /* Variáveis de Cores e Estilos (Design System) */
+        :root {
+            --primary-color: #0A66C2;
+            --primary-hover: #004182;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --alert-color: #EF4444;
+            --alert-bg: #FEF2F2;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
 
-        .busca-container { margin: 25px 0 15px 0; padding-top: 20px; border-top: 2px dashed #eee; }
-        .card { background: #fafafa; padding: 15px; border-left: 5px solid #0056b3; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .card p { margin: 6px 0; color: #333; font-size: 14px; }
-        .card.alerta { border-left-color: #e74c3c; }
-        .tag-alerta { display: inline-block; background-color: #ffefed; color: #e74c3c; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-top: 5px; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 0; 
+            padding: 20px 15px; 
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { 
+            max-width: 480px; 
+            background: var(--card-bg); 
+            padding: 25px 20px; 
+            border-radius: var(--radius-lg); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            margin: auto; 
+        }
+
+        h2 { 
+            text-align: center; 
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 25px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group { margin-bottom: 18px; }
         
-        /* Oculta os elementos inicialmente */
+        label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            margin-bottom: 6px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Inputs estilosos e tamanho 16px para evitar zoom no iOS */
+        input, select, textarea { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1.5px solid var(--border-color); 
+            border-radius: var(--radius-md); 
+            box-sizing: border-box; 
+            font-size: 16px;
+            background-color: #F9FAFB;
+            transition: all 0.2s ease;
+            color: var(--text-dark);
+        }
+
+        input:focus, select:focus, textarea:focus { 
+            outline: none; 
+            border-color: var(--primary-color); 
+            background-color: var(--card-bg);
+            box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.1); 
+        }
+
+        /* Ajuste visual para o input de data desabilitado/automático */
+        input[type="date"] { color: var(--text-muted); }
+
+        button { 
+            width: 100%; 
+            padding: 16px; 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none; 
+            border-radius: var(--radius-md); 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600; 
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
+        }
+
+        button:hover, button:active { 
+            background-color: var(--primary-hover); 
+            transform: translateY(-1px);
+        }
+
+        .btn-sair { 
+            background-color: transparent; 
+            color: var(--alert-color);
+            border: 1.5px solid var(--alert-color);
+            box-shadow: none;
+            margin-top: 30px; 
+        }
+        .btn-sair:hover { background-color: var(--alert-bg); color: var(--alert-color); }
+
+        /* Divisória e Busca */
+        .busca-container { 
+            margin: 35px 0 20px 0; 
+            position: relative;
+        }
+        
+        .busca-container input {
+            padding-left: 40px;
+            border-radius: 30px; /* Busca mais redonda */
+        }
+
+        .busca-icon {
+            position: absolute;
+            left: 14px;
+            top: 15px;
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        /* Lista de Contatos */
+        .card { 
+            background: var(--card-bg); 
+            padding: 18px; 
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); 
+            margin-bottom: 15px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+            transition: transform 0.2s;
+        }
+        
+        .card.alerta { border-left: 4px solid var(--alert-color); }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .card h3 { margin: 0; font-size: 16px; color: var(--text-dark); }
+        .card p { margin: 6px 0; font-size: 14px; color: var(--text-muted); line-height: 1.4; }
+        .card strong { color: var(--text-dark); font-weight: 600; }
+        
+        .tag-alerta { 
+            display: inline-block; 
+            background-color: var(--alert-bg); 
+            color: var(--alert-color); 
+            padding: 6px 10px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            margin-top: 10px; 
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* Controle de Telas */
         #telaApp { display: none; }
-        #msgErro { color: #e74c3c; text-align: center; margin-top: 15px; font-weight: bold; display: none; }
+        #msgErro { color: var(--alert-color); text-align: center; margin-top: 15px; font-weight: 600; display: none; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -37,25 +181,37 @@
     <h2>Acesso ao Sistema</h2>
     <form id="formLogin">
         <div class="form-group">
-            <label for="emailLogin">E-mail</label>
-            <input type="email" id="emailLogin" placeholder="Digite seu e-mail" required>
+            <label for="emailLogin">E-mail de Acesso</label>
+            <input type="email" id="emailLogin" placeholder="seu@email.com" required>
         </div>
         <div class="form-group">
             <label for="senhaLogin">Senha</label>
-            <input type="password" id="senhaLogin" placeholder="Digite sua senha" required>
+            <input type="password" id="senhaLogin" placeholder="••••••••" required>
         </div>
-        <button type="submit" id="btnEntrar">Entrar</button>
+        <button type="submit" id="btnEntrar">Entrar no Sistema</button>
         <p id="msgErro">E-mail ou senha incorretos.</p>
     </form>
 </div>
 
 <!-- TELA PRINCIPAL DO APP -->
 <div class="container" id="telaApp">
-    <h2>Registro de Contatos</h2>
+    <h2>Novo Contato</h2>
     <form id="formContato">
-        <div class="form-group"><label for="data">Data do Contato</label><input type="date" id="data" required></div>
-        <div class="form-group"><label for="nome">Nome do Cliente</label><input type="text" id="nome" placeholder="Ex: João da Silva" required></div>
-        <div class="form-group"><label for="contato">Contato (WhatsApp/Telefone)</label><input type="tel" id="contato" placeholder="(11) 99999-9999" required></div>
+        <div class="form-group">
+            <label for="data">Data do Contato</label>
+            <input type="date" id="data" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="nome">Nome do Cliente</label>
+            <input type="text" id="nome" placeholder="Ex: João da Silva" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+            <label for="contato">WhatsApp / Telefone</label>
+            <input type="tel" id="contato" placeholder="(11) 99999-9999" maxlength="15" required autocomplete="off">
+        </div>
+
         <div class="form-group">
             <label for="empreendimento">Empreendimento de Interesse</label>
             <select id="empreendimento" required>
@@ -68,37 +224,46 @@
                 <option value="Plano Jaçana">Plano Jaçana</option>
             </select>
         </div>
-        <div class="form-group"><label for="valor">Valor Acordado (R$)</label><input type="number" id="valor" step="0.01" placeholder="Ex: 250000.00" required></div>
+
+        <div class="form-group">
+            <label for="valor">Valor Acordado</label>
+            <input type="text" id="valor" placeholder="R$ 0,00" required autocomplete="off">
+        </div>
+
         <div class="form-group">
             <label for="obstaculo">Obstáculo Identificado</label>
             <select id="obstaculo">
-                <option value="Nenhum">Nenhum obstáculo</option>
-                <option value="Nome Sujo">Nome Sujo / Restrição (Retorno em 30 dias)</option>
-                <option value="Outros">Outros - Renda, Doc, etc (Retorno em 15 dias)</option>
+                <option value="Nenhum">✅ Nenhum obstáculo</option>
+                <option value="Nome Sujo">⚠️ Nome Sujo / Restrição (Retorno 30 dias)</option>
+                <option value="Outros">⚠️ Outros - Renda, Doc (Retorno 15 dias)</option>
             </select>
         </div>
-        <div class="form-group"><label for="obs">Observações</label><textarea id="obs" rows="3" placeholder="Detalhe o obstáculo ou a situação do cliente..."></textarea></div>
-        <button type="submit">Salvar Contato</button>
+
+        <div class="form-group">
+            <label for="obs">Observações Adicionais</label>
+            <textarea id="obs" rows="3" placeholder="Detalhes da conversa, status da aprovação..."></textarea>
+        </div>
+
+        <button type="submit">Salvar Cliente</button>
     </form>
 
     <div class="busca-container">
-        <input type="text" id="busca" placeholder="🔍 Buscar por nome, contato ou empreendimento...">
+        <span class="busca-icon">🔍</span>
+        <input type="text" id="busca" placeholder="Buscar cliente, tel ou empreendimento...">
     </div>
 
     <div class="lista-contatos" id="listaContatos">
-        <p style="text-align:center; color:#666;">Carregando contatos...</p>
+        <p style="text-align:center; color: var(--text-muted); margin-top:30px;">Carregando contatos...</p>
     </div>
 
     <button id="btnSair" class="btn-sair">Sair da Conta</button>
 </div>
 
 <script type="module">
-    // Importando as bibliotecas do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
-    // Suas credenciais do Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyDLkz8nVg_NPNNZvg4VQNEZyF0Ju-GjyO4",
         authDomain: "appbatalha-910d2.firebaseapp.com",
@@ -108,7 +273,6 @@
         appId: "1:580640530854:web:adcf9e15e8e79c680def67"
     };
 
-    // Inicializando Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
@@ -117,25 +281,34 @@
     let contatosBaixados = [];
     let unsubscribeSnapshot = null;
 
-    // ----- LÓGICA DE AUTENTICAÇÃO -----
+    // --- MÁSCARAS DE UX (TELEFONE E MOEDA) ---
+    document.getElementById('contato').addEventListener('input', function (e) {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
 
-    // Monitora se o usuário está logado ou não
+    document.getElementById('valor').addEventListener('input', function(e) {
+        let valor = e.target.value.replace(/\D/g, '');
+        valor = (valor / 100).toFixed(2) + '';
+        valor = valor.replace(".", ",");
+        valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+        e.target.value = valor ? 'R$ ' + valor : '';
+    });
+
+    // --- AUTENTICAÇÃO ---
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Logado: Mostra o app, esconde o login e carrega os dados
             document.getElementById('telaLogin').style.display = 'none';
             document.getElementById('telaApp').style.display = 'block';
             carregarDadosDoBanco();
             document.getElementById('data').valueAsDate = new Date();
         } else {
-            // Deslogado: Mostra o login, esconde o app e limpa a lista
             document.getElementById('telaLogin').style.display = 'block';
             document.getElementById('telaApp').style.display = 'none';
-            if(unsubscribeSnapshot) unsubscribeSnapshot(); // Para de ouvir o banco
+            if(unsubscribeSnapshot) unsubscribeSnapshot(); 
         }
     });
 
-    // Fazer Login
     document.getElementById('formLogin').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('emailLogin').value;
@@ -143,7 +316,7 @@
         const btn = document.getElementById('btnEntrar');
         const msgErro = document.getElementById('msgErro');
         
-        btn.innerText = "Carregando...";
+        btn.innerText = "Verificando...";
         btn.disabled = true;
         msgErro.style.display = 'none';
 
@@ -153,18 +326,14 @@
         } catch (error) {
             msgErro.style.display = 'block';
         } finally {
-            btn.innerText = "Entrar";
+            btn.innerText = "Entrar no Sistema";
             btn.disabled = false;
         }
     });
 
-    // Fazer Logout
-    document.getElementById('btnSair').addEventListener('click', () => {
-        signOut(auth);
-    });
+    document.getElementById('btnSair').addEventListener('click', () => signOut(auth));
 
-    // ----- LÓGICA DO APLICATIVO -----
-
+    // --- LÓGICA DO APP ---
     function calcularDataRetorno(dataBase, dias) {
         if (!dias) return null;
         let data = new Date(dataBase);
@@ -178,7 +347,7 @@
         divLista.innerHTML = '';
         
         if(lista.length === 0) {
-            divLista.innerHTML = '<p style="text-align:center; color:#666;">Nenhum contato encontrado.</p>';
+            divLista.innerHTML = '<p style="text-align:center; color:#6b7280; margin-top:20px;">Nenhum cliente registrado ainda.</p>';
             return;
         }
 
@@ -187,22 +356,23 @@
             card.className = cliente.dataRetorno ? 'card alerta' : 'card';
             
             let htmlCard = `
-                <p><strong>Cliente:</strong> ${cliente.nome}</p>
-                <p><strong>Data:</strong> ${cliente.dataFormatada} | <strong>Contato:</strong> ${cliente.contato}</p>
-                <p><strong>Empreendimento:</strong> ${cliente.empreendimento}</p>
-                <p><strong>Valor:</strong> ${cliente.valor}</p>
-                <p><strong>Obstáculo:</strong> ${cliente.obstaculo}</p>
-                <p><strong>Obs:</strong> ${cliente.obs}</p>
+                <div class="card-header">
+                    <h3>👤 ${cliente.nome}</h3>
+                    <small style="color:#6b7280">${cliente.dataFormatada}</small>
+                </div>
+                <p><strong>📞 Contato:</strong> ${cliente.contato}</p>
+                <p><strong>🏢 Ref:</strong> ${cliente.empreendimento}</p>
+                <p><strong>💰 Valor:</strong> ${cliente.valor}</p>
+                <p><strong>📝 Obs:</strong> ${cliente.obs}</p>
             `;
             if (cliente.dataRetorno) {
-                htmlCard += `<span class="tag-alerta">⚠️ Ligar de novo em: ${cliente.dataRetorno}</span>`;
+                htmlCard += `<div class="tag-alerta">⏰ Ligar de novo em: ${cliente.dataRetorno}</div>`;
             }
             card.innerHTML = htmlCard;
             divLista.appendChild(card);
         });
     }
 
-    // Função que busca os dados apenas quando está logado
     function carregarDadosDoBanco() {
         const q = query(contatosRef, orderBy("timestamp", "desc"));
         unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
@@ -217,17 +387,13 @@
             } else {
                 renderizarLista(contatosBaixados);
             }
-        }, (error) => {
-            console.error("Erro ao ler dados: ", error);
-            document.getElementById('listaContatos').innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar dados. Verifique a conexão.</p>';
         });
     }
 
-    // Salvando no Firestore
     document.getElementById('formContato').addEventListener('submit', async function(e) {
         e.preventDefault(); 
         const botao = this.querySelector('button');
-        botao.innerText = "Salvando...";
+        botao.innerText = "Salvando na Nuvem...";
         botao.disabled = true;
 
         const dataStr = document.getElementById('data').value;
@@ -244,25 +410,24 @@
                 nome: document.getElementById('nome').value,
                 contato: document.getElementById('contato').value,
                 empreendimento: document.getElementById('empreendimento').value,
-                valor: parseFloat(document.getElementById('valor').value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+                valor: document.getElementById('valor').value, // Já vai formatado com R$
                 obstaculo: obstaculo,
-                obs: document.getElementById('obs').value || 'Nenhuma.',
+                obs: document.getElementById('obs').value || '-',
                 dataRetorno: calcularDataRetorno(dataStr, diasParaRetorno),
                 timestamp: serverTimestamp()
             });
 
             this.reset();
             document.getElementById('data').valueAsDate = new Date();
-            document.getElementById('busca').value = '';
+            document.getElementById('valor').value = ''; 
         } catch (error) {
-            alert("Erro ao salvar. Erro: " + error.message);
+            alert("Erro ao salvar. Verifique sua conexão.");
         } finally {
-            botao.innerText = "Salvar Contato";
+            botao.innerText = "Salvar Cliente";
             botao.disabled = false;
         }
     });
 
-    // Sistema de Busca
     function filtrarEBuscar(termo) {
         const filtrados = contatosBaixados.filter(c => 
             c.nome.toLowerCase().includes(termo) || 
