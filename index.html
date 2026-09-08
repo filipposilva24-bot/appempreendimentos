@@ -168,12 +168,6 @@
         }
         button:hover { background-color: var(--primary-hover); }
 
-        .btn-secundario {
-            background-color: #4B5563;
-            box-shadow: 0 4px 10px rgba(75, 85, 99, 0.2);
-        }
-        .btn-secundario:hover { background-color: #374151; }
-
         .btn-sair { 
             background-color: transparent; 
             color: var(--alert-color);
@@ -233,31 +227,6 @@
         .filtro-btn.ativo {
             background: var(--primary-color);
             color: white;
-        }
-
-        .tag-empreendimento-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-        .tag-empreendimento {
-            background: rgba(3, 105, 161, 0.1);
-            color: var(--primary-color);
-            padding: 5px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            border: 1px solid var(--border-color);
-        }
-        .tag-empreendimento span {
-            cursor: pointer;
-            color: var(--alert-color);
-            font-weight: bold;
-            font-size: 14px;
         }
 
         .busca-container { 
@@ -514,9 +483,10 @@
 
         <div class="form-group">
             <label for="empreendimento">Empreendimento de Interesse</label>
-            <select id="empreendimento" required onchange="mostrarFichaTecnica(this.value)">
-                <option value="" disabled selected>Carregando empreendimentos...</option>
+            <select id="empreendimento" required onchange="selecionarEmpreendimento(this.value)">
+                <option value="" disabled selected>Selecione um empreendimento...</option>
             </select>
+            <!-- Ficha Técnica Nativa -->
             <div class="ficha-tecnica-box" id="fichaTecnicaBox">
                 <span id="fichaConteudo">Selecione um empreendimento para ver os detalhes.</span>
             </div>
@@ -577,19 +547,8 @@
         <button type="submit">Salvar Cliente no CRM</button>
     </form>
 
-    <!-- GERENCIAMENTO DE EMPREENDIMENTOS -->
-    <h3>Gerenciar Empreendimentos</h3>
-    <div class="tag-empreendimento-container" id="listaEmpreendimentosChips"></div>
-    
-    <form id="formNovoEmpreendimento" style="margin-top: 8px;">
-        <div class="form-group" style="margin-bottom: 8px;">
-            <input type="text" id="novoEmpreendimentoNome" placeholder="Nome do novo empreendimento..." required autocomplete="off">
-        </div>
-        <button type="submit" class="btn-secundario">Adicionar Empreendimento</button>
-    </form>
-
     <!-- FILTRAGEM E BUSCA -->
-    <div class="filtros-rapidos">
+    <div class="filtros-rapidos" style="margin-top: 25px;">
         <button class="filtro-btn ativo" onclick="filtrarStatus('TODOS', this)">Todos</button>
         <button class="filtro-btn" onclick="filtrarStatus('HOJE', this)">🚨 Ligar Hoje</button>
         <button class="filtro-btn" onclick="filtrarStatus('OBSTACULO', this)">⚠️ Com Obstáculos</button>
@@ -608,7 +567,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -624,15 +583,25 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
     const contatosRef = collection(db, "clientes");
-    const empreendimentosRef = collection(db, "empreendimentos");
 
     let contatosBaixados = [];
     let filtroAtual = 'TODOS';
     let unsubContatos = null;
-    let unsubEmpreendimentos = null;
     let modoCadastro = false;
 
-    // --- ALTERAR ENTRE LOGIN E CADASTRO ---
+    // --- BANCO DE DADOS NATIVO DE EMPREENDIMENTOS (Prontos, Em Obras e Lançamentos) ---
+    const bancoEmpreendimentos = [
+        { nome: "Alto São Domingos (Cury)", desc: "🏢 <strong>Alto São Domingos (Cury)</strong><br>📍 <em>Pirituba / São Domingos (São Paulo)</em><br>📐 2 dormitórios com varanda e opção de vaga.<br>🏊‍♂️ Lazer: Piscina adulto e infantil, churrasqueira, salão de festas, academia e coworking." },
+        { nome: "Mais Butantã (Cury)", desc: "🏢 <strong>Cury Máximo Butantã</strong><br>📍 <em>Rua Prof. Máximo Ribeiro Nunes, Butantã (Zona Oeste)</em><br>📐 Aptos de 2 dorms com suíte e terraço.<br>🏊‍♂️ Lazer: Salão de festas, churrasqueira, quadra, pet care." },
+        { nome: "Plano Leopoldina (Cury)", desc: "🏢 <strong>Nova Leopoldina Condomínio Art (Cury)</strong><br>📍 <em>Rua Othão, Vila Leopoldina (Perto da Estação Ceasa)</em><br>📐 1 e 2 dorms (37m² a 42m²) com terraço.<br>🏊‍♂️ Lazer: Fitness, coworking, piscinas, churrasqueiras." },
+        { nome: "Praça Pirituba (Cury)", desc: "🏢 <strong>Lyne Pirituba (Cury)</strong><br>📍 <i>Av. Raimundo Pereira de Magalhães, 5028 (Frente à Estação Pirituba)</i><br>📐 2 dorms com opção de terraço e vaga.<br>🏊‍♂️ Lazer: Piscina, lavanderia, fitness, solarium, espaço pet." },
+        { nome: "Ares do Horto (Cury)", desc: "🏢 <strong>Ares do Horto (Cury)</strong><br>📍 <em>Estrada do Campo Limpo, Horto do Ipê (Zona Sul)</em><br>📐 Aptos de 1 e 2 dormitórios.<br>🏊‍♂️ Lazer: Piscina com solarium, academia, salão de festas." },
+        { nome: "Duetto São Domingos (Plano&Plano)", desc: "🏢 <strong>Duetto São Domingos (Plano&Plano)</strong><br>📍 <em>Rua Frederico Jacobi, Parque São Domingos (Zona Oeste)</em><br>📐 1 e 2 dorms com varanda (26m² a 35m²).<br>🏊‍♂️ Lazer: Piscinas adulto/infantil, coworking, pet care." },
+        { nome: "Plano Jaçanã (Plano&Plano)", desc: "🏢 <strong>Plano&Jaçanã (Plano&Plano)</strong><br>📍 <em>Av. Luís Stamatis, Jaçanã (Zona Norte, perto do Tucuruvi)</em><br>📐 2 dorms com terraço (cerca de 34m²).<br>🏊‍♂️ Lazer: Piscinas, coworking, salão de festas, quadra de areia." },
+        { nome: "Riserva Metrópole (Direcional)", desc: "🏢 <strong>Riserva Metrópole (Direcional Engenharia)</strong><br>📍 <em>Localização estratégica em São Paulo</em><br>📐 Apartamentos de 1 e 2 dormitórios com excelente padrão de acabamento.<br>🏊‍♂️ Lazer completo estilo clube com portaria 24h." },
+        { nome: "Tenda Vila Maria", desc: "🏢 <strong>Residencial Tenda Vila Maria</strong><br>📍 <em>Zona Norte - São Paulo</em><br>📐 2 dormitórios pelo programa habitacional.<br>🏊‍♂️ Lazer: Playground, salão de festas e bicicletário." }
+    ];
+
     window.alternarModoAuth = function() {
         modoCadastro = !modoCadastro;
         const titulo = document.getElementById('tituloAuth');
@@ -652,26 +621,29 @@
         }
     }
 
-    // --- BANCO DE DADOS DE FICHAS TÉCNICAS INTELIGENTES ---
-    const fichasTecnicas = {
-        "Mais Butantã": "🏢 <strong>Cury Máximo Butantã</strong><br>📍 <em>Rua Prof. Máximo Ribeiro Nunes, Butantã (Zona Oeste)</em><br>📐 Aptos de 2 dorms (opção com suíte/terraço).<br>🏊‍♂️ Lazer: Salão de festas, churrasqueira, quadra, pet care.",
-        "Plano Leopodina": "🏢 <strong>Nova Leopoldina Condomínio Art (Cury)</strong><br>📍 <em>Rua Othão, Vila Leopoldina (Perto da Estação Ceasa)</em><br>📐 1 e 2 dorms (37m² a 42m²) com terraço.<br>🏊‍♂️ Lazer: Fitness, coworking, piscinas, churrasqueiras.",
-        "Praça Pirituba": "🏢 <strong>Lyne Pirituba (Cury)</strong><br>📍 <em>Av. Raimundo Pereira de Magalhães, 5028 (Frente à Estação Pirituba)</em><br>📐 2 dorms com opção de terraço e vaga.<br>🏊‍♂️ Lazer: Piscina, lavanderia, fitness, solarium, espaço pet.",
-        "Ares do Horto": "🏢 <strong>Ares do Horto (Cury)</strong><br>📍 <em>Estrada do Campo Limpo, Horto do Ipê (Zona Sul)</em><br>📐 Aptos de 1 e 2 dormitórios.<br>🏊‍♂️ Lazer: Piscina com solarium, academia, salão de festas.",
-        "Duetto São Domingos": "🏢 <strong>Duetto São Domingos (Plano&Plano)</strong><br>📍 <em>Rua Frederico Jacobi, Parque São Domingos (Zona Oeste)</em><br>📐 1 e 2 dorms com varanda (26m² a 35m²).<br>🏊‍♂️ Lazer: Piscinas adulto/infantil, coworking, pet care.",
-        "Plano Jaçana": "🏢 <strong>Plano&Jaçanã (Plano&Plano)</strong><br>📍 <em>Av. Luís Stamatis, Jaçanã (Zona Norte, perto do Tucuruvi)</em><br>📐 2 dorms com terraço (cerca de 34m²).<br>🏊‍♂️ Lazer: Piscinas, coworking, salão de festas, quadra de areia."
-    };
+    // Carrega o select nativamente com todos os empreendimentos do banco do app
+    function carregarSelectEmpreendimentos() {
+        const select = document.getElementById('empreendimento');
+        select.innerHTML = '<option value="" disabled selected>Selecione um empreendimento...</option>';
+        
+        bancoEmpreendimentos.forEach(emp => {
+            const opt = document.createElement('option');
+            opt.value = emp.nome;
+            opt.textContent = emp.nome;
+            select.appendChild(opt);
+        });
+    }
 
-    window.mostrarFichaTecnica = function(nomeEmpreendimento) {
+    window.selecionarEmpreendimento = function(nomeEmpreendimento) {
         const box = document.getElementById('fichaTecnicaBox');
         const conteudo = document.getElementById('fichaConteudo');
         
-        if (fichasTecnicas[nomeEmpreendimento]) {
-            conteudo.innerHTML = fichasTecnicas[nomeEmpreendimento];
+        const achado = bancoEmpreendimentos.find(e => e.nome === nomeEmpreendimento);
+        if (achado) {
+            conteudo.innerHTML = achado.desc;
             box.style.display = 'block';
         } else {
-            conteudo.innerHTML = `🏢 <strong>Empreendimento: ${nomeEmpreendimento}</strong><br>📍 <em>Novo projeto cadastrado no sistema.</em><br>💡 Dica: Anote as metragens e condições principais nas observações do cliente!`;
-            box.style.display = 'block';
+            box.style.display = 'none';
         }
     };
 
@@ -707,9 +679,8 @@
         if (user) {
             document.getElementById('telaLogin').style.display = 'none';
             document.getElementById('telaApp').style.display = 'block';
-            await inicializarEmpreendimentosPadrao();
+            carregarSelectEmpreendimentos();
             carregarDadosDoBanco();
-            carregarEmpreendimentos();
             document.getElementById('data').valueAsDate = new Date();
             const agora = new Date();
             document.getElementById('horario').value = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
@@ -717,7 +688,6 @@
             document.getElementById('telaLogin').style.display = 'block';
             document.getElementById('telaApp').style.display = 'none';
             if(unsubContatos) unsubContatos(); 
-            if(unsubEmpreendimentos) unsubEmpreendimentos();
         }
     });
 
@@ -757,60 +727,6 @@
     });
 
     document.getElementById('btnSair').addEventListener('click', () => signOut(auth));
-
-    async function inicializarEmpreendimentosPadrao() {
-        const snapshot = await getDocs(empreendimentosRef);
-        if (snapshot.empty) {
-            const padroes = ["Mais Butantã", "Plano Leopodina", "Praça Pirituba", "Ares do Horto", "Duetto São Domingos", "Plano Jaçana"];
-            for (let nome of padroes) {
-                await addDoc(empreendimentosRef, { nome });
-            }
-        }
-    }
-
-    function carregarEmpreendimentos() {
-        const q = query(empreendimentosRef, orderBy("nome", "asc"));
-        unsubEmpreendimentos = onSnapshot(q, (snapshot) => {
-            const selectEmpreendimento = document.getElementById('empreendimento');
-            const chipsContainer = document.getElementById('listaEmpreendimentosChips');
-            
-            const valorAtual = selectEmpreendimento.value;
-            selectEmpreendimento.innerHTML = '<option value="" disabled selected>Selecione uma opção...</option>';
-            chipsContainer.innerHTML = '';
-
-            snapshot.forEach((docSnap) => {
-                const emp = docSnap.data();
-                const id = docSnap.id;
-
-                const opt = document.createElement('option');
-                opt.value = emp.nome;
-                opt.textContent = emp.nome;
-                selectEmpreendimento.appendChild(opt);
-
-                const chip = document.createElement('div');
-                chip.className = 'tag-empreendimento';
-                chip.innerHTML = `${emp.nome} <span onclick="excluirEmpreendimento('${id}', '${emp.nome}')" title="Excluir">&times;</span>`;
-                chipsContainer.appendChild(chip);
-            });
-            if(valorAtual) selectEmpreendimento.value = valorAtual;
-        });
-    }
-
-    document.getElementById('formNovoEmpreendimento').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const input = document.getElementById('novoEmpreendimentoNome');
-        const nome = input.value.trim();
-        if(nome) {
-            await addDoc(empreendimentosRef, { nome });
-            input.value = '';
-        }
-    });
-
-    window.excluirEmpreendimento = async function(id, nome) {
-        if(confirm(`Deseja excluir o empreendimento "${nome}"?`)) {
-            await deleteDoc(doc(db, "empreendimentos", id));
-        }
-    };
 
     function atualizarDashboard(listaCompleta) {
         const hoje = new Date();
