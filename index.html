@@ -21,7 +21,6 @@
             --radius-lg: 16px;
         }
 
-        /* Variáveis do Modo Escuro */
         body.dark-mode {
             --bg-color: #111827;
             --card-bg: #1F2937;
@@ -42,7 +41,7 @@
         }
 
         .container { 
-            max-width: 480px; 
+            max-width: 600px; /* Um pouco mais largo para acomodar o Kanban */
             background: var(--card-bg); 
             padding: 18px 15px; 
             border-radius: var(--radius-lg); 
@@ -78,7 +77,6 @@
             box-shadow: none;
         }
 
-        /* Dashboard de Métricas (Item 1) */
         .dashboard {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -248,85 +246,102 @@
             z-index: 10;
         }
 
+        /* --- ESTILO KANBAN (COLUNAS) --- */
+        .kanban-board {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-top: 10px;
+        }
+        .kanban-coluna {
+            min-width: 260px;
+            max-width: 280px;
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        body.dark-mode .kanban-coluna { background: rgba(255,255,255,0.01); }
+        
+        .kanban-coluna h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+
         .card { 
             background: var(--card-bg); 
-            padding: 14px; 
+            padding: 12px; 
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md); 
-            margin-bottom: 12px; 
+            margin-bottom: 10px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
             position: relative;
         }
         .card.alerta { border-left: 4px solid var(--alert-color); }
         
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-        }
+        .card h3 { margin: 0 0 6px 0; font-size: 14px; color: var(--text-dark); border: none; padding: 0; }
+        .card p { margin: 3px 0; font-size: 12px; color: var(--text-muted); line-height: 1.3; }
 
-        .card h3 { margin: 0; font-size: 15px; color: var(--text-dark); border: none; padding: 0; }
-        .card p { margin: 4px 0; font-size: 13px; color: var(--text-muted); line-height: 1.3; }
-        .card strong { color: var(--text-dark); font-weight: 600; }
-
-        .badge-status {
+        /* Termômetro de Temperatura */
+        .badge-temp {
             display: inline-block;
-            padding: 3px 6px;
-            border-radius: 4px;
             font-size: 10px;
             font-weight: 700;
-            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
             margin-bottom: 6px;
         }
-        .status-em-contato { background: #FEF3C7; color: #D97706; }
-        .status-aguardando-doc { background: #E0E7FF; color: #4338CA; }
-        .status-credito-aprovado { background: #ECFDF5; color: #059669; }
-        .status-vendido { background: #D1FAE5; color: #065F46; }
-        .status-perdido { background: #FEE2E2; color: #B91C1C; }
-        
+        .temp-quente { background: #FEE2E2; color: #DC2626; }
+        .temp-morno { background: #FEF3C7; color: #D97706; }
+        .temp-frio { background: #E0E7FF; color: #4338CA; }
+
         .tag-alerta { 
             display: block; 
             background-color: var(--alert-bg); 
             color: var(--alert-color); 
-            padding: 5px 8px; 
-            border-radius: 6px; 
-            font-size: 11px; 
+            padding: 4px 6px; 
+            border-radius: 4px; 
+            font-size: 10px; 
             font-weight: 700; 
-            margin-top: 8px; 
+            margin-top: 6px; 
             text-align: center;
         }
 
         .historico-box {
             background: rgba(0,0,0,0.02);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 12px;
+            border-radius: 4px;
+            padding: 6px;
+            margin-top: 6px;
+            font-size: 11px;
         }
         .historico-item {
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 3px;
+            padding-bottom: 2px;
         }
-        .historico-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
 
         .card-acoes {
             display: flex;
-            gap: 6px;
-            margin-top: 10px;
+            gap: 4px;
+            margin-top: 8px;
         }
         .btn-whats {
             background-color: var(--whatsapp-color);
             color: white;
             border: none;
-            padding: 7px 10px;
-            font-size: 12px;
+            padding: 6px 8px;
+            font-size: 11px;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             flex: 1;
             margin-top: 0;
@@ -335,7 +350,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 3px;
         }
         .btn-whats:hover { background-color: #20ba5a; }
 
@@ -343,25 +358,38 @@
             background-color: #4B5563;
             color: white;
             border: none;
-            padding: 7px 10px;
-            font-size: 12px;
+            padding: 5px 8px;
+            font-size: 11px;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            margin-top: 6px;
+            margin-top: 5px;
             box-shadow: none;
             width: 100%;
         }
         .btn-add-obs:hover { background-color: #374151; }
 
+        .btn-mover {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 6px;
+            width: 100%;
+        }
+
         .btn-excluir {
             background-color: transparent;
             color: var(--alert-color);
             border: 1px solid var(--alert-color);
-            padding: 7px 10px;
-            font-size: 12px;
+            padding: 5px 8px;
+            font-size: 11px;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             width: auto;
             margin-top: 0;
@@ -399,7 +427,7 @@
         <button class="btn-tema" id="btnAlternarTema" onclick="alternarTema()">🌙 Tema</button>
     </div>
 
-    <!-- DASHBOARD DE MÉTRICAS (Item 1) -->
+    <!-- DASHBOARD DE MÉTRICAS -->
     <div class="dashboard">
         <div class="dash-card">
             <span>Ativos</span>
@@ -411,7 +439,7 @@
         </div>
         <div class="dash-card">
             <span>⭐ VGV Fechado</span>
-            <strong id="dashVGV" style="font-size: 12px;">R$ 0</strong>
+            <strong id="dashVGV" style="font-size: 11px;">R$ 0</strong>
         </div>
     </div>
     
@@ -451,39 +479,49 @@
                 <input type="text" id="valor" placeholder="R$ 0,00" required autocomplete="off">
             </div>
             <div class="form-group" style="flex: 1;">
-                <label for="origem">Origem do Lead</label>
+                <label for="temperatura">Temperatura 🔥</label>
+                <select id="temperatura">
+                    <option value="🔥 Quente">🔥 Quente</option>
+                    <option value="🟡 Morno" selected>🟡 Morno</option>
+                    <option value="❄️ Frio">❄️ Frio</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="status">Status do Funil</label>
+                <select id="status">
+                    <option value="Em Contato">🟡 Em Contato</option>
+                    <option value="Aguardando Documento">🔵 Aguardando Doc</option>
+                    <option value="Crédito Aprovado">🟢 Crédito Aprovado</option>
+                    <option value="Vendido">⭐ Vendido</option>
+                    <option value="Perdido">🔴 Perdido</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="origem">Origem</label>
                 <select id="origem">
-                    <option value="Instagram / Anúncio">📱 Instagram / Anúncio</option>
+                    <option value="Instagram">📱 Instagram</option>
                     <option value="Indicação">🤝 Indicação</option>
-                    <option value="Placa na Rua">🏠 Placa na Rua</option>
-                    <option value="Plantão de Vendas">🏢 Plantão de Vendas</option>
+                    <option value="Placa">🏠 Placa</option>
+                    <option value="Plantão">🏢 Plantão</option>
                     <option value="Outros">📌 Outros</option>
                 </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="status">Status da Venda (Funil)</label>
-            <select id="status">
-                <option value="Em Contato">🟡 Em Contato</option>
-                <option value="Aguardando Documento">🔵 Aguardando Documento</option>
-                <option value="Crédito Aprovado">🟢 Crédito Aprovado</option>
-                <option value="Vendido">⭐ Vendido / Fechado</option>
-                <option value="Perdido">🔴 Perdido / Desistiu</option>
-            </select>
-        </div>
-
-        <div class="form-group">
             <label for="obstaculo">Obstáculo Identificado</label>
             <select id="obstaculo">
                 <option value="Nenhum">✅ Nenhum obstáculo</option>
-                <option value="Nome Sujo">⚠️ Nome Sujo / Restrição (Retorno 30 dias)</option>
-                <option value="Outros">⚠️ Outros - Renda, Doc (Retorno 15 dias)</option>
+                <option value="Nome Sujo">⚠️ Nome Sujo (Retorno 30 dias)</option>
+                <option value="Outros">⚠️ Outros - Renda/Doc (Retorno 15 dias)</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="obs">Primeira Observação / Detalhe</label>
+            <label for="obs">Observação / Detalhe</label>
             <textarea id="obs" rows="2" placeholder="Detalhes da conversa inicial..."></textarea>
         </div>
 
@@ -513,8 +551,9 @@
         <input type="text" id="busca" placeholder="Buscar cliente, tel ou empreendimento...">
     </div>
 
-    <div class="lista-contatos" id="listaContatos">
-        <p style="text-align:center; color: var(--text-muted); margin-top:15px;">Carregando contatos...</p>
+    <!-- KANBAN BOARD (COLUNAS DO FUNIL) -->
+    <div class="kanban-board" id="kanbanBoard">
+        <!-- Colunas geradas via JS -->
     </div>
 
     <button id="btnSair" class="btn-sair">Sair da Conta</button>
@@ -545,7 +584,6 @@
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
 
-    // --- MODO ESCURO (Dark Mode) ---
     window.alternarTema = function() {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
@@ -553,7 +591,6 @@
         document.getElementById('btnAlternarTema').innerText = isDark ? '☀️ Tema' : '🌙 Tema';
     }
 
-    // Carrega tema salvo
     if(localStorage.getItem('crm_tema') === 'dark') {
         document.body.classList.add('dark-mode');
         setTimeout(() => {
@@ -583,10 +620,8 @@
             carregarDadosDoBanco();
             carregarEmpreendimentos();
             document.getElementById('data').valueAsDate = new Date();
-            // Preenche horário atual
             const agora = new Date();
-            const horaStr = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
-            document.getElementById('horario').value = horaStr;
+            document.getElementById('horario').value = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
         } else {
             document.getElementById('telaLogin').style.display = 'block';
             document.getElementById('telaApp').style.display = 'none';
@@ -671,7 +706,6 @@
         }
     };
 
-    // --- ATUALIZAÇÃO DO DASHBOARD (MÉTRICAS) ---
     function atualizarDashboard(listaCompleta) {
         const hoje = new Date();
         hoje.setHours(0,0,0,0);
@@ -681,19 +715,13 @@
         let vgvTotal = 0;
 
         listaCompleta.forEach(c => {
-            // Verifica se vence hoje
             if (c.diasRetorno && c.dataStr) {
                 const dataBase = new Date(c.dataStr + 'T00:00:00');
                 dataBase.setDate(dataBase.getDate() + c.diasRetorno);
-                if (dataBase <= hoje) {
-                    ligarHojeCount++;
-                }
+                if (dataBase <= hoje) ligarHojeCount++;
             }
-
-            // Calcula VGV (soma apenas Vendido ou Crédito Aprovado)
             if (c.status === 'Vendido' || c.status === 'Crédito Aprovado') {
                 if (c.valor) {
-                    // Transforma string "R$ 250.000,00" em número
                     let numLimpo = c.valor.replace('R$', '').replaceAll('.', '').replace(',', '.').trim();
                     let valNum = parseFloat(numLimpo);
                     if (!isNaN(valNum)) vgvTotal += valNum;
@@ -703,85 +731,103 @@
 
         document.getElementById('dashTotal').innerText = totalAtivos;
         document.getElementById('dashHoje').innerText = ligarHojeCount;
-        
-        // Formata VGV para Real compactado (ex: R$ 1.2M ou formatado padrão)
         document.getElementById('dashVGV').innerText = vgvTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
     }
 
-    function renderizarLista(lista) {
-        const divLista = document.getElementById('listaContatos');
-        divLista.innerHTML = '';
-        
-        if(lista.length === 0) {
-            divLista.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin-top:15px;">Nenhum cliente encontrado.</p>';
-            return;
-        }
+    // --- RENDERIZAÇÃO DO KANBAN (COLUNAS) ---
+    function renderizarKanban(lista) {
+        const board = document.getElementById('kanbanBoard');
+        board.innerHTML = '';
+
+        const colunasConfig = [
+            { id: 'Em Contato', titulo: '🟡 Em Contato', proximo: 'Aguardando Documento' },
+            { id: 'Aguardando Documento', titulo: '🔵 Aguardando Doc', proximo: 'Crédito Aprovado', anterior: 'Em Contato' },
+            { id: 'Crédito Aprovado', titulo: '🟢 Crédito Aprovado', proximo: 'Vendido', anterior: 'Aguardando Documento' },
+            { id: 'Vendido', titulo: '⭐ Vendido', anterior: 'Crédito Aprovado' },
+            { id: 'Perdido', titulo: '🔴 Perdido' }
+        ];
 
         const hoje = new Date();
         hoje.setHours(0,0,0,0);
 
-        lista.forEach(cliente => {
-            const card = document.createElement('div');
-            
-            let deveLigarHoje = false;
-            if (cliente.diasRetorno && cliente.dataStr) {
-                const dataBase = new Date(cliente.dataStr + 'T00:00:00');
-                dataBase.setDate(dataBase.getDate() + cliente.diasRetorno);
-                if (dataBase <= hoje) {
-                    deveLigarHoje = true;
-                }
-            }
+        colunasConfig.forEach(col => {
+            const clientesColuna = lista.filter(c => (c.status || 'Em Contato') === col.id);
 
-            card.className = deveLigarHoje ? 'card alerta' : 'card';
-            
-            let classeStatus = 'status-em-contato';
-            if (cliente.status === 'Aguardando Documento') classeStatus = 'status-aguardando-doc';
-            if (cliente.status === 'Crédito Aprovado') classeStatus = 'status-credito-aprovado';
-            if (cliente.status === 'Vendido') classeStatus = 'status-vendido';
-            if (cliente.status === 'Perdido') classeStatus = 'status-perdido';
+            const divColuna = document.createElement('div');
+            divColuna.className = 'kanban-coluna';
+            divColuna.innerHTML = `<h4>${col.titulo} <span>(${clientesColuna.length})</span></h4>`;
 
-            const telLimpo = cliente.contato.replace(/\D/g, '');
-            const msgWhats = encodeURIComponent(`Olá ${cliente.nome}, tudo bem? Estou entrando em contato referente ao empreendimento ${cliente.empreendimento}.`);
-            const linkWhats = `https://wa.me/55${telLimpo}?text=${msgWhats}`;
+            const cardsContainer = document.createElement('div');
 
-            let historicoHtml = '';
-            if (cliente.historico && cliente.historico.length > 0) {
-                historicoHtml = '<div class="historico-box">';
-                cliente.historico.forEach(h => {
-                    historicoHtml += `<div class="historico-item"><small style="opacity:0.7">${h.data}:</small> ${h.texto}</div>`;
+            if (clientesColuna.length === 0) {
+                cardsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:11px; margin:10px 0;">Nenhum lead</p>';
+            } else {
+                clientesColuna.forEach(cliente => {
+                    let deveLigarHoje = false;
+                    if (cliente.diasRetorno && cliente.dataStr) {
+                        const dataBase = new Date(cliente.dataStr + 'T00:00:00');
+                        dataBase.setDate(dataBase.getDate() + cliente.diasRetorno);
+                        if (dataBase <= hoje) deveLigarHoje = true;
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = deveLigarHoje ? 'card alerta' : 'card';
+
+                    let tempClass = 'temp-morno';
+                    if (cliente.temperatura === '🔥 Quente') tempClass = 'temp-quente';
+                    if (cliente.temperatura === '❄️ Frio') tempClass = 'temp-frio';
+
+                    const telLimpo = cliente.contato.replace(/\D/g, '');
+                    const msgWhats = encodeURIComponent(`Olá ${cliente.nome}, tudo bem? Estou entrando em contato referente ao empreendimento ${cliente.empreendimento}.`);
+                    const linkWhats = `https://wa.me/55${telLimpo}?text=${msgWhats}`;
+
+                    let historicoHtml = '';
+                    if (cliente.historico && cliente.historico.length > 0) {
+                        historicoHtml = '<div class="historico-box">';
+                        cliente.historico.forEach(h => {
+                            historicoHtml += `<div class="historico-item"><small style="opacity:0.7">${h.data}:</small> ${h.texto}</div>`;
+                        });
+                        historicoHtml += '</div>';
+                    }
+
+                    let htmlCard = `
+                        <span class="badge-temp ${tempClass}">${cliente.temperatura || '🟡 Morno'}</span>
+                        <h3>👤 ${cliente.nome}</h3>
+                        <p><strong>📞</strong> ${cliente.contato}</p>
+                        <p><strong>🏢</strong> ${cliente.empreendimento}</p>
+                        <p><strong>💰</strong> ${cliente.valor}</p>
+                        ${historicoHtml}
+                    `;
+
+                    if (cliente.dataRetornoFormatada) {
+                        htmlCard += `<div class="tag-alerta">⏰ Retorno: ${cliente.dataRetornoFormatada}</div>`;
+                    }
+
+                    // Botões de mover entre colunas
+                    let botoesMover = '';
+                    if (col.anterior) {
+                        botoesMover += `<button class="btn-mover" onclick="mudarStatus('${cliente.id}', '${col.anterior}')">⬅️ Voltar</button>`;
+                    }
+                    if (col.proximo) {
+                        botoesMover += `<button class="btn-mover" onclick="mudarStatus('${cliente.id}', '${col.proximo}')">Avançar ➡️</button>`;
+                    }
+
+                    htmlCard += `
+                        ${botoesMover}
+                        <button class="btn-add-obs" onclick="adicionarInteracao('${cliente.id}')">➕ Nota</button>
+                        <div class="card-acoes">
+                            <a href="${linkWhats}" target="_blank" class="btn-whats">💬 Whats</a>
+                            <button class="btn-excluir" onclick="excluirCliente('${cliente.id}')">Excluir</button>
+                        </div>
+                    `;
+
+                    card.innerHTML = htmlCard;
+                    cardsContainer.appendChild(card);
                 });
-                historicoHtml += '</div>';
             }
 
-            let horarioInfo = cliente.horario ? `às ${cliente.horario}` : '';
-
-            let htmlCard = `
-                <div class="card-header">
-                    <h3>👤 ${cliente.nome}</h3>
-                    <span class="badge-status ${classeStatus}">${cliente.status || 'Em Contato'}</span>
-                </div>
-                <p><strong>📞 Contato:</strong> ${cliente.contato}</p>
-                <p><strong>🏢 Empreendimento:</strong> ${cliente.empreendimento}</p>
-                <p><strong>💰 Valor:</strong> ${cliente.valor} | <small>Origem: ${cliente.origem || 'N/D'}</small></p>
-                <p><strong>📅 Contato em:</strong> ${cliente.dataFormatada} ${horarioInfo}</p>
-                <p><strong>⚠️ Obstáculo:</strong> ${cliente.obstaculo}</p>
-                ${historicoHtml}
-            `;
-
-            if (cliente.dataRetornoFormatada) {
-                htmlCard += `<div class="tag-alerta">⏰ Retorno agendado para: ${cliente.dataRetornoFormatada}</div>`;
-            }
-
-            htmlCard += `
-                <button class="btn-add-obs" onclick="adicionarInteracao('${cliente.id}')">➕ Adicionar Nova Anotação</button>
-                <div class="card-acoes">
-                    <a href="${linkWhats}" target="_blank" class="btn-whats">💬 WhatsApp</a>
-                    <button class="btn-excluir" onclick="excluirCliente('${cliente.id}')">Excluir</button>
-                </div>
-            `;
-
-            card.innerHTML = htmlCard;
-            divLista.appendChild(card);
+            divColuna.appendChild(cardsContainer);
+            board.appendChild(divColuna);
         });
     }
 
@@ -796,6 +842,16 @@
             aplicarFiltrosEBusca();
         });
     }
+
+    // Mudar status direto pelo Kanban
+    window.mudarStatus = async function(id, novoStatus) {
+        try {
+            const docRef = doc(db, "clientes", id);
+            await updateDoc(docRef, { status: novoStatus });
+        } catch (error) {
+            alert("Erro ao mover card: " + error.message);
+        }
+    };
 
     window.filtrarStatus = function(tipo, btn) {
         document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
@@ -830,7 +886,7 @@
             filtrados = filtrados.filter(c => c.obstaculo && c.obstaculo !== 'Nenhum');
         }
 
-        renderizarLista(filtrados);
+        renderizarKanban(filtrados);
     }
 
     window.adicionarInteracao = async function(id) {
@@ -893,6 +949,7 @@
                 contato: document.getElementById('contato').value,
                 empreendimento: document.getElementById('empreendimento').value,
                 valor: document.getElementById('valor').value,
+                temperatura: document.getElementById('temperatura').value,
                 origem: document.getElementById('origem').value,
                 status: document.getElementById('status').value,
                 obstaculo: obstaculo,
