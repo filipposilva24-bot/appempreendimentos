@@ -41,13 +41,17 @@
         }
 
         .container { 
-            max-width: 600px; 
+            max-width: 480px; 
             background: var(--card-bg); 
-            padding: 18px 15px; 
+            padding: 22px 18px; 
             border-radius: var(--radius-lg); 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
             margin: auto; 
             transition: background-color 0.3s ease;
+        }
+
+        #telaApp.container {
+            max-width: 600px;
         }
 
         .header-top {
@@ -62,6 +66,7 @@
             font-weight: 700;
             margin: 0;
             letter-spacing: -0.5px;
+            text-align: center;
         }
 
         .btn-tema {
@@ -177,6 +182,19 @@
             margin-top: 25px; 
         }
         .btn-sair:hover { background-color: var(--alert-bg); }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .auth-toggle span {
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .auth-toggle span:hover { text-decoration: underline; }
 
         .ficha-tecnica-box {
             background: rgba(10, 102, 194, 0.04);
@@ -313,7 +331,7 @@
         }
         .card.alerta { border-left: 4px solid var(--alert-color); }
         
-        .card h3 { margin: 0 0 6px 0; font-size: 14px; color: var(--text-dark); border: none; padding: 0; }
+        .card h3 { margin: 0 0 6px 0; font-size: 14px; color: var(--text-dark); border: none; padding: 0; text-align: left; }
         .card p { margin: 3px 0; font-size: 12px; color: var(--text-muted); line-height: 1.3; }
 
         .badge-temp {
@@ -423,26 +441,29 @@
         .btn-excluir:hover { background-color: var(--alert-bg); }
 
         #telaApp { display: none; }
-        #msgErro { color: var(--alert-color); text-align: center; margin-top: 12px; font-weight: 600; display: none; font-size: 13px; }
+        #msgErro { color: var(--alert-color); text-align: center; margin-top: 10px; font-weight: 600; display: none; font-size: 13px; }
     </style>
 </head>
 <body>
 
-<!-- TELA DE LOGIN -->
+<!-- TELA DE LOGIN / CADASTRO -->
 <div class="container" id="telaLogin">
-    <h2>Acesso ao Sistema</h2>
-    <form id="formLogin" style="margin-top: 15px;">
+    <h2 id="tituloAuth">Acesso ao Sistema</h2>
+    <form id="formAuth" style="margin-top: 15px;">
         <div class="form-group">
-            <label for="emailLogin">E-mail de Acesso</label>
+            <label for="emailLogin">E-mail</label>
             <input type="email" id="emailLogin" placeholder="seu@email.com" required>
         </div>
         <div class="form-group">
             <label for="senhaLogin">Senha</label>
             <input type="password" id="senhaLogin" placeholder="••••••••" required>
         </div>
-        <button type="submit" id="btnEntrar">Entrar no Sistema</button>
-        <p id="msgErro">E-mail ou senha incorretos.</p>
+        <button type="submit" id="btnAuthSubmit">Entrar no Sistema</button>
+        <p id="msgErro"></p>
     </form>
+    <div class="auth-toggle">
+        <span id="textoToggle" onclick="alternarModoAuth()">Não tem uma conta? Cadastre-se grátis</span>
+    </div>
 </div>
 
 <!-- TELA PRINCIPAL DO APP -->
@@ -496,7 +517,6 @@
             <select id="empreendimento" required onchange="mostrarFichaTecnica(this.value)">
                 <option value="" disabled selected>Carregando empreendimentos...</option>
             </select>
-            <!-- Ficha Técnica Inteligente (Funciona com os padrões e novos) -->
             <div class="ficha-tecnica-box" id="fichaTecnicaBox">
                 <span id="fichaConteudo">Selecione um empreendimento para ver os detalhes.</span>
             </div>
@@ -589,7 +609,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
     import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDLkz8nVg_NPNNZvg4VQNEZyF0Ju-GjyO4",
@@ -610,6 +630,27 @@
     let filtroAtual = 'TODOS';
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
+    let modoCadastro = false;
+
+    // --- ALTERAR ENTRE LOGIN E CADASTRO ---
+    window.alternarModoAuth = function() {
+        modoCadastro = !modoCadastro;
+        const titulo = document.getElementById('tituloAuth');
+        const btn = document.getElementById('btnAuthSubmit');
+        const toggle = document.getElementById('textoToggle');
+        const msgErro = document.getElementById('msgErro');
+        msgErro.style.display = 'none';
+
+        if(modoCadastro) {
+            titulo.innerText = "Criar Nova Conta";
+            btn.innerText = "Cadastrar no Sistema";
+            toggle.innerText = "Já tem uma conta? Faça login";
+        } else {
+            titulo.innerText = "Acesso ao Sistema";
+            btn.innerText = "Entrar no Sistema";
+            toggle.innerText = "Não tem uma conta? Cadastre-se grátis";
+        }
+    }
 
     // --- BANCO DE DADOS DE FICHAS TÉCNICAS INTELIGENTES ---
     const fichasTecnicas = {
@@ -629,7 +670,6 @@
             conteudo.innerHTML = fichasTecnicas[nomeEmpreendimento];
             box.style.display = 'block';
         } else {
-            // Se for um empreendimento novo cadastrado pelo usuário, exibe uma ficha genérica útil
             conteudo.innerHTML = `🏢 <strong>Empreendimento: ${nomeEmpreendimento}</strong><br>📍 <em>Novo projeto cadastrado no sistema.</em><br>💡 Dica: Anote as metragens e condições principais nas observações do cliente!`;
             box.style.display = 'block';
         }
@@ -681,24 +721,37 @@
         }
     });
 
-    document.getElementById('formLogin').addEventListener('submit', async (e) => {
+    document.getElementById('formAuth').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('emailLogin').value;
         const senha = document.getElementById('senhaLogin').value;
-        const btn = document.getElementById('btnEntrar');
+        const btn = document.getElementById('btnAuthSubmit');
         const msgErro = document.getElementById('msgErro');
         
-        btn.innerText = "Verificando...";
+        btn.innerText = modoCadastro ? "Cadastrando..." : "Verificando...";
         btn.disabled = true;
         msgErro.style.display = 'none';
 
         try {
-            await signInWithEmailAndPassword(auth, email, senha);
-            document.getElementById('formLogin').reset();
+            if(modoCadastro) {
+                await createUserWithEmailAndPassword(auth, email, senha);
+            } else {
+                await signInWithEmailAndPassword(auth, email, senha);
+            }
+            document.getElementById('formAuth').reset();
         } catch (error) {
             msgErro.style.display = 'block';
+            if(error.code === 'auth/email-already-in-use') {
+                msgErro.innerText = "Este e-mail já está cadastrado.";
+            } else if(error.code === 'auth/weak-password') {
+                msgErro.innerText = "A senha deve ter pelo menos 6 caracteres.";
+            } else if(error.code === 'auth/invalid-email') {
+                msgErro.innerText = "E-mail inválido.";
+            } else {
+                msgErro.innerText = "E-mail ou senha incorretos.";
+            }
         } finally {
-            btn.innerText = "Entrar no Sistema";
+            btn.innerText = modoCadastro ? "Cadastrar no Sistema" : "Entrar no Sistema";
             btn.disabled = false;
         }
     });
