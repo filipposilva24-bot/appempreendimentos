@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Leads - Nuvem</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
+        .container { max-width: 500px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin: auto; }
+        h2 { text-align: center; color: #1a1a1a; margin-top: 0; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: #444; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 15px; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #0056b3; box-shadow: 0 0 0 2px rgba(0,86,179,0.2); }
+        button { width: 100%; padding: 14px; background-color: #0056b3; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #004494; }
+        
+        .busca-container { margin: 25px 0 15px 0; padding-top: 20px; border-top: 2px dashed #eee; }
+        
+        .card { background: #fafafa; padding: 15px; border-left: 5px solid #0056b3; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card p { margin: 6px 0; color: #333; font-size: 14px; }
+        .card.alerta { border-left-color: #e74c3c; }
+        
+        .tag-alerta { display: inline-block; background-color: #ffefed; color: #e74c3c; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Registro de Contatos</h2>
+    <form id="formContato">
+        <div class="form-group">
+            <label for="data">Data do Contato</label>
+            <input type="date" id="data" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="nome">Nome do Cliente</label>
+            <input type="text" id="nome" placeholder="Ex: João da Silva" required>
+        </div>
+
+        <div class="form-group">
+            <label for="contato">Contato (WhatsApp/Telefone)</label>
+            <input type="tel" id="contato" placeholder="(11) 99999-9999" required>
+        </div>
+
+        <div class="form-group">
+            <label for="empreendimento">Empreendimento de Interesse</label>
+            <select id="empreendimento" required>
+                <option value="" disabled selected>Selecione uma opção...</option>
+                <option value="Mais Butantã">Mais Butantã</option>
+                <option value="Plano Leopodina">Plano Leopodina</option>
+                <option value="Praça Pirituba">Praça Pirituba</option>
+                <option value="Ares do Horto">Ares do Horto</option>
+                <option value="Duetto São Domingos">Duetto São Domingos</option>
+                <option value="Plano Jaçana">Plano Jaçana</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="valor">Valor Acordado (R$)</label>
+            <input type="number" id="valor" step="0.01" placeholder="Ex: 250000.00" required>
+        </div>
+
+        <div class="form-group">
+            <label for="obstaculo">Obstáculo Identificado</label>
+            <select id="obstaculo">
+                <option value="Nenhum">Nenhum obstáculo</option>
+                <option value="Nome Sujo">Nome Sujo / Restrição (Retorno em 30 dias)</option>
+                <option value="Outros">Outros - Renda, Doc, etc (Retorno em 15 dias)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="obs">Observações</label>
+            <textarea id="obs" rows="3" placeholder="Detalhe o obstáculo ou a situação do cliente..."></textarea>
+        </div>
+
+        <button type="submit">Salvar Contato</button>
+    </form>
+
+    <div class="busca-container">
+        <input type="text" id="busca" placeholder="🔍 Buscar por nome, contato ou empreendimento...">
+    </div>
+
+    <div class="lista-contatos" id="listaContatos">
+        <p style="text-align:center; color:#666;">Carregando contatos...</p>
+    </div>
+</div>
+
+<script type="module">
+    // Importando as bibliotecas do Firebase versão 12.18.0
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+    // Suas credenciais do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyDLkz8nVg_NPNNZvg4VQNEZyF0Ju-GjyO4",
+        authDomain: "appbatalha-910d2.firebaseapp.com",
+        projectId: "appbatalha-910d2",
+        storageBucket: "appbatalha-910d2.firebasestorage.app",
+        messagingSenderId: "580640530854",
+        appId: "1:580640530854:web:adcf9e15e8e79c680def67",
+        measurementId: "G-96P782XV2T"
+    };
+
+    // Inicializando Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+    const contatosRef = collection(db, "clientes");
+
+    let contatosBaixados = [];
+
+    document.getElementById('data').valueAsDate = new Date();
+
+    function calcularDataRetorno(dataBase, dias) {
+        if (!dias) return null;
+        let data = new Date(dataBase);
+        data.setMinutes(data.getMinutes() + data.getTimezoneOffset());
+        data.setDate(data.getDate() + dias);
+        return data.toLocaleDateString('pt-BR');
+    }
+
+    function renderizarLista(lista) {
+        const divLista = document.getElementById('listaContatos');
+        divLista.innerHTML = '';
+        
+        if(lista.length === 0) {
+            divLista.innerHTML = '<p style="text-align:center; color:#666;">Nenhum contato encontrado.</p>';
+            return;
+        }
+
+        lista.forEach(cliente => {
+            const card = document.createElement('div');
+            card.className = cliente.dataRetorno ? 'card alerta' : 'card';
+            
+            let htmlCard = `
+                <p><strong>Cliente:</strong> ${cliente.nome}</p>
+                <p><strong>Data:</strong> ${cliente.dataFormatada} | <strong>Contato:</strong> ${cliente.contato}</p>
+                <p><strong>Empreendimento:</strong> ${cliente.empreendimento}</p>
+                <p><strong>Valor:</strong> ${cliente.valor}</p>
+                <p><strong>Obstáculo:</strong> ${cliente.obstaculo}</p>
+                <p><strong>Obs:</strong> ${cliente.obs}</p>
+            `;
+            if (cliente.dataRetorno) {
+                htmlCard += `<span class="tag-alerta">⚠️ Ligar de novo em: ${cliente.dataRetorno}</span>`;
+            }
+            card.innerHTML = htmlCard;
+            divLista.appendChild(card);
+        });
+    }
+
+    // Lendo os dados do Firestore em tempo real
+    const q = query(contatosRef, orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
+        contatosBaixados = [];
+        snapshot.forEach((doc) => {
+            contatosBaixados.push({ id: doc.id, ...doc.data() });
+        });
+        
+        const termoBusca = document.getElementById('busca').value.toLowerCase();
+        if(termoBusca) {
+            filtrarEBuscar(termoBusca);
+        } else {
+            renderizarLista(contatosBaixados);
+        }
+    }, (error) => {
+        console.error("Erro ao ler dados: ", error);
+        document.getElementById('listaContatos').innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar dados. Verifique as regras de segurança do Firestore.</p>';
+    });
+
+    // Salvando no Firestore
+    document.getElementById('formContato').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        const botao = this.querySelector('button');
+        botao.innerText = "Salvando...";
+        botao.disabled = true;
+
+        const dataStr = document.getElementById('data').value;
+        const obstaculo = document.getElementById('obstaculo').value;
+        
+        let diasParaRetorno = 0;
+        if (obstaculo === 'Nome Sujo') diasParaRetorno = 30;
+        else if (obstaculo === 'Outros') diasParaRetorno = 15;
+
+        try {
+            await addDoc(contatosRef, {
+                dataStr: dataStr,
+                dataFormatada: dataStr.split('-').reverse().join('/'),
+                nome: document.getElementById('nome').value,
+                contato: document.getElementById('contato').value,
+                empreendimento: document.getElementById('empreendimento').value,
+                valor: parseFloat(document.getElementById('valor').value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+                obstaculo: obstaculo,
+                obs: document.getElementById('obs').value || 'Nenhuma.',
+                dataRetorno: calcularDataRetorno(dataStr, diasParaRetorno),
+                timestamp: serverTimestamp()
+            });
+
+            this.reset();
+            document.getElementById('data').valueAsDate = new Date();
+            document.getElementById('busca').value = '';
+        } catch (error) {
+            alert("Erro ao salvar. Verifique se o Firestore está criado e em modo de teste. Erro: " + error.message);
+        } finally {
+            botao.innerText = "Salvar Contato";
+            botao.disabled = false;
+        }
+    });
+
+    // Sistema de Busca
+    function filtrarEBuscar(termo) {
+        const filtrados = contatosBaixados.filter(c => 
+            c.nome.toLowerCase().includes(termo) || 
+            c.contato.includes(termo) || 
+            c.empreendimento.toLowerCase().includes(termo)
+        );
+        renderizarLista(filtrados);
+    }
+
+    document.getElementById('busca').addEventListener('input', function(e) {
+        filtrarEBuscar(e.target.value.toLowerCase());
+    });
+</script>
+</body>
+</html>
