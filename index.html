@@ -353,14 +353,14 @@
 <div class="modal-overlay" id="modalAPI">
     <div class="modal-card">
         <h3 style="margin-top:0;">Configurar Inteligência Artificial</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">Cole abaixo a sua Chave de API gerada no Google AI Studio (suporta tokens no formato atual AQ...).</p>
+        <p style="font-size: 12px; color: var(--text-muted);">Cole seu token <strong>AQ...</strong> copiado do AI Studio abaixo:</p>
         <div class="form-group">
-            <label for="inputChaveGemini">Chave de API / Token</label>
+            <label for="inputChaveGemini">Token de Acesso</label>
             <input type="password" id="inputChaveGemini" placeholder="AQ.Ab8RN6...">
         </div>
         <div style="display: flex; gap: 8px; margin-top: 15px;">
             <button type="button" class="btn-secundario" onclick="fecharModalAPI()">Cancelar</button>
-            <button type="button" onclick="salvarChaveAPI()">Salvar Chave</button>
+            <button type="button" onclick="salvarChaveAPI()">Salvar Token</button>
         </div>
     </div>
 </div>
@@ -425,14 +425,14 @@
         const novaChave = document.getElementById('inputChaveGemini').value.trim();
         if(novaChave) {
             localStorage.setItem('gemini_api_key', novaChave);
-            alert("Chave salva com sucesso no seu dispositivo!");
+            alert("Token salvo com sucesso no seu dispositivo!");
             fecharModalAPI();
         } else {
-            alert("Insira uma chave válida.");
+            alert("Insira um token válido.");
         }
     }
 
-    // --- BUSCA DINÂMICA COM SUPORTE AO NOVO PADRÃO DE TOKEN ---
+    // --- CHAMADA IA CORRIGIDA PARA SUPORTE AO TOKEN AQ... ---
     window.dispararBuscaIA = async function(nomeEmpreendimento) {
         const box = document.getElementById('fichaTecnicaBox');
         const conteudo = document.getElementById('fichaConteudo');
@@ -446,29 +446,24 @@
             return;
         }
 
-        const apiKey = localStorage.getItem('gemini_api_key');
-        if (!apiKey) {
-            conteudo.innerHTML = `⚠️ Chave da IA não configurada. Clique no botão <strong>⚙️ IA</strong> no topo para inserir sua chave.`;
+        const token = localStorage.getItem('gemini_api_key');
+        if (!token) {
+            conteudo.innerHTML = `⚠️ Token da IA não configurada. Clique no botão <strong>⚙️ IA</strong> no topo para inserir seu token.`;
             return;
         }
 
         conteudo.innerHTML = `🤖 <em>Consultando Inteligência Artificial para "${nomeEmpreendimento}"...</em>`;
 
         try {
-            let url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
-            let headers = { "Content-Type": "application/json" };
-
-            if (apiKey.startsWith('AQ.')) {
-                headers["Authorization"] = `Bearer ${apiKey}`;
-            } else {
-                url += `?key=${apiKey}`;
-            }
-
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
             const prompt = `Gere uma ficha técnica imobiliária curta e profissional para o empreendimento: ${nomeEmpreendimento}. Inclua local provável, tipologia de dormitórios e itens de lazer em formato HTML limpo utilizando apenas tags <strong>, <em>, 📍 e 🏊‍♂️. Seja direto.`;
 
             const resposta = await fetch(url, {
                 method: "POST",
-                headers: headers,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }]
                 })
@@ -481,7 +476,8 @@
                 cacheFichasIA[nomeEmpreendimento] = textoGerado;
                 conteudo.innerHTML = textoGerado;
             } else {
-                conteudo.innerHTML = `⚠️ Erro na autenticação. Verifique se o token inserido em ⚙️ IA está correto.`;
+                console.error("Retorno da IA:", dados);
+                conteudo.innerHTML = `⚠️ Erro na API do Gemini. Verifique o token inserido em ⚙️ IA.`;
             }
 
         } catch (erro) {
