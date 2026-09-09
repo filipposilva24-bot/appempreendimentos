@@ -424,6 +424,36 @@
         }
         .btn-add-obs:hover { background-color: #374151; }
 
+        .btn-calc {
+            background-color: #0369A1;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+            box-shadow: none;
+            width: 100%;
+        }
+        .btn-calc:hover { background-color: #0284C7; }
+
+        .btn-trocar {
+            background-color: #7C3AED;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+            box-shadow: none;
+            width: 100%;
+        }
+        .btn-trocar:hover { background-color: #6D28D9; }
+
         .btn-mover {
             background-color: var(--primary-color);
             color: white;
@@ -639,6 +669,7 @@
     const empreendimentosRef = collection(db, "empreendimentos");
 
     let contatosBaixados = [];
+    let listaGlobalEmpreendimentos = [];
     let filtroAtual = 'TODOS';
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
@@ -664,7 +695,6 @@
         }
     }
 
-    // --- BANCO DE DADOS DE FICHAS TÉCNICAS INTELIGENTES ---
     const fichasTecnicas = {
         "Mais Butantã": "🏢 <strong>Cury Máximo Butantã</strong><br>📍 <em>Rua Prof. Máximo Ribeiro Nunes, Butantã (Zona Oeste)</em><br>📐 Aptos de 2 dorms (opção com suíte/terraço).<br>🏊‍♂️ Lazer: Salão de festas, churrasqueira, quadra, pet care.",
         "Plano Leopodina": "🏢 <strong>Nova Leopoldina Condomínio Art (Cury)</strong><br>📍 <em>Rua Othão, Vila Leopoldina (Perto da Estação Ceasa)</em><br>📐 1 e 2 dorms (37m² a 42m²) com terraço.<br>🏊‍♂️ Lazer: Fitness, coworking, piscinas, churrasqueiras.",
@@ -789,10 +819,12 @@
             const valorAtual = selectEmpreendimento.value;
             selectEmpreendimento.innerHTML = '<option value="" disabled selected>Selecione uma opção...</option>';
             chipsContainer.innerHTML = '';
+            listaGlobalEmpreendimentos = [];
 
             snapshot.forEach((docSnap) => {
                 const emp = docSnap.data();
                 const id = docSnap.id;
+                listaGlobalEmpreendimentos.push(emp.nome);
 
                 const opt = document.createElement('option');
                 opt.value = emp.nome;
@@ -888,10 +920,8 @@
                         if (dataBase <= hoje) deveLigarHoje = true;
                     }
 
-                    // --- CÁLCULO DE DIAS SEM CONTATO (INATIVIDADE) ---
                     let diasInativo = 0;
                     if (cliente.historico && cliente.historico.length > 0) {
-                        // Pega a data da última interação registrada no histórico (formato DD/MM/YYYY)
                         const ultimaInteracaoStr = cliente.historico[cliente.historico.length - 1].data;
                         const partesData = ultimaInteracaoStr.split('/');
                         if (partesData.length === 3) {
@@ -906,7 +936,6 @@
                     }
 
                     const card = document.createElement('div');
-                    // Se passar de 4 dias sem contato e não estiver vendido/perdido, marca alerta de inativo
                     const estaInativo = diasInativo >= 4 && cliente.status !== 'Vendido' && cliente.status !== 'Perdido';
                     card.className = (deveLigarHoje || estaInativo) ? 'card alerta' : 'card';
 
@@ -955,6 +984,8 @@
                     htmlCard += `
                         ${botoesMover}
                         <button class="btn-add-obs" onclick="adicionarInteracao('${cliente.id}')">➕ Nota</button>
+                        <button class="btn-calc" onclick="abrirCalculadoraFinanciamento()">🧮 Simular Financiamento</button>
+                        <button class="btn-trocar" onclick="trocarEmpreendimento('${cliente.id}', '${cliente.empreendimento}')">🔄 Trocar Empreendimento</button>
                         <div class="card-acoes">
                             <a href="${linkWhats}" target="_blank" class="btn-whats">💬 Whats</a>
                             <button class="btn-excluir" onclick="excluirCliente('${cliente.id}')">Excluir</button>
@@ -970,6 +1001,63 @@
             board.appendChild(divColuna);
         });
     }
+
+    // --- NOVA FUNÇÃO: SIMULADOR RÁPIDO DE FINANCIAMENTO ---
+    window.abrirCalculadoraFinanciamento = function() {
+        const rendaStr = prompt("Digite a renda bruta familiar mensal (Ex: 4500):");
+        if (!rendaStr) return;
+        const renda = parseFloat(rendaStr.replace(',', '.'));
+        if (isNaN(renda) || renda <= 0) {
+            alert("Renda inválida.");
+            return;
+        }
+
+        // Simulação base habitual: A parcela comprometida pode ser até 30% da renda bruta
+        const prestacaoMax = renda * 0.30;
+        // Estimativa grosseira de teto de financiamento (fator aproximado para 350 meses a juros MCMV/SBPE)
+        const tetoFinanciamento = prestacaoMax * 210; 
+
+        alert(`📊 SIMULAÇÃO RÁPIDA DE CRÉDITO:\n\n• Renda Informada: R$ ${renda.toLocaleString('pt-BR', {minimumFractionDigits: 2})}\n• Parcela Máxima Aprox. (30%): R$ ${prestacaoMax.toLocaleString('pt-BR', {minimumFractionDigits: 2})}/mês\n• Potencial Estimado de Financiamento: R$ ${tetoFinanciamento.toLocaleString('pt-BR', {maximumFractionDigits: 0})}\n\n💡 Dica: Valide sempre com o simulador oficial do banco.`);
+    };
+
+    // --- NOVA FUNÇÃO: TROCAR O EMPREENDIMENTO DO LEAD ---
+    window.trocarEmpreendimento = async function(idClient, empreendimentoAtual) {
+        if (listaGlobalEmpreendimentos.length === 0) {
+            alert("Nenhum outro empreendimento cadastrado.");
+            return;
+        }
+
+        let listaTexto = listaGlobalEmpreendimentos.map((emp, index) => `${index + 1} - ${emp}`).join('\n');
+        let escolhaStr = prompt(`Empreendimento atual: ${empreendimentoAtual}\n\nEscolha o número do novo empreendimento:\n${listaTexto}`);
+        
+        if (!escolhaStr) return;
+        let indice = parseInt(escolhaStr) - 1;
+
+        if (isNaN(indice) || indice < 0 || indice >= listaGlobalEmpreendimentos.length) {
+            alert("Opção inválida.");
+            return;
+        }
+
+        let novoEmp = listaGlobalEmpreendimentos[indice];
+        if (novoEmp === empreendimentoAtual) {
+            alert("O cliente já está cadastrado neste empreendimento.");
+            return;
+        }
+
+        if (confirm(`Deseja alterar o interesse do cliente para "${novoEmp}"?`)) {
+            try {
+                const docRef = doc(db, "clientes", idClient);
+                const dataHoje = new Date().toLocaleDateString('pt-BR');
+                await updateDoc(docRef, {
+                    empreendimento: novoEmp,
+                    historico: arrayUnion({ data: dataHoje, texto: `🔄 Empreendimento alterado de "${empreendimentoAtual}" para "${novoEmp}".` })
+                });
+                alert("Empreendimento alterado com sucesso!");
+            } catch (error) {
+                alert("Erro ao alterar: " + error.message);
+            }
+        }
+    };
 
     function carregarDadosDoBanco() {
         const q = query(contatosRef, orderBy("timestamp", "desc"));
