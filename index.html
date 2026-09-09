@@ -358,6 +358,18 @@
             text-align: center;
         }
 
+        .tag-inativo {
+            display: block;
+            background-color: #FEF3C7;
+            color: #D97706;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 4px;
+            text-align: center;
+        }
+
         .historico-box {
             background: rgba(0,0,0,0.02);
             border: 1px solid var(--border-color);
@@ -876,8 +888,27 @@
                         if (dataBase <= hoje) deveLigarHoje = true;
                     }
 
+                    // --- CÁLCULO DE DIAS SEM CONTATO (INATIVIDADE) ---
+                    let diasInativo = 0;
+                    if (cliente.historico && cliente.historico.length > 0) {
+                        // Pega a data da última interação registrada no histórico (formato DD/MM/YYYY)
+                        const ultimaInteracaoStr = cliente.historico[cliente.historico.length - 1].data;
+                        const partesData = ultimaInteracaoStr.split('/');
+                        if (partesData.length === 3) {
+                            const ultimaDataObj = new Date(`${partesData[2]}-${partesData[1]}-${partesData[0]}T00:00:00`);
+                            const diffTempo = hoje - ultimaDataObj;
+                            diasInativo = Math.floor(diffTempo / (1000 * 60 * 60 * 24));
+                        }
+                    } else if (cliente.dataStr) {
+                        const dataCriacaoObj = new Date(cliente.dataStr + 'T00:00:00');
+                        const diffTempo = hoje - dataCriacaoObj;
+                        diasInativo = Math.floor(diffTempo / (1000 * 60 * 60 * 24));
+                    }
+
                     const card = document.createElement('div');
-                    card.className = deveLigarHoje ? 'card alerta' : 'card';
+                    // Se passar de 4 dias sem contato e não estiver vendido/perdido, marca alerta de inativo
+                    const estaInativo = diasInativo >= 4 && cliente.status !== 'Vendido' && cliente.status !== 'Perdido';
+                    card.className = (deveLigarHoje || estaInativo) ? 'card alerta' : 'card';
 
                     let tempClass = 'temp-morno';
                     if (cliente.temperatura === '🔥 Quente') tempClass = 'temp-quente';
@@ -907,6 +938,10 @@
 
                     if (cliente.dataRetornoFormatada) {
                         htmlCard += `<div class="tag-alerta">⏰ Retorno: ${cliente.dataRetornoFormatada}</div>`;
+                    }
+
+                    if (estaInativo) {
+                        htmlCard += `<div class="tag-inativo">⚠️ ${diasInativo} dias sem contato!</div>`;
                     }
 
                     let botoesMover = '';
