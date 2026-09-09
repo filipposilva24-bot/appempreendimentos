@@ -22,43 +22,17 @@
         }
 
         body.dark-mode {
-            --bg-color: #111827;
-            --card-bg: #1F2937;
-            --text-dark: #F9FAFB;
-            --text-muted: #9CA3AF;
-            --border-color: #374151;
-            --alert-bg: #7F1D1D;
+            --bg-color: #111827; --card-bg: #1F2937; --text-dark: #F9FAFB;
+            --text-muted: #9CA3AF; --border-color: #374151; --alert-bg: #7F1D1D;
         }
 
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--bg-color); 
-            margin: 0; 
-            padding: 12px 10px; 
-            color: var(--text-dark);
-            -webkit-font-smoothing: antialiased;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .container { 
-            max-width: 480px; 
-            background: var(--card-bg); 
-            padding: 22px 18px; 
-            border-radius: var(--radius-lg); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            margin: auto; 
-            transition: background-color 0.3s ease;
-        }
-
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: var(--bg-color); margin: 0; padding: 12px 10px; color: var(--text-dark); transition: background-color 0.3s, color 0.3s; }
+        .container { max-width: 480px; background: var(--card-bg); padding: 22px 18px; border-radius: var(--radius-lg); box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: auto; transition: background-color 0.3s; }
         #telaApp.container { max-width: 600px; }
 
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        h2 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.5px; text-align: center; }
-
-        .btn-tema {
-            background: transparent; border: 1px solid var(--border-color); color: var(--text-dark);
-            padding: 6px 10px; border-radius: 20px; font-size: 13px; cursor: pointer;
-        }
+        h2 { font-size: 20px; font-weight: 700; margin: 0; text-align: center; }
+        .btn-tema { background: transparent; border: 1px solid var(--border-color); color: var(--text-dark); padding: 6px 10px; border-radius: 20px; font-size: 13px; cursor: pointer; }
 
         .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
         .dash-card { background: rgba(10, 102, 194, 0.05); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 10px 6px; text-align: center; }
@@ -67,31 +41,19 @@
         .dash-card strong { font-size: 14px; color: var(--primary-color); }
 
         h3 { font-size: 15px; color: var(--text-dark); margin: 20px 0 10px 0; border-bottom: 2px solid var(--border-color); padding-bottom: 4px; }
-        
         .form-group { margin-bottom: 12px; }
         label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
-        input, select, textarea { 
-            width: 100% !important; padding: 11px 14px !important; border: 1.5px solid var(--border-color) !important; 
-            border-radius: var(--radius-md) !important; box-sizing: border-box !important; font-size: 15px !important;
-            background-color: var(--bg-color) !important; color: var(--text-dark) !important; display: block; appearance: none;
-        }
+        input, select, textarea { width: 100% !important; padding: 11px 14px !important; border: 1.5px solid var(--border-color) !important; border-radius: var(--radius-md) !important; box-sizing: border-box !important; font-size: 15px !important; background-color: var(--bg-color) !important; color: var(--text-dark) !important; display: block; appearance: none; }
         input:focus, select:focus, textarea:focus { outline: none !important; border-color: var(--primary-color) !important; }
         
-        button { 
-            width: 100%; padding: 14px; background-color: var(--primary-color); color: white; border: none; 
-            border-radius: var(--radius-md); cursor: pointer; font-size: 15px; font-weight: 600; margin-top: 8px;
-        }
+        button { width: 100%; padding: 14px; background-color: var(--primary-color); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-size: 15px; font-weight: 600; margin-top: 8px; }
         .btn-secundario { background-color: #4B5563; }
         .btn-sair { background-color: transparent; color: var(--alert-color); border: 1.5px solid var(--alert-color); margin-top: 25px; }
 
         .auth-toggle { text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted); }
         .auth-toggle span { color: var(--primary-color); font-weight: 600; cursor: pointer; }
-        .auth-toggle span:hover { text-decoration: underline; }
-
-        .ficha-tecnica-box {
-            background: rgba(10, 102, 194, 0.04); border: 1.5px dashed var(--primary-color); border-radius: var(--radius-md);
-            padding: 12px; margin-top: 8px; font-size: 12px; line-height: 1.4; display: none;
-        }
+        
+        .ficha-tecnica-box { background: rgba(10, 102, 194, 0.04); border: 1.5px dashed var(--primary-color); border-radius: var(--radius-md); padding: 12px; margin-top: 8px; font-size: 12px; line-height: 1.4; display: none; }
         body.dark-mode .ficha-tecnica-box { background: rgba(10, 102, 194, 0.1); }
 
         .filtros-rapidos { display: flex; gap: 6px; margin: 15px 0 10px 0; overflow-x: auto; padding-bottom: 4px; }
@@ -109,11 +71,10 @@
         .kanban-board { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; margin-top: 10px; scroll-snap-type: x mandatory; }
         .kanban-coluna { min-width: 260px; max-width: 260px; background: rgba(0,0,0,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 10px; display: flex; flex-direction: column; scroll-snap-align: start; }
         body.dark-mode .kanban-coluna { background: rgba(255,255,255,0.01); }
-        
         .kanban-coluna h4 { font-size: 13px; text-transform: uppercase; margin: 0 0 10px 0; padding-bottom: 6px; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; position: sticky; top: 0; background: var(--card-bg); z-index: 5; }
         .kanban-cards-container { max-height: 420px; overflow-y: auto; padding-right: 4px; }
         
-        .card { background: var(--card-bg); padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 10px; position: relative; }
+        .card { background: var(--card-bg); padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 10px; }
         .card.alerta { border-left: 4px solid var(--alert-color); }
         .card h3 { margin: 0 0 6px 0; font-size: 14px; color: var(--text-dark); }
         .card p { margin: 3px 0; font-size: 12px; color: var(--text-muted); }
@@ -129,9 +90,10 @@
 
         .card-acoes { display: flex; gap: 4px; margin-top: 8px; }
         .btn-whats { background-color: var(--whatsapp-color); color: white; padding: 6px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; flex: 1; text-align: center; text-decoration: none; }
-        .btn-add-obs { background-color: #4B5563; padding: 5px 8px; font-size: 11px; font-weight: 600; width: 100%; margin-top: 5px; }
-        .btn-mover { background-color: var(--primary-color); padding: 5px 6px; font-size: 10px; font-weight: 600; margin-top: 6px; }
-        .btn-excluir { background-color: transparent; color: var(--alert-color); border: 1px solid var(--alert-color); padding: 5px 8px; font-size: 11px; font-weight: 600; width: auto; margin-top: 0;}
+        .btn-add-obs, .btn-mover, .btn-excluir { border-radius: 4px; font-size: 11px; font-weight: 600; padding: 5px 8px; cursor: pointer; }
+        .btn-add-obs { background-color: #4B5563; color: white; width: 100%; border: none; margin-top: 5px; }
+        .btn-mover { background-color: var(--primary-color); color: white; width: 100%; border: none; margin-top: 6px; }
+        .btn-excluir { background-color: transparent; color: var(--alert-color); border: 1px solid var(--alert-color); width: auto; margin-top: 0;}
         
         #telaApp { display: none; }
         #msgErro { color: var(--alert-color); text-align: center; margin-top: 10px; font-weight: 600; display: none; font-size: 13px; }
@@ -143,20 +105,12 @@
 <div class="container" id="telaLogin">
     <h2 id="tituloAuth">Acesso ao Sistema</h2>
     <form id="formAuth" style="margin-top: 15px;">
-        <div class="form-group">
-            <label>E-mail</label>
-            <input type="email" id="emailLogin" placeholder="seu@email.com" required>
-        </div>
-        <div class="form-group">
-            <label>Senha</label>
-            <input type="password" id="senhaLogin" placeholder="••••••••" required>
-        </div>
+        <div class="form-group"><label>E-mail</label><input type="email" id="emailLogin" required></div>
+        <div class="form-group"><label>Senha</label><input type="password" id="senhaLogin" required></div>
         <button type="submit" id="btnAuthSubmit">Entrar no Sistema</button>
         <p id="msgErro"></p>
     </form>
-    <div class="auth-toggle">
-        <span id="textoToggle" onclick="alternarModoAuth()">Não tem uma conta? Cadastre-se grátis</span>
-    </div>
+    <div class="auth-toggle"><span id="textoToggle" onclick="alternarModoAuth()">Não tem uma conta? Cadastre-se grátis</span></div>
 </div>
 
 <!-- TELA PRINCIPAL DO APP -->
@@ -179,93 +133,51 @@
             <div class="form-group" style="flex: 2;"><label>Data</label><input type="date" id="data" required></div>
             <div class="form-group" style="flex: 1;"><label>Horário</label><input type="time" id="horario"></div>
         </div>
-        
-        <div class="form-group">
-            <label>Nome do Cliente</label>
-            <input type="text" id="nome" placeholder="Ex: João da Silva" required autocomplete="off">
-        </div>
-        <div class="form-group">
-            <label>WhatsApp / Telefone</label>
-            <input type="tel" id="contato" placeholder="(11) 99999-9999" maxlength="15" required autocomplete="off">
-        </div>
+        <div class="form-group"><label>Nome do Cliente</label><input type="text" id="nome" required autocomplete="off"></div>
+        <div class="form-group"><label>WhatsApp / Telefone</label><input type="tel" id="contato" maxlength="15" required autocomplete="off"></div>
 
         <div class="form-group">
             <label>Empreendimento de Interesse</label>
             <select id="empreendimento" required onchange="mostrarFichaTecnicaCliente(this.value)">
                 <option value="" disabled selected>Carregando seus empreendimentos...</option>
             </select>
-            <!-- Ficha Técnica que aparece pro cliente -->
             <div class="ficha-tecnica-box" id="fichaTecnicaBox"></div>
         </div>
 
         <div style="display: flex; gap: 8px;">
-            <div class="form-group" style="flex: 1;"><label>Valor Acordado</label><input type="text" id="valor" placeholder="R$ 0,00" required></div>
-            <div class="form-group" style="flex: 1;">
-                <label>Temperatura 🔥</label>
-                <select id="temperatura">
-                    <option value="🔥 Quente">🔥 Quente</option>
-                    <option value="🟡 Morno" selected>🟡 Morno</option>
-                    <option value="❄️ Frio">❄️ Frio</option>
-                </select>
-            </div>
+            <div class="form-group" style="flex: 1;"><label>Valor Acordado</label><input type="text" id="valor" required></div>
+            <div class="form-group" style="flex: 1;"><label>Temperatura 🔥</label><select id="temperatura"><option>🔥 Quente</option><option selected>🟡 Morno</option><option>❄️ Frio</option></select></div>
         </div>
 
         <div style="display: flex; gap: 8px;">
-            <div class="form-group" style="flex: 1;">
-                <label>Status</label>
-                <select id="status">
-                    <option value="Em Contato">🟡 Em Contato</option>
-                    <option value="Aguardando Documento">🔵 Aguardando Doc</option>
-                    <option value="Crédito Aprovado">🟢 Crédito Aprovado</option>
-                    <option value="Vendido">⭐ Vendido</option>
-                    <option value="Perdido">🔴 Perdido</option>
-                </select>
-            </div>
-            <div class="form-group" style="flex: 1;">
-                <label>Origem</label>
-                <select id="origem">
-                    <option value="Instagram">📱 Instagram</option>
-                    <option value="Indicação">🤝 Indicação</option>
-                    <option value="Plantão">🏢 Plantão</option>
-                    <option value="Outros">📌 Outros</option>
-                </select>
-            </div>
+            <div class="form-group" style="flex: 1;"><label>Status</label><select id="status"><option>🟡 Em Contato</option><option>🔵 Aguardando Doc</option><option>🟢 Crédito Aprovado</option><option>⭐ Vendido</option><option>🔴 Perdido</option></select></div>
+            <div class="form-group" style="flex: 1;"><label>Origem</label><select id="origem"><option>📱 Instagram</option><option>🤝 Indicação</option><option>🏢 Plantão</option><option>📌 Outros</option></select></div>
         </div>
 
         <div class="form-group">
             <label>Obstáculo Identificado</label>
-            <select id="obstaculo">
-                <option value="Nenhum">✅ Nenhum obstáculo</option>
-                <option value="Nome Sujo">⚠️ Nome Sujo (Retorno 30 dias)</option>
-                <option value="Outros">⚠️ Outros - Renda/Doc (Retorno 15 dias)</option>
-            </select>
+            <select id="obstaculo"><option value="Nenhum">✅ Nenhum obstáculo</option><option value="Nome Sujo">⚠️ Nome Sujo (Retorno 30 dias)</option><option value="Outros">⚠️ Outros - Renda/Doc (Retorno 15 dias)</option></select>
         </div>
-
-        <div class="form-group">
-            <label>Observação / Detalhe</label>
-            <textarea id="obs" rows="2" placeholder="Detalhes da conversa inicial..."></textarea>
-        </div>
+        <div class="form-group"><label>Observação / Detalhe</label><textarea id="obs" rows="2"></textarea></div>
 
         <button type="submit">Salvar Cliente no CRM</button>
     </form>
 
-    <!-- GERENCIAR EMPREENDIMENTOS (ADICIONAR/EXCLUIR DA SUA LISTA) -->
+    <!-- GERENCIAR EMPREENDIMENTOS -->
     <h3 style="margin-top: 30px;">Gerenciar Meus Empreendimentos</h3>
-    <p style="font-size: 11px; color: var(--text-muted); margin-top:-5px;">Gerencie a lista de imóveis que você está trabalhando agora.</p>
+    <p style="font-size: 11px; color: var(--text-muted); margin-top:-5px;">Comece a digitar abaixo para o app buscar no Super Banco.</p>
     
     <div class="tag-empreendimento-container" id="listaEmpreendimentosChips"></div>
-    
-    <!-- DATALIST INTELIGENTE INVISÍVEL -->
     <datalist id="bancoMestre"></datalist>
 
     <form id="formNovoEmpreendimento" style="margin-top: 12px;">
         <div class="form-group" style="margin-bottom: 8px;">
             <label>Buscar ou Digitar Novo</label>
-            <input type="text" id="novoEmpreendimentoNome" list="bancoMestre" placeholder="Ex: Alto São Domingos..." required autocomplete="off">
+            <input type="text" id="novoEmpreendimentoNome" list="bancoMestre" placeholder="Ex: Dez Guarulhos..." required autocomplete="off">
         </div>
         <div class="form-group" style="margin-bottom: 8px;">
             <label>Ficha Técnica / Descrição</label>
-            <textarea id="novoEmpreendimentoDesc" rows="3" placeholder="A ficha técnica aparecerá aqui automaticamente se o empreendimento for reconhecido..."></textarea>
+            <textarea id="novoEmpreendimentoDesc" rows="3" placeholder="A ficha técnica aparecerá aqui automaticamente..."></textarea>
         </div>
         <button type="submit" class="btn-secundario">Adicionar à Minha Lista</button>
     </form>
@@ -288,425 +200,209 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, arrayUnion, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyDLkz8nVg_NPNNZvg4VQNEZyF0Ju-GjyO4",
-        authDomain: "appbatalha-910d2.firebaseapp.com",
-        projectId: "appbatalha-910d2",
-        storageBucket: "appbatalha-910d2.firebasestorage.app",
-        messagingSenderId: "580640530854",
-        appId: "1:580640530854:web:adcf9e15e8e79c680def67"
+        apiKey: "AIzaSyDLkz8nVg_NPNNZvg4VQNEZyF0Ju-GjyO4", authDomain: "appbatalha-910d2.firebaseapp.com",
+        projectId: "appbatalha-910d2", storageBucket: "appbatalha-910d2.firebasestorage.app",
+        messagingSenderId: "580640530854", appId: "1:580640530854:web:adcf9e15e8e79c680def67"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const contatosRef = collection(db, "clientes");
-    const empreendimentosRef = collection(db, "empreendimentos");
+    const db = getFirestore(app); const auth = getAuth(app);
+    const contatosRef = collection(db, "clientes"); const empreendimentosRef = collection(db, "empreendimentos");
 
-    // --- O CÉREBRO: BANCO DE DADOS MESTRE DE EMPREENDIMENTOS ---
+    // --- SUPER BANCO DE DADOS (EXPANDIDO) ---
+    // Adicionei vários empreendimentos de SP, Guarulhos e região de diversas construtoras
     const masterDB = [
-        { nome: "Alto São Domingos (Cury)", desc: "🏢 Alto São Domingos (Cury)\n📍 Pirituba / São Domingos (São Paulo)\n📐 2 dormitórios com varanda.\n🏊‍♂️ Lazer: Piscina adulto e infantil, churrasqueira, salão de festas, academia e coworking." },
-        { nome: "Mais Butantã (Cury)", desc: "🏢 Cury Máximo Butantã\n📍 Rua Prof. Máximo Ribeiro Nunes, Butantã\n📐 Aptos de 2 dorms com suíte e terraço.\n🏊‍♂️ Lazer completo." },
-        { nome: "Plano Leopoldina (Cury)", desc: "🏢 Nova Leopoldina Condomínio Art\n📍 Rua Othão, Vila Leopoldina\n📐 1 e 2 dorms (37m² a 42m²) com terraço.\n🏊‍♂️ Lazer: Fitness, coworking, piscinas." },
-        { nome: "Praça Pirituba (Cury)", desc: "🏢 Lyne Pirituba (Cury)\n📍 Frente à Estação Pirituba\n📐 2 dorms com terraço e vaga.\n🏊‍♂️ Lazer: Piscina, lavanderia, fitness." },
-        { nome: "Ares do Horto (Cury)", desc: "🏢 Ares do Horto (Cury)\n📍 Estrada do Campo Limpo, Horto do Ipê\n📐 Aptos de 1 e 2 dormitórios." },
-        { nome: "Duetto São Domingos (Plano&Plano)", desc: "🏢 Duetto São Domingos (Plano&Plano)\n📍 Parque São Domingos\n📐 1 e 2 dorms com varanda (26m² a 35m²)." },
-        { nome: "Plano Jaçanã (Plano&Plano)", desc: "🏢 Plano&Jaçanã (Plano&Plano)\n📍 Av. Luís Stamatis, Jaçanã\n📐 2 dorms com terraço (cerca de 34m²)." }
+        // CURY
+        { nome: "Alto São Domingos (Cury)", desc: "🏢 Alto São Domingos (Cury)\n📍 Pirituba / São Domingos\n📐 2 dorms com varanda.\n🏊‍♂️ Lazer: Piscina, churrasqueira, academia, coworking." },
+        { nome: "Mais Butantã (Cury)", desc: "🏢 Cury Máximo Butantã\n📍 Butantã (Zona Oeste)\n📐 2 dorms c/ suíte e terraço.\n🏊‍♂️ Lazer completo." },
+        { nome: "Plano Leopoldina (Cury)", desc: "🏢 Nova Leopoldina Art\n📍 Vila Leopoldina\n📐 1 e 2 dorms c/ terraço." },
+        { nome: "Praça Pirituba (Cury)", desc: "🏢 Lyne Pirituba (Cury)\n📍 Frente Estação Pirituba\n📐 2 dorms c/ terraço." },
+        { nome: "Dez Guarulhos (Cury)", desc: "🏢 Dez Guarulhos (Cury)\n📍 Vila Augusta, Guarulhos\n📐 2 dormitórios com vaga." },
+        { nome: "Único Guarulhos (Cury)", desc: "🏢 Único Guarulhos\n📍 Guarulhos (Centro)\n📐 2 dorms, lazer completo." },
+        
+        // PLANO & PLANO
+        { nome: "Duetto São Domingos (Plano&Plano)", desc: "🏢 Duetto São Domingos\n📍 Parque São Domingos\n📐 1 e 2 dorms com varanda." },
+        { nome: "Plano Jaçanã (Plano&Plano)", desc: "🏢 Plano&Jaçanã\n📍 Av. Luís Stamatis, ZN\n📐 2 dorms com terraço." },
+        { nome: "Plano&Estação Pirituba", desc: "🏢 Plano&Estação Pirituba\n📍 Pirituba\n📐 2 dormitórios (MCMV)." },
+        { nome: "Plano&Guarulhos", desc: "🏢 Plano&Guarulhos\n📍 Centro de Guarulhos\n📐 1 e 2 dorms, lazer de clube." },
+        
+        // DIRECIONAL
+        { nome: "Riserva Metrópole (Direcional)", desc: "🏢 Riserva Metrópole\n📍 São Paulo\n📐 1 e 2 dorms, alto padrão de acabamento." },
+        { nome: "Conquista Guarulhos (Direcional)", desc: "🏢 Conquista Guarulhos\n📍 Guarulhos\n📐 2 dorms (Pronto/Em Obras)." },
+        
+        // TENDA
+        { nome: "Tenda Vila Maria", desc: "🏢 Residencial Tenda Vila Maria\n📍 Zona Norte, SP\n📐 2 dormitórios (Programa Casa Verde e Amarela)." },
+        { nome: "Tenda Bonsucesso Guarulhos", desc: "🏢 Tenda Bonsucesso\n📍 Guarulhos\n📐 1 e 2 dorms, ideal para primeiro imóvel." },
+        
+        // MRV
+        { nome: "Grand Reserva Paulista (MRV)", desc: "🏢 Grand Reserva Paulista\n📍 Pirituba, SP\n📐 2 dorms, condomínio fechado com vaga." },
+        { nome: "Parque Sintra (MRV)", desc: "🏢 Parque Sintra (MRV)\n📍 Guarulhos\n📐 2 dorms com lazer completo e segurança 24h." },
+
+        // VIVAZ
+        { nome: "Vivaz Guarulhos", desc: "🏢 Vivaz Guarulhos\n📍 Av. Guarulhos\n📐 2 dorms c/ sacada e vaga." },
+        { nome: "Vivaz Pirituba", desc: "🏢 Vivaz Pirituba\n📍 Pirituba\n📐 2 dormitórios." }
     ];
 
-    // Preencher o Datalist Inteligente
     const datalist = document.getElementById('bancoMestre');
-    masterDB.forEach(emp => {
-        let option = document.createElement('option');
-        option.value = emp.nome;
-        datalist.appendChild(option);
-    });
+    masterDB.forEach(emp => { let option = document.createElement('option'); option.value = emp.nome; datalist.appendChild(option); });
 
-    // Detectar digitação e autocompletar a ficha técnica
     document.getElementById('novoEmpreendimentoNome').addEventListener('input', function(e) {
         const val = e.target.value;
-        const achado = masterDB.find(emp => emp.nome === val);
-        if (achado) {
-            document.getElementById('novoEmpreendimentoDesc').value = achado.desc;
-        }
+        const achado = masterDB.find(emp => emp.nome.toLowerCase() === val.toLowerCase());
+        if (achado) document.getElementById('novoEmpreendimentoDesc').value = achado.desc;
     });
 
-    let contatosBaixados = [];
-    let mapaEmpreendimentos = {}; // Guarda as fichas técnicas ativas
-    let filtroAtual = 'TODOS';
-    let unsubContatos = null;
-    let unsubEmpreendimentos = null;
-    let modoCadastro = false;
+    let contatosBaixados = []; let mapaEmpreendimentos = {}; let filtroAtual = 'TODOS';
+    let unsubContatos = null; let unsubEmpreendimentos = null; let modoCadastro = false;
 
     window.alternarModoAuth = function() {
         modoCadastro = !modoCadastro;
-        const titulo = document.getElementById('tituloAuth');
-        const btn = document.getElementById('btnAuthSubmit');
-        const toggle = document.getElementById('textoToggle');
+        const titulo = document.getElementById('tituloAuth'); const btn = document.getElementById('btnAuthSubmit'); const toggle = document.getElementById('textoToggle');
         document.getElementById('msgErro').style.display = 'none';
-
-        if(modoCadastro) {
-            titulo.innerText = "Criar Nova Conta";
-            btn.innerText = "Cadastrar no Sistema";
-            toggle.innerText = "Já tem uma conta? Faça login";
-        } else {
-            titulo.innerText = "Acesso ao Sistema";
-            btn.innerText = "Entrar no Sistema";
-            toggle.innerText = "Não tem uma conta? Cadastre-se grátis";
-        }
+        titulo.innerText = modoCadastro ? "Criar Nova Conta" : "Acesso ao Sistema";
+        btn.innerText = modoCadastro ? "Cadastrar no Sistema" : "Entrar no Sistema";
+        toggle.innerText = modoCadastro ? "Já tem uma conta? Faça login" : "Não tem uma conta? Cadastre-se grátis";
     }
 
     window.mostrarFichaTecnicaCliente = function(nome) {
         const box = document.getElementById('fichaTecnicaBox');
         if(mapaEmpreendimentos[nome] && mapaEmpreendimentos[nome].trim() !== '') {
-            // Converte as quebras de linha para <br> para exibir bonito na tela
-            box.innerHTML = mapaEmpreendimentos[nome].replace(/\n/g, '<br>');
-            box.style.display = 'block';
-        } else {
-            box.style.display = 'none';
-        }
+            box.innerHTML = mapaEmpreendimentos[nome].replace(/\n/g, '<br>'); box.style.display = 'block';
+        } else { box.style.display = 'none'; }
     }
 
-    // --- CARREGAR EMPREENDIMENTOS ATIVOS DO FIREBASE ---
     function carregarEmpreendimentos() {
         const q = query(empreendimentosRef, orderBy("nome", "asc"));
         unsubEmpreendimentos = onSnapshot(q, (snapshot) => {
-            const select = document.getElementById('empreendimento');
-            const chips = document.getElementById('listaEmpreendimentosChips');
-            
+            const select = document.getElementById('empreendimento'); const chips = document.getElementById('listaEmpreendimentosChips');
             const valorAtual = select.value;
             select.innerHTML = '<option value="" disabled selected>Selecione o empreendimento...</option>';
-            chips.innerHTML = '';
-            mapaEmpreendimentos = {};
+            chips.innerHTML = ''; mapaEmpreendimentos = {};
 
             snapshot.forEach((docSnap) => {
-                const emp = docSnap.data();
-                const id = docSnap.id;
-                
+                const emp = docSnap.data(); const id = docSnap.id;
                 mapaEmpreendimentos[emp.nome] = emp.desc || '';
-
-                const opt = document.createElement('option');
-                opt.value = emp.nome;
-                opt.textContent = emp.nome;
-                select.appendChild(opt);
-
-                const chip = document.createElement('div');
-                chip.className = 'tag-empreendimento';
-                chip.innerHTML = `${emp.nome} <span onclick="excluirEmpreendimento('${id}', '${emp.nome}')">&times;</span>`;
-                chips.appendChild(chip);
+                const opt = document.createElement('option'); opt.value = emp.nome; opt.textContent = emp.nome; select.appendChild(opt);
+                const chip = document.createElement('div'); chip.className = 'tag-empreendimento';
+                chip.innerHTML = `${emp.nome} <span onclick="excluirEmpreendimento('${id}', '${emp.nome}')">&times;</span>`; chips.appendChild(chip);
             });
-            
-            if(valorAtual && mapaEmpreendimentos[valorAtual] !== undefined) {
-                select.value = valorAtual;
-                mostrarFichaTecnicaCliente(valorAtual);
-            }
+            if(valorAtual && mapaEmpreendimentos[valorAtual] !== undefined) { select.value = valorAtual; mostrarFichaTecnicaCliente(valorAtual); }
         });
     }
 
-    // --- ADICIONAR NOVO EMPREENDIMENTO NA SUA LISTA ---
     document.getElementById('formNovoEmpreendimento').addEventListener('submit', async function(e) {
         e.preventDefault();
-        const nomeInput = document.getElementById('novoEmpreendimentoNome');
-        const descInput = document.getElementById('novoEmpreendimentoDesc');
-        
-        const nome = nomeInput.value.trim();
-        const desc = descInput.value.trim();
-
-        if(nome) {
-            const btn = this.querySelector('button');
-            btn.innerText = 'Salvando...';
-            try {
-                await addDoc(empreendimentosRef, { nome: nome, desc: desc });
-                nomeInput.value = '';
-                descInput.value = '';
-            } catch(err) {
-                alert("Erro ao adicionar: " + err.message);
-            } finally {
-                btn.innerText = 'Adicionar à Minha Lista';
-            }
+        const nomeInput = document.getElementById('novoEmpreendimentoNome'); const descInput = document.getElementById('novoEmpreendimentoDesc');
+        if(nomeInput.value.trim()) {
+            const btn = this.querySelector('button'); btn.innerText = 'Salvando...';
+            try { await addDoc(empreendimentosRef, { nome: nomeInput.value.trim(), desc: descInput.value.trim() }); nomeInput.value = ''; descInput.value = ''; } 
+            catch(err) { alert("Erro: " + err.message); } finally { btn.innerText = 'Adicionar à Minha Lista'; }
         }
     });
 
     window.excluirEmpreendimento = async function(id, nome) {
-        if(confirm(`Tem certeza que deseja remover "${nome}" da sua lista ativa? (Os clientes que já estão nele não serão afetados)`)) {
-            await deleteDoc(doc(db, "empreendimentos", id));
-        }
+        if(confirm(`Remover "${nome}" da sua lista ativa?`)) await deleteDoc(doc(db, "empreendimentos", id));
     };
 
-    // (O resto do código de UI e Firebase se mantém idêntico ao anterior para o funcionamento do KANBAN e Autenticação)
-    
     window.alternarTema = function() {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('crm_tema', isDark ? 'dark' : 'light');
-        document.getElementById('btnAlternarTema').innerText = isDark ? '☀️ Tema' : '🌙 Tema';
+        document.body.classList.toggle('dark-mode'); localStorage.setItem('crm_tema', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        document.getElementById('btnAlternarTema').innerText = document.body.classList.contains('dark-mode') ? '☀️ Tema' : '🌙 Tema';
     }
+    if(localStorage.getItem('crm_tema') === 'dark') { document.body.classList.add('dark-mode'); setTimeout(() => { document.getElementById('btnAlternarTema').innerText = '☀️ Tema'; }, 100); }
 
-    if(localStorage.getItem('crm_tema') === 'dark') {
-        document.body.classList.add('dark-mode');
-        setTimeout(() => { document.getElementById('btnAlternarTema').innerText = '☀️ Tema'; }, 100);
-    }
-
-    document.getElementById('contato').addEventListener('input', function (e) {
-        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-    });
-
-    document.getElementById('valor').addEventListener('input', function(e) {
-        let valor = e.target.value.replace(/\D/g, '');
-        valor = (valor / 100).toFixed(2) + '';
-        valor = valor.replace(".", ",");
-        valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-        e.target.value = valor ? 'R$ ' + valor : '';
-    });
+    document.getElementById('contato').addEventListener('input', e => { let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/); e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : ''); });
+    document.getElementById('valor').addEventListener('input', e => { let v = e.target.value.replace(/\D/g, ''); v = (v / 100).toFixed(2).replace(".", ",").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); e.target.value = v ? 'R$ ' + v : ''; });
 
     onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            document.getElementById('telaLogin').style.display = 'none';
-            document.getElementById('telaApp').style.display = 'block';
-            carregarEmpreendimentos();
-            carregarDadosDoBanco();
-            document.getElementById('data').valueAsDate = new Date();
-            const agora = new Date();
-            document.getElementById('horario').value = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
-        } else {
-            document.getElementById('telaLogin').style.display = 'block';
-            document.getElementById('telaApp').style.display = 'none';
-            if(unsubContatos) unsubContatos(); 
-            if(unsubEmpreendimentos) unsubEmpreendimentos();
-        }
+        if (user) { document.getElementById('telaLogin').style.display = 'none'; document.getElementById('telaApp').style.display = 'block'; carregarEmpreendimentos(); carregarDadosDoBanco(); document.getElementById('data').valueAsDate = new Date(); const agora = new Date(); document.getElementById('horario').value = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0'); } 
+        else { document.getElementById('telaLogin').style.display = 'block'; document.getElementById('telaApp').style.display = 'none'; if(unsubContatos) unsubContatos(); if(unsubEmpreendimentos) unsubEmpreendimentos(); }
     });
 
     document.getElementById('formAuth').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('emailLogin').value;
-        const senha = document.getElementById('senhaLogin').value;
-        const btn = document.getElementById('btnAuthSubmit');
-        const msgErro = document.getElementById('msgErro');
-        
-        btn.innerText = modoCadastro ? "Cadastrando..." : "Verificando...";
-        btn.disabled = true;
-        msgErro.style.display = 'none';
-
-        try {
-            if(modoCadastro) await createUserWithEmailAndPassword(auth, email, senha);
-            else await signInWithEmailAndPassword(auth, email, senha);
-            document.getElementById('formAuth').reset();
-        } catch (error) {
-            msgErro.style.display = 'block';
-            msgErro.innerText = "Falha na autenticação. Verifique os dados.";
-        } finally {
-            btn.innerText = modoCadastro ? "Cadastrar no Sistema" : "Entrar no Sistema";
-            btn.disabled = false;
-        }
+        e.preventDefault(); const email = document.getElementById('emailLogin').value; const senha = document.getElementById('senhaLogin').value; const btn = document.getElementById('btnAuthSubmit'); const msgErro = document.getElementById('msgErro');
+        btn.innerText = "Carregando..."; btn.disabled = true; msgErro.style.display = 'none';
+        try { if(modoCadastro) await createUserWithEmailAndPassword(auth, email, senha); else await signInWithEmailAndPassword(auth, email, senha); document.getElementById('formAuth').reset(); } 
+        catch (error) { msgErro.style.display = 'block'; msgErro.innerText = "Falha na autenticação."; } 
+        finally { btn.innerText = modoCadastro ? "Cadastrar no Sistema" : "Entrar no Sistema"; btn.disabled = false; }
     });
 
     document.getElementById('btnSair').addEventListener('click', () => signOut(auth));
 
     function atualizarDashboard(listaCompleta) {
         const hoje = new Date(); hoje.setHours(0,0,0,0);
-        let totalAtivos = listaCompleta.length;
-        let ligarHojeCount = 0;
-        let vgvTotal = 0;
-
+        let [totalAtivos, ligarHojeCount, vgvTotal] = [listaCompleta.length, 0, 0];
         listaCompleta.forEach(c => {
-            if (c.diasRetorno && c.dataStr) {
-                const dataBase = new Date(c.dataStr + 'T00:00:00');
-                dataBase.setDate(dataBase.getDate() + c.diasRetorno);
-                if (dataBase <= hoje) ligarHojeCount++;
-            }
-            if (c.status === 'Vendido' || c.status === 'Crédito Aprovado') {
-                if (c.valor) {
-                    let numLimpo = c.valor.replace('R$', '').replaceAll('.', '').replace(',', '.').trim();
-                    let valNum = parseFloat(numLimpo);
-                    if (!isNaN(valNum)) vgvTotal += valNum;
-                }
-            }
+            if (c.diasRetorno && c.dataStr) { const dataBase = new Date(c.dataStr + 'T00:00:00'); dataBase.setDate(dataBase.getDate() + c.diasRetorno); if (dataBase <= hoje) ligarHojeCount++; }
+            if (['Vendido', 'Crédito Aprovado'].includes(c.status) && c.valor) { let valNum = parseFloat(c.valor.replace('R$', '').replaceAll('.', '').replace(',', '.').trim()); if (!isNaN(valNum)) vgvTotal += valNum; }
         });
-
-        document.getElementById('dashTotal').innerText = totalAtivos;
-        document.getElementById('dashHoje').innerText = ligarHojeCount;
-        document.getElementById('dashVGV').innerText = vgvTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+        document.getElementById('dashTotal').innerText = totalAtivos; document.getElementById('dashHoje').innerText = ligarHojeCount; document.getElementById('dashVGV').innerText = vgvTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
     }
 
     function renderizarKanban(lista) {
-        const board = document.getElementById('kanbanBoard');
-        board.innerHTML = '';
-        const colunasConfig = [
-            { id: 'Em Contato', titulo: '🟡 Em Contato', proximo: 'Aguardando Documento' },
-            { id: 'Aguardando Documento', titulo: '🔵 Aguardando Doc', proximo: 'Crédito Aprovado', anterior: 'Em Contato' },
-            { id: 'Crédito Aprovado', titulo: '🟢 Crédito Aprovado', proximo: 'Vendido', anterior: 'Aguardando Documento' },
-            { id: 'Vendido', titulo: '⭐ Vendido', anterior: 'Crédito Aprovado' },
-            { id: 'Perdido', titulo: '🔴 Perdido' }
-        ];
-
+        const board = document.getElementById('kanbanBoard'); board.innerHTML = '';
+        const cols = [{ id: 'Em Contato', t: '🟡 Em Contato', p: 'Aguardando Documento' }, { id: 'Aguardando Documento', t: '🔵 Aguardando Doc', p: 'Crédito Aprovado', a: 'Em Contato' }, { id: 'Crédito Aprovado', t: '🟢 Crédito Aprovado', p: 'Vendido', a: 'Aguardando Documento' }, { id: 'Vendido', t: '⭐ Vendido', a: 'Crédito Aprovado' }, { id: 'Perdido', t: '🔴 Perdido' }];
         const hoje = new Date(); hoje.setHours(0,0,0,0);
-
-        colunasConfig.forEach(col => {
-            const clientesColuna = lista.filter(c => (c.status || 'Em Contato') === col.id);
-            const divColuna = document.createElement('div');
-            divColuna.className = 'kanban-coluna';
-            divColuna.innerHTML = `<h4>${col.titulo} <span>(${clientesColuna.length})</span></h4>`;
-            const cardsContainer = document.createElement('div');
-            cardsContainer.className = 'kanban-cards-container';
-
-            if (clientesColuna.length === 0) {
-                cardsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:11px; margin:15px 0;">Nenhum lead</p>';
-            } else {
-                clientesColuna.forEach(cliente => {
-                    let deveLigarHoje = false;
-                    if (cliente.diasRetorno && cliente.dataStr) {
-                        const dataBase = new Date(cliente.dataStr + 'T00:00:00');
-                        dataBase.setDate(dataBase.getDate() + cliente.diasRetorno);
-                        if (dataBase <= hoje) deveLigarHoje = true;
-                    }
-
-                    const card = document.createElement('div');
-                    card.className = deveLigarHoje ? 'card alerta' : 'card';
-
-                    let tempClass = 'temp-morno';
-                    if (cliente.temperatura === '🔥 Quente') tempClass = 'temp-quente';
-                    if (cliente.temperatura === '❄️ Frio') tempClass = 'temp-frio';
-
-                    const telLimpo = cliente.contato.replace(/\D/g, '');
-                    const linkWhats = `https://wa.me/55${telLimpo}`;
-
-                    let historicoHtml = '';
-                    if (cliente.historico && cliente.historico.length > 0) {
-                        historicoHtml = '<div class="historico-box">';
-                        cliente.historico.forEach(h => { historicoHtml += `<div class="historico-item"><small style="opacity:0.7">${h.data}:</small> ${h.texto}</div>`; });
-                        historicoHtml += '</div>';
-                    }
-
-                    let htmlCard = `
-                        <span class="badge-temp ${tempClass}">${cliente.temperatura || '🟡 Morno'}</span>
-                        <h3>👤 ${cliente.nome}</h3>
-                        <p><strong>📞</strong> ${cliente.contato}</p>
-                        <p><strong>🏢</strong> ${cliente.empreendimento}</p>
-                        <p><strong>💰</strong> ${cliente.valor}</p>
-                        ${historicoHtml}
-                    `;
-                    if (cliente.dataRetornoFormatada) htmlCard += `<div class="tag-alerta">⏰ Retorno: ${cliente.dataRetornoFormatada}</div>`;
-
-                    let botoesMover = '';
-                    if (col.anterior) botoesMover += `<button class="btn-mover" onclick="mudarStatus('${cliente.id}', '${col.anterior}')">⬅️ Voltar</button>`;
-                    if (col.proximo) botoesMover += `<button class="btn-mover" onclick="mudarStatus('${cliente.id}', '${col.proximo}')">Avançar ➡️</button>`;
-
-                    htmlCard += `
-                        ${botoesMover}
-                        <button class="btn-add-obs" onclick="adicionarInteracao('${cliente.id}')">➕ Nota</button>
-                        <div class="card-acoes">
-                            <a href="${linkWhats}" target="_blank" class="btn-whats">💬 Whats</a>
-                            <button class="btn-excluir" onclick="excluirCliente('${cliente.id}')">Excluir</button>
-                        </div>
-                    `;
-                    card.innerHTML = htmlCard;
-                    cardsContainer.appendChild(card);
-                });
-            }
-            divColuna.appendChild(cardsContainer);
-            board.appendChild(divColuna);
+        cols.forEach(col => {
+            const clientes = lista.filter(c => (c.status || 'Em Contato') === col.id);
+            const dCol = document.createElement('div'); dCol.className = 'kanban-coluna'; dCol.innerHTML = `<h4>${col.t} <span>(${clientes.length})</span></h4>`;
+            const cCont = document.createElement('div'); cCont.className = 'kanban-cards-container';
+            if (clientes.length === 0) cCont.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:11px; margin:15px 0;">Nenhum lead</p>';
+            else clientes.forEach(c => {
+                let deveLigar = false; if (c.diasRetorno && c.dataStr) { const db = new Date(c.dataStr + 'T00:00:00'); db.setDate(db.getDate() + c.diasRetorno); if (db <= hoje) deveLigar = true; }
+                const card = document.createElement('div'); card.className = deveLigar ? 'card alerta' : 'card';
+                let tClass = c.temperatura === '🔥 Quente' ? 'temp-quente' : (c.temperatura === '❄️ Frio' ? 'temp-frio' : 'temp-morno');
+                let hHtml = ''; if (c.historico && c.historico.length > 0) { hHtml = '<div class="historico-box">'; c.historico.forEach(h => { hHtml += `<div class="historico-item"><small style="opacity:0.7">${h.data}:</small> ${h.texto}</div>`; }); hHtml += '</div>'; }
+                let hCard = `<span class="badge-temp ${tClass}">${c.temperatura || '🟡 Morno'}</span><h3>👤 ${c.nome}</h3><p><strong>📞</strong> ${c.contato}</p><p><strong>🏢</strong> ${c.empreendimento}</p><p><strong>💰</strong> ${c.valor}</p>${hHtml}`;
+                if (c.dataRetornoFormatada) hCard += `<div class="tag-alerta">⏰ Retorno: ${c.dataRetornoFormatada}</div>`;
+                hCard += `${col.a ? `<button class="btn-mover" onclick="mudarStatus('${c.id}', '${col.a}')">⬅️ Voltar</button>` : ''}${col.p ? `<button class="btn-mover" onclick="mudarStatus('${c.id}', '${col.p}')">Avançar ➡️</button>` : ''}<button class="btn-add-obs" onclick="adicionarInteracao('${c.id}')">➕ Nota</button><div class="card-acoes"><a href="https://wa.me/55${c.contato.replace(/\D/g, '')}" target="_blank" class="btn-whats">💬 Whats</a><button class="btn-excluir" onclick="excluirCliente('${c.id}')">Excluir</button></div>`;
+                card.innerHTML = hCard; cCont.appendChild(card);
+            });
+            dCol.appendChild(cCont); board.appendChild(dCol);
         });
     }
 
     function carregarDadosDoBanco() {
-        const q = query(contatosRef, orderBy("timestamp", "desc"));
-        unsubContatos = onSnapshot(q, (snapshot) => {
-            contatosBaixados = [];
-            snapshot.forEach((doc) => { contatosBaixados.push({ id: doc.id, ...doc.data() }); });
-            atualizarDashboard(contatosBaixados);
-            aplicarFiltrosEBusca();
+        onSnapshot(query(contatosRef, orderBy("timestamp", "desc")), (snapshot) => {
+            contatosBaixados = []; snapshot.forEach((doc) => { contatosBaixados.push({ id: doc.id, ...doc.data() }); });
+            atualizarDashboard(contatosBaixados); aplicarFiltrosEBusca();
         });
     }
 
-    window.mudarStatus = async function(id, novoStatus) {
-        try { await updateDoc(doc(db, "clientes", id), { status: novoStatus }); } catch (error) { alert("Erro: " + error.message); }
-    };
-
-    window.filtrarStatus = function(tipo, btn) {
-        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
-        btn.classList.add('ativo'); filtroAtual = tipo; aplicarFiltrosEBusca();
-    }
-
+    window.mudarStatus = async (id, s) => { try { await updateDoc(doc(db, "clientes", id), { status: s }); } catch (e) { alert("Erro: " + e.message); } };
+    window.filtrarStatus = (tipo, btn) => { document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo')); btn.classList.add('ativo'); filtroAtual = tipo; aplicarFiltrosEBusca(); }
     document.getElementById('busca').addEventListener('input', aplicarFiltrosEBusca);
 
     function aplicarFiltrosEBusca() {
-        const termo = document.getElementById('busca').value.toLowerCase();
-        const hoje = new Date(); hoje.setHours(0,0,0,0);
+        const termo = document.getElementById('busca').value.toLowerCase(); const hoje = new Date(); hoje.setHours(0,0,0,0);
         let filtrados = contatosBaixados.filter(c => c.nome.toLowerCase().includes(termo) || c.contato.includes(termo) || c.empreendimento.toLowerCase().includes(termo));
-        if (filtroAtual === 'HOJE') {
-            filtrados = filtrados.filter(c => {
-                if (!c.diasRetorno || !c.dataStr) return false;
-                const dataBase = new Date(c.dataStr + 'T00:00:00');
-                dataBase.setDate(dataBase.getDate() + c.diasRetorno);
-                return dataBase <= hoje;
-            });
-        } else if (filtroAtual === 'OBSTACULO') {
-            filtrados = filtrados.filter(c => c.obstaculo && c.obstaculo !== 'Nenhum');
-        }
+        if (filtroAtual === 'HOJE') filtrados = filtrados.filter(c => { if (!c.diasRetorno || !c.dataStr) return false; const d = new Date(c.dataStr + 'T00:00:00'); d.setDate(d.getDate() + c.diasRetorno); return d <= hoje; });
+        else if (filtroAtual === 'OBSTACULO') filtrados = filtrados.filter(c => c.obstaculo && c.obstaculo !== 'Nenhum');
         renderizarKanban(filtrados);
     }
 
-    window.adicionarInteracao = async function(id) {
-        const novaNota = prompt("Digite a nota:");
-        if (novaNota && novaNota.trim() !== "") {
-            const dataHoje = new Date().toLocaleDateString('pt-BR');
-            await updateDoc(doc(db, "clientes", id), { historico: arrayUnion({ data: dataHoje, texto: novaNota.trim() }) });
-        }
-    };
-
-    window.excluirCliente = async function(id) {
-        if (confirm("Deseja excluir este cliente?")) await deleteDoc(doc(db, "clientes", id));
-    }
+    window.adicionarInteracao = async (id) => { const n = prompt("Digite a nota:"); if (n && n.trim() !== "") await updateDoc(doc(db, "clientes", id), { historico: arrayUnion({ data: new Date().toLocaleDateString('pt-BR'), texto: n.trim() }) }); };
+    window.excluirCliente = async (id) => { if (confirm("Deseja excluir este cliente?")) await deleteDoc(doc(db, "clientes", id)); }
 
     document.getElementById('formContato').addEventListener('submit', async function(e) {
-        e.preventDefault(); 
-        const botao = this.querySelector('button');
-        botao.innerText = "Salvando..."; botao.disabled = true;
-
-        const dataStr = document.getElementById('data').value;
-        const obstaculo = document.getElementById('obstaculo').value;
-        const obsInicial = document.getElementById('obs').value.trim();
-        
-        let diasParaRetorno = (obstaculo === 'Nome Sujo') ? 30 : ((obstaculo === 'Outros') ? 15 : 0);
-        let dataRetornoFormatada = null;
-        if (diasParaRetorno > 0) {
-            let dataRet = new Date(dataStr + 'T00:00:00');
-            dataRet.setDate(dataRet.getDate() + diasParaRetorno);
-            dataRetornoFormatada = dataRet.toLocaleDateString('pt-BR');
-        }
-
-        let historicoInicial = obsInicial ? [{ data: new Date(dataStr + 'T00:00:00').toLocaleDateString('pt-BR'), texto: obsInicial }] : [];
-
+        e.preventDefault(); const btn = this.querySelector('button'); btn.innerText = "Salvando..."; btn.disabled = true;
+        const dStr = document.getElementById('data').value; const obs = document.getElementById('obstaculo').value; const nI = document.getElementById('obs').value.trim();
+        let dRet = (obs === 'Nome Sujo') ? 30 : ((obs === 'Outros') ? 15 : 0); let dRetF = null;
+        if (dRet > 0) { let d = new Date(dStr + 'T00:00:00'); d.setDate(d.getDate() + dRet); dRetF = d.toLocaleDateString('pt-BR'); }
         try {
             await addDoc(contatosRef, {
-                dataStr: dataStr,
-                horario: document.getElementById('horario').value || '',
-                dataFormatada: dataStr.split('-').reverse().join('/'),
-                nome: document.getElementById('nome').value,
-                contato: document.getElementById('contato').value,
-                empreendimento: document.getElementById('empreendimento').value,
-                valor: document.getElementById('valor').value,
-                temperatura: document.getElementById('temperatura').value,
-                origem: document.getElementById('origem').value,
-                status: document.getElementById('status').value,
-                obstaculo: obstaculo,
-                diasRetorno: diasParaRetorno,
-                dataRetornoFormatada: dataRetornoFormatada,
-                historico: historicoInicial,
-                timestamp: serverTimestamp()
+                dataStr: dStr, horario: document.getElementById('horario').value || '', dataFormatada: dStr.split('-').reverse().join('/'),
+                nome: document.getElementById('nome').value, contato: document.getElementById('contato').value,
+                empreendimento: document.getElementById('empreendimento').value, valor: document.getElementById('valor').value,
+                temperatura: document.getElementById('temperatura').value, origem: document.getElementById('origem').value,
+                status: document.getElementById('status').value, obstaculo: obs, diasRetorno: dRet, dataRetornoFormatada: dRetF,
+                historico: nI ? [{ data: new Date(dStr + 'T00:00:00').toLocaleDateString('pt-BR'), texto: nI }] : [], timestamp: serverTimestamp()
             });
-            this.reset();
-            document.getElementById('data').valueAsDate = new Date();
-            document.getElementById('fichaTecnicaBox').style.display = 'none';
-        } catch (error) {
-            alert("Erro ao salvar: " + error.message);
-        } finally {
-            botao.innerText = "Salvar Cliente no CRM"; botao.disabled = false;
-        }
+            this.reset(); document.getElementById('data').valueAsDate = new Date(); document.getElementById('fichaTecnicaBox').style.display = 'none';
+        } catch (e) { alert("Erro ao salvar: " + e.message); } finally { btn.innerText = "Salvar Cliente no CRM"; btn.disabled = false; }
     });
 </script>
 </body>
