@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CRM de Vendas - Imóveis com IA</title>
+    <title>CRM de Vendas - Imóveis</title>
     <style>
         :root {
             --primary-color: #0A66C2;
@@ -50,131 +50,393 @@
             transition: background-color 0.3s ease;
         }
 
-        #telaApp.container { max-width: 600px; }
-
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        h2 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.5px; text-align: center; }
-
-        .btn-tema {
-            background: transparent; border: 1px solid var(--border-color); color: var(--text-dark);
-            padding: 6px 10px; border-radius: 20px; font-size: 13px; cursor: pointer; width: auto; margin: 0;
+        #telaApp.container {
+            max-width: 600px;
         }
 
-        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
-        .dash-card { background: rgba(10, 102, 194, 0.05); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 10px 6px; text-align: center; }
-        body.dark-mode .dash-card { background: rgba(255, 255, 255, 0.03); }
-        .dash-card span { display: block; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
-        .dash-card strong { font-size: 14px; color: var(--primary-color); }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-        h3 { font-size: 15px; color: var(--text-dark); margin: 20px 0 10px 0; border-bottom: 2px solid var(--border-color); padding-bottom: 4px; }
+        h2 { 
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        .btn-tema {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            width: auto;
+            margin: 0;
+            box-shadow: none;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .dash-card {
+            background: rgba(10, 102, 194, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 6px;
+            text-align: center;
+        }
+        body.dark-mode .dash-card { background: rgba(255, 255, 255, 0.03); }
+        .dash-card span {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .dash-card strong {
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin: 20px 0 10px 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+
         .form-group { margin-bottom: 12px; }
         
-        label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        label { 
+            display: block; 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            margin-bottom: 4px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         input, select, textarea { 
-            width: 100% !important; max-width: 100% !important; padding: 11px 14px !important; border: 1.5px solid var(--border-color) !important; 
-            border-radius: var(--radius-md) !important; box-sizing: border-box !important; font-size: 15px !important;
-            background-color: var(--bg-color) !important; color: var(--text-dark) !important; display: block; appearance: none; -webkit-appearance: none;
+            width: 100% !important; 
+            max-width: 100% !important;
+            padding: 11px 14px !important; 
+            border: 1.5px solid var(--border-color) !important; 
+            border-radius: var(--radius-md) !important; 
+            box-sizing: border-box !important; 
+            font-size: 15px !important;
+            background-color: var(--bg-color) !important;
+            color: var(--text-dark) !important;
+            display: block;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         input[type="date"], input[type="time"] { min-height: 45px; }
-        input:focus, select:focus, textarea:focus { outline: none !important; border-color: var(--primary-color) !important; box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1) !important; }
+
+        input:focus, select:focus, textarea:focus { 
+            outline: none !important; 
+            border-color: var(--primary-color) !important; 
+            box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1) !important; 
+        }
 
         button { 
-            width: 100%; padding: 14px; background-color: var(--primary-color); color: white; border: none; 
-            border-radius: var(--radius-md); cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.2s ease; margin-top: 8px;
+            width: 100%; 
+            padding: 14px; 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none; 
+            border-radius: var(--radius-md); 
+            cursor: pointer; 
+            font-size: 15px; 
+            font-weight: 600; 
+            transition: all 0.2s ease;
+            margin-top: 8px;
             box-shadow: 0 4px 10px rgba(10, 102, 194, 0.2);
         }
         button:hover { background-color: var(--primary-hover); }
 
-        .btn-secundario { background-color: #4B5563; box-shadow: 0 4px 10px rgba(75, 85, 99, 0.2); }
+        .btn-secundario {
+            background-color: #4B5563;
+            box-shadow: 0 4px 10px rgba(75, 85, 99, 0.2);
+        }
         .btn-secundario:hover { background-color: #374151; }
-        .btn-sair { background-color: transparent; color: var(--alert-color); border: 1.5px solid var(--alert-color); box-shadow: none; margin-top: 25px; }
+
+        .btn-sair { 
+            background-color: transparent; 
+            color: var(--alert-color);
+            border: 1.5px solid var(--alert-color);
+            box-shadow: none;
+            margin-top: 25px; 
+        }
         .btn-sair:hover { background-color: var(--alert-bg); }
 
-        .auth-toggle { text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted); }
-        .auth-toggle span { color: var(--primary-color); font-weight: 600; cursor: pointer; }
+        .auth-toggle {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .auth-toggle span {
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+        }
         .auth-toggle span:hover { text-decoration: underline; }
 
         .ficha-tecnica-box {
-            background: rgba(10, 102, 194, 0.04); border: 1.5px dashed var(--primary-color); border-radius: var(--radius-md);
-            padding: 12px; margin-top: 8px; font-size: 12px; line-height: 1.4; display: none;
+            background: rgba(10, 102, 194, 0.04);
+            border: 1.5px dashed var(--primary-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+            display: none;
         }
         body.dark-mode .ficha-tecnica-box { background: rgba(10, 102, 194, 0.1); }
         .ficha-tecnica-box strong { color: var(--primary-color); }
 
-        .filtros-rapidos { display: flex; gap: 6px; margin: 15px 0 10px 0; overflow-x: auto; padding-bottom: 4px; }
+        .filtros-rapidos {
+            display: flex;
+            gap: 6px;
+            margin: 15px 0 10px 0;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
         .filtro-btn {
-            background: var(--border-color); color: var(--text-dark); border: none; padding: 6px 12px; border-radius: 20px;
-            font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; width: auto !important; margin: 0;
+            background: var(--border-color);
+            color: var(--text-dark);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: none;
+            margin: 0;
+            width: auto !important;
         }
-        .filtro-btn.ativo { background: var(--primary-color); color: white; }
+        .filtro-btn.ativo {
+            background: var(--primary-color);
+            color: white;
+        }
 
-        .tag-empreendimento-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .tag-empreendimento-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
         .tag-empreendimento {
-            background: rgba(3, 105, 161, 0.1); color: var(--primary-color); padding: 5px 8px; border-radius: 6px;
-            font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; border: 1px solid var(--border-color);
+            background: rgba(3, 105, 161, 0.1);
+            color: var(--primary-color);
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid var(--border-color);
         }
-        .tag-empreendimento span { cursor: pointer; color: var(--alert-color); font-weight: bold; font-size: 14px; }
+        .tag-empreendimento span {
+            cursor: pointer;
+            color: var(--alert-color);
+            font-weight: bold;
+            font-size: 14px;
+        }
 
-        .busca-container { margin: 15px 0 10px 0; position: relative; }
-        .busca-container input { padding-left: 36px !important; border-radius: 30px !important; }
-        .busca-icon { position: absolute; left: 12px; top: 13px; font-size: 16px; color: var(--text-muted); z-index: 10; }
+        .busca-container { 
+            margin: 15px 0 10px 0; 
+            position: relative;
+        }
+        .busca-container input {
+            padding-left: 36px !important;
+            border-radius: 30px !important;
+        }
+        .busca-icon {
+            position: absolute;
+            left: 12px;
+            top: 13px;
+            font-size: 16px;
+            color: var(--text-muted);
+            z-index: 10;
+        }
 
-        .kanban-board { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; margin-top: 10px; scroll-snap-type: x mandatory; }
+        .kanban-board {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-top: 10px;
+            scroll-snap-type: x mandatory;
+        }
         .kanban-coluna {
-            min-width: 260px; max-width: 260px; background: rgba(0,0,0,0.02); border: 1px solid var(--border-color);
-            border-radius: var(--radius-md); padding: 10px; display: flex; flex-direction: column; scroll-snap-align: start;
+            min-width: 260px;
+            max-width: 260px;
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            scroll-snap-align: start;
         }
         body.dark-mode .kanban-coluna { background: rgba(255,255,255,0.01); }
         
         .kanban-coluna h4 {
-            font-size: 13px; text-transform: uppercase; margin: 0 0 10px 0; padding-bottom: 6px; border-bottom: 2px solid var(--border-color);
-            display: flex; justify-content: space-between; position: sticky; top: 0; background: var(--card-bg); z-index: 5;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            z-index: 5;
         }
 
-        .kanban-cards-container { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+        .kanban-cards-container {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
         .kanban-cards-container::-webkit-scrollbar { width: 4px; }
         .kanban-cards-container::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
 
         .card { 
-            background: var(--card-bg); padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); 
-            margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); position: relative;
+            background: var(--card-bg); 
+            padding: 12px; 
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); 
+            margin-bottom: 10px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+            position: relative;
         }
         .card.alerta { border-left: 4px solid var(--alert-color); }
         
         .card h3 { margin: 0 0 6px 0; font-size: 14px; color: var(--text-dark); border: none; padding: 0; text-align: left; }
         .card p { margin: 3px 0; font-size: 12px; color: var(--text-muted); line-height: 1.3; }
 
-        .badge-temp { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; }
+        .badge-temp {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
         .temp-quente { background: #FEE2E2; color: #DC2626; }
         .temp-morno { background: #FEF3C7; color: #D97706; }
         .temp-frio { background: #E0E7FF; color: #4338CA; }
 
         .tag-alerta { 
-            display: block; background-color: var(--alert-bg); color: var(--alert-color); padding: 4px 6px; 
-            border-radius: 4px; font-size: 10px; font-weight: 700; margin-top: 6px; text-align: center;
+            display: block; 
+            background-color: var(--alert-bg); 
+            color: var(--alert-color); 
+            padding: 4px 6px; 
+            border-radius: 4px; 
+            font-size: 10px; 
+            font-weight: 700; 
+            margin-top: 6px; 
+            text-align: center;
         }
 
-        .historico-box { background: rgba(0,0,0,0.02); border: 1px solid var(--border-color); border-radius: 4px; padding: 6px; margin-top: 6px; font-size: 11px; }
-        .historico-item { margin-bottom: 3px; border-bottom: 1px dashed var(--border-color); padding-bottom: 2px; }
+        .historico-box {
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px;
+            margin-top: 6px;
+            font-size: 11px;
+        }
+        .historico-item {
+            margin-bottom: 3px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 2px;
+        }
 
-        .card-acoes { display: flex; gap: 4px; margin-top: 8px; }
+        .card-acoes {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
         .btn-whats {
-            background-color: var(--whatsapp-color); color: white; border: none; padding: 6px 8px; font-size: 11px; font-weight: 600;
-            border-radius: 4px; cursor: pointer; flex: 1; margin-top: 0; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 3px;
+            background-color: var(--whatsapp-color);
+            color: white;
+            border: none;
+            padding: 6px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1;
+            margin-top: 0;
+            box-shadow: none;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
         }
         .btn-whats:hover { background-color: #20ba5a; }
 
         .btn-add-obs {
-            background-color: #4B5563; color: white; border: none; padding: 5px 8px; font-size: 11px; font-weight: 600;
-            border-radius: 4px; cursor: pointer; margin-top: 5px; width: 100%;
+            background-color: #4B5563;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+            box-shadow: none;
+            width: 100%;
         }
         .btn-add-obs:hover { background-color: #374151; }
 
-        .btn-mover { background-color: var(--primary-color); color: white; border: none; padding: 5px 6px; font-size: 10px; font-weight: 600; border-radius: 4px; cursor: pointer; margin-top: 6px; width: 100%; }
+        .btn-mover {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 6px;
+            width: 100%;
+        }
+
         .btn-excluir {
-            background-color: transparent; color: var(--alert-color); border: 1.5px solid var(--alert-color);
-            padding: 5px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer; width: auto; margin-top: 0;
+            background-color: transparent;
+            color: var(--alert-color);
+            border: 1px solid var(--alert-color);
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+            margin-top: 0;
+            box-shadow: none;
         }
         .btn-excluir:hover { background-color: var(--alert-bg); }
 
@@ -213,9 +475,18 @@
 
     <!-- DASHBOARD DE MÉTRICAS -->
     <div class="dashboard">
-        <div class="dash-card"><span>Ativos</span><strong id="dashTotal">0</strong></div>
-        <div class="dash-card"><span>🚨 Ligar Hoje</span><strong id="dashHoje" style="color: var(--alert-color);">0</strong></div>
-        <div class="dash-card"><span>⭐ VGV Fechado</span><strong id="dashVGV" style="font-size: 11px;">R$ 0</strong></div>
+        <div class="dash-card">
+            <span>Ativos</span>
+            <strong id="dashTotal">0</strong>
+        </div>
+        <div class="dash-card">
+            <span>🚨 Ligar Hoje</span>
+            <strong id="dashHoje" style="color: var(--alert-color);">0</strong>
+        </div>
+        <div class="dash-card">
+            <span>⭐ VGV Fechado</span>
+            <strong id="dashVGV" style="font-size: 11px;">R$ 0</strong>
+        </div>
     </div>
     
     <!-- FORMULÁRIO DE CLIENTES -->
@@ -243,11 +514,11 @@
 
         <div class="form-group">
             <label for="empreendimento">Empreendimento de Interesse</label>
-            <select id="empreendimento" required onchange="dispararBuscaIA(this.value)">
-                <option value="" disabled selected>Selecione um empreendimento...</option>
+            <select id="empreendimento" required onchange="mostrarFichaTecnica(this.value)">
+                <option value="" disabled selected>Carregando empreendimentos...</option>
             </select>
             <div class="ficha-tecnica-box" id="fichaTecnicaBox">
-                <span id="fichaConteudo">🤖 Consultando Inteligência Artificial...</span>
+                <span id="fichaConteudo">Selecione um empreendimento para ver os detalhes.</span>
             </div>
         </div>
 
@@ -307,12 +578,12 @@
     </form>
 
     <!-- GERENCIAMENTO DE EMPREENDIMENTOS -->
-    <h3>Gerenciar Meus Empreendimentos</h3>
+    <h3>Gerenciar Empreendimentos</h3>
     <div class="tag-empreendimento-container" id="listaEmpreendimentosChips"></div>
     
     <form id="formNovoEmpreendimento" style="margin-top: 8px;">
         <div class="form-group" style="margin-bottom: 8px;">
-            <input type="text" id="novoEmpreendimentoNome" placeholder="Adicionar novo empreendimento..." required autocomplete="off">
+            <input type="text" id="novoEmpreendimentoNome" placeholder="Nome do novo empreendimento..." required autocomplete="off">
         </div>
         <button type="submit" class="btn-secundario">Adicionar Empreendimento</button>
     </form>
@@ -360,8 +631,8 @@
     let unsubContatos = null;
     let unsubEmpreendimentos = null;
     let modoCadastro = false;
-    let cacheFichasIA = {}; 
 
+    // --- ALTERAR ENTRE LOGIN E CADASTRO ---
     window.alternarModoAuth = function() {
         modoCadastro = !modoCadastro;
         const titulo = document.getElementById('tituloAuth');
@@ -381,42 +652,26 @@
         }
     }
 
-    // --- CHAMADA SEGURA VIA API ROUTE DO VERCEL ---
-    window.dispararBuscaIA = async function(nomeEmpreendimento) {
+    // --- BANCO DE DADOS DE FICHAS TÉCNICAS INTELIGENTES ---
+    const fichasTecnicas = {
+        "Mais Butantã": "🏢 <strong>Cury Máximo Butantã</strong><br>📍 <em>Rua Prof. Máximo Ribeiro Nunes, Butantã (Zona Oeste)</em><br>📐 Aptos de 2 dorms (opção com suíte/terraço).<br>🏊‍♂️ Lazer: Salão de festas, churrasqueira, quadra, pet care.",
+        "Plano Leopodina": "🏢 <strong>Nova Leopoldina Condomínio Art (Cury)</strong><br>📍 <em>Rua Othão, Vila Leopoldina (Perto da Estação Ceasa)</em><br>📐 1 e 2 dorms (37m² a 42m²) com terraço.<br>🏊‍♂️ Lazer: Fitness, coworking, piscinas, churrasqueiras.",
+        "Praça Pirituba": "🏢 <strong>Lyne Pirituba (Cury)</strong><br>📍 <em>Av. Raimundo Pereira de Magalhães, 5028 (Frente à Estação Pirituba)</em><br>📐 2 dorms com opção de terraço e vaga.<br>🏊‍♂️ Lazer: Piscina, lavanderia, fitness, solarium, espaço pet.",
+        "Ares do Horto": "🏢 <strong>Ares do Horto (Cury)</strong><br>📍 <em>Estrada do Campo Limpo, Horto do Ipê (Zona Sul)</em><br>📐 Aptos de 1 e 2 dormitórios.<br>🏊‍♂️ Lazer: Piscina com solarium, academia, salão de festas.",
+        "Duetto São Domingos": "🏢 <strong>Duetto São Domingos (Plano&Plano)</strong><br>📍 <em>Rua Frederico Jacobi, Parque São Domingos (Zona Oeste)</em><br>📐 1 e 2 dorms com varanda (26m² a 35m²).<br>🏊‍♂️ Lazer: Piscinas adulto/infantil, coworking, pet care.",
+        "Plano Jaçana": "🏢 <strong>Plano&Jaçanã (Plano&Plano)</strong><br>📍 <em>Av. Luís Stamatis, Jaçanã (Zona Norte, perto do Tucuruvi)</em><br>📐 2 dorms com terraço (cerca de 34m²).<br>🏊‍♂️ Lazer: Piscinas, coworking, salão de festas, quadra de areia."
+    };
+
+    window.mostrarFichaTecnica = function(nomeEmpreendimento) {
         const box = document.getElementById('fichaTecnicaBox');
         const conteudo = document.getElementById('fichaConteudo');
         
-        if (!nomeEmpreendimento) return;
-
-        box.style.display = 'block';
-
-        if (cacheFichasIA[nomeEmpreendimento]) {
-            conteudo.innerHTML = cacheFichasIA[nomeEmpreendimento];
-            return;
-        }
-
-        conteudo.innerHTML = `🤖 <em>Consultando Inteligência Artificial para "${nomeEmpreendimento}"...</em>`;
-
-        try {
-            const resposta = await fetch('/api/gemini', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ empreendimento: nomeEmpreendimento })
-            });
-
-            const dados = await resposta.json();
-            
-            if (resposta.ok && dados.resultado) {
-                cacheFichasIA[nomeEmpreendimento] = dados.resultado;
-                conteudo.innerHTML = dados.resultado;
-            } else {
-                console.error("Erro da API:", dados);
-                conteudo.innerHTML = `⚠️ ${dados.error || 'Erro ao consultar a IA.'}`;
-            }
-
-        } catch (erro) {
-            console.error("Erro de conexão:", erro);
-            conteudo.innerHTML = `⚠️ Erro de conexão com o servidor de IA.`;
+        if (fichasTecnicas[nomeEmpreendimento]) {
+            conteudo.innerHTML = fichasTecnicas[nomeEmpreendimento];
+            box.style.display = 'block';
+        } else {
+            conteudo.innerHTML = `🏢 <strong>Empreendimento: ${nomeEmpreendimento}</strong><br>📍 <em>Novo projeto cadastrado no sistema.</em><br>💡 Dica: Anote as metragens e condições principais nas observações do cliente!`;
+            box.style.display = 'block';
         }
     };
 
@@ -506,7 +761,7 @@
     async function inicializarEmpreendimentosPadrao() {
         const snapshot = await getDocs(empreendimentosRef);
         if (snapshot.empty) {
-            const padroes = ["Alto São Domingos", "Mais Butantã", "Plano Leopoldina", "Praça Pirituba", "Ares do Horto", "Duetto São Domingos", "Plano Jaçana", "Dez Guarulhos"];
+            const padroes = ["Mais Butantã", "Plano Leopodina", "Praça Pirituba", "Ares do Horto", "Duetto São Domingos", "Plano Jaçana"];
             for (let nome of padroes) {
                 await addDoc(empreendimentosRef, { nome });
             }
@@ -520,7 +775,7 @@
             const chipsContainer = document.getElementById('listaEmpreendimentosChips');
             
             const valorAtual = selectEmpreendimento.value;
-            selectEmpreendimento.innerHTML = '<option value="" disabled selected>Selecione um empreendimento...</option>';
+            selectEmpreendimento.innerHTML = '<option value="" disabled selected>Selecione uma opção...</option>';
             chipsContainer.innerHTML = '';
 
             snapshot.forEach((docSnap) => {
@@ -537,10 +792,7 @@
                 chip.innerHTML = `${emp.nome} <span onclick="excluirEmpreendimento('${id}', '${emp.nome}')" title="Excluir">&times;</span>`;
                 chipsContainer.appendChild(chip);
             });
-            if(valorAtual) {
-                selectEmpreendimento.value = valorAtual;
-                dispararBuscaIA(valorAtual);
-            }
+            if(valorAtual) selectEmpreendimento.value = valorAtual;
         });
     }
 
