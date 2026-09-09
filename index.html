@@ -381,7 +381,7 @@
         }
     }
 
-    // --- IA DINÂMICA CUSTOMIZADA POR NOME DE EMPREENDIMENTO ---
+    // --- BUSCA DINÂMICA COM API DO GEMINI VIA VERCEL OU NAVEGADOR ---
     window.dispararBuscaIA = async function(nomeEmpreendimento) {
         const box = document.getElementById('fichaTecnicaBox');
         const conteudo = document.getElementById('fichaConteudo');
@@ -395,45 +395,41 @@
             return;
         }
 
-        conteudo.innerHTML = `🤖 <em>Consultando Inteligência Artificial para "${nomeEmpreendimento}"...</em>`;
+        // Puxa a chave injetada pelo ambiente (Vercel) ou salva localmente no navegador
+        const apiKey = window.__ENV?.GEMINI_API_KEY || localStorage.getItem('gemini_api_key');
+        
+        if (!apiKey) {
+            conteudo.innerHTML = `⚠️ Chave da API do Gemini não configurada. Defina a variável no Vercel.`;
+            return;
+        }
+
+        conteudo.innerHTML = `🤖 <em>Consultando IA para "${nomeEmpreendimento}"...</em>`;
 
         try {
-            setTimeout(() => {
-                let fichaGerada = '';
-                
-                // IA customizada que adapta o texto exatamente para o nome selecionado
-                if (nomeEmpreendimento.toLowerCase().includes('jaçanã') || nomeEmpreendimento.toLowerCase().includes('jacana')) {
-                    fichaGerada = `🏢 <strong>${nomeEmpreendimento}</strong><br>` +
-                                  `📍 <em>Av. Luís Stamatis, Jaçanã (Zona Norte - SP)</em><br>` +
-                                  `📐 Tipologia: 2 dormitórios com terraço (cerca de 34m²).<br>` +
-                                  `🏊‍♂️ Lazer: Piscinas adulto e infantil, coworking, salão de festas e quadra de areia.<br>` +
-                                  `💡 <em>Ficha gerada por IA.</em>`;
-                } else if (nomeEmpreendimento.toLowerCase().includes('pirituba')) {
-                    fichaGerada = `🏢 <strong>${nomeEmpreendimento}</strong><br>` +
-                                  `📍 <em>Região de Pirituba / Rodovia dos Bandeirantes (Zona Oeste - SP)</em><br>` +
-                                  `📐 Tipologia: 1 e 2 dormitórios com opção de vaga e varanda.<br>` +
-                                  `🏊‍♂️ Lazer: Completo com piscina, academia, pet place e salão de festas.<br>` +
-                                  `💡 <em>Ficha gerada por IA.</em>`;
-                } else if (nomeEmpreendimento.toLowerCase().includes('butantã')) {
-                    fichaGerada = `🏢 <strong>${nomeEmpreendimento}</strong><br>` +
-                                  `📍 <em>Próximo à USP / Rodovia Raposo Tavares (Butantã - SP)</em><br>` +
-                                  `📐 Tipologia: Aptos de 2 dormitórios com suíte e terraço.<br>` +
-                                  `🏊‍♂️ Lazer: Condomínio clube com piscinas, quadra e segurança 24h.<br>` +
-                                  `💡 <em>Ficha gerada por IA.</em>`;
-                } else {
-                    fichaGerada = `🏢 <strong>${nomeEmpreendimento}</strong><br>` +
-                                  `📍 <em>Localização Estratégica em São Paulo e Região</em><br>` +
-                                  `📐 Tipologia: Opções inteligentes de 1 e 2 dormitórios com excelente padrão.<br>` +
-                                  `🏊‍♂️ Lazer: Condomínio fechado com área de lazer completa e vagas.<br>` +
-                                  `💡 <em>Ficha gerada por IA.</em>`;
-                }
-                
-                cacheFichasIA[nomeEmpreendimento] = fichaGerada;
-                conteudo.innerHTML = fichaGerada;
-            }, 500);
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const prompt = `Gere uma ficha técnica imobiliária curta e profissional para o empreendimento: ${nomeEmpreendimento}. Inclua local provável, tipologia de dormitórios e itens de lazer em formato HTML limpo utilizando apenas tags <strong>, <em>, 📍 e 🏊‍♂️. Seja direto.`;
+
+            const resposta = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }]
+                })
+            });
+
+            const dados = await resposta.json();
+            if (dados.candidates && dados.candidates[0]) {
+                let textoGerado = dados.candidates[0].content.parts[0].text;
+                textoGerado = textoGerado.replace(/```html/g, '').replace(/```/g, '').trim();
+                cacheFichasIA[nomeEmpreendimento] = textoGerado;
+                conteudo.innerHTML = textoGerado;
+            } else {
+                conteudo.innerHTML = `⚠️ Chave de API inválida ou limite excedido.`;
+            }
 
         } catch (erro) {
-            conteudo.innerHTML = `⚠️ Erro ao gerar dados.`;
+            console.error("Erro na API:", erro);
+            conteudo.innerHTML = `⚠️ Erro ao consultar a IA.`;
         }
     };
 
