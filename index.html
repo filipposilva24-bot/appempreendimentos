@@ -353,10 +353,10 @@
 <div class="modal-overlay" id="modalAPI">
     <div class="modal-card">
         <h3 style="margin-top:0;">Configurar Inteligência Artificial</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">Insira sua chave da API do Gemini para gerar as fichas técnicas automáticas dos empreendimentos.</p>
+        <p style="font-size: 12px; color: var(--text-muted);">Cole abaixo a sua Chave de API gerada no Google AI Studio (suporta tokens no formato atual AQ...).</p>
         <div class="form-group">
-            <label for="inputChaveGemini">Chave API do Gemini</label>
-            <input type="password" id="inputChaveGemini" placeholder="AIzaSy...">
+            <label for="inputChaveGemini">Chave de API / Token</label>
+            <input type="password" id="inputChaveGemini" placeholder="AQ.Ab8RN6...">
         </div>
         <div style="display: flex; gap: 8px; margin-top: 15px;">
             <button type="button" class="btn-secundario" onclick="fecharModalAPI()">Cancelar</button>
@@ -411,7 +411,6 @@
         }
     }
 
-    // --- CONTROLE DO MODAL DE CONFIGURAÇÃO DA IA ---
     window.abrirModalAPI = function() {
         const chaveSalva = localStorage.getItem('gemini_api_key') || '';
         document.getElementById('inputChaveGemini').value = chaveSalva;
@@ -426,14 +425,14 @@
         const novaChave = document.getElementById('inputChaveGemini').value.trim();
         if(novaChave) {
             localStorage.setItem('gemini_api_key', novaChave);
-            alert("Chave da IA salva com sucesso no seu dispositivo!");
+            alert("Chave salva com sucesso no seu dispositivo!");
             fecharModalAPI();
         } else {
             alert("Insira uma chave válida.");
         }
     }
 
-    // --- INTEGRAÇÃO COM A API REAL DO GEMINI ---
+    // --- BUSCA DINÂMICA COM SUPORTE AO NOVO PADRÃO DE TOKEN ---
     window.dispararBuscaIA = async function(nomeEmpreendimento) {
         const box = document.getElementById('fichaTecnicaBox');
         const conteudo = document.getElementById('fichaConteudo');
@@ -456,12 +455,20 @@
         conteudo.innerHTML = `🤖 <em>Consultando Inteligência Artificial para "${nomeEmpreendimento}"...</em>`;
 
         try {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            let url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
+            let headers = { "Content-Type": "application/json" };
+
+            if (apiKey.startsWith('AQ.')) {
+                headers["Authorization"] = `Bearer ${apiKey}`;
+            } else {
+                url += `?key=${apiKey}`;
+            }
+
             const prompt = `Gere uma ficha técnica imobiliária curta e profissional para o empreendimento: ${nomeEmpreendimento}. Inclua local provável, tipologia de dormitórios e itens de lazer em formato HTML limpo utilizando apenas tags <strong>, <em>, 📍 e 🏊‍♂️. Seja direto.`;
 
             const resposta = await fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: headers,
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }]
                 })
@@ -474,7 +481,7 @@
                 cacheFichasIA[nomeEmpreendimento] = textoGerado;
                 conteudo.innerHTML = textoGerado;
             } else {
-                conteudo.innerHTML = `⚠️ Chave de API inválida ou limite excedido. Verifique sua chave em ⚙️ IA.`;
+                conteudo.innerHTML = `⚠️ Erro na autenticação. Verifique se o token inserido em ⚙️ IA está correto.`;
             }
 
         } catch (erro) {
