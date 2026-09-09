@@ -34,7 +34,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--bg-color); 
             margin: 0; 
-            padding: 12px 10px; 
+            padding: 12px 10px 75px 10px; /* Padding inferior extra para a barra fixa */
             color: var(--text-dark);
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.3s ease, color 0.3s ease;
@@ -53,6 +53,10 @@
         #telaApp.container {
             max-width: 600px;
         }
+
+        /* SISTEMA DE ABAS (TELA ÚNICA OU SEPARADAS) */
+        .secao-aba { display: none; }
+        .secao-aba.ativa { display: block; }
 
         .header-top {
             display: flex;
@@ -482,6 +486,41 @@
         }
         .btn-excluir:hover { background-color: var(--alert-bg); }
 
+        /* BARRA DE NAVEGAÇÃO INFERIOR (BOTTOM NAV) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: none; /* Só aparece logado */
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-item {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            padding: 6px 12px;
+            margin: 0;
+            width: auto;
+            transition: color 0.2s ease;
+        }
+        .nav-item span.nav-icon { font-size: 18px; }
+        .nav-item.ativo { color: var(--primary-color); }
+
         #telaApp { display: none; }
         #msgErro { color: var(--alert-color); text-align: center; margin-top: 10px; font-weight: 600; display: none; font-size: 13px; }
     </style>
@@ -515,138 +554,162 @@
         <button class="btn-tema" id="btnAlternarTema" onclick="alternarTema()">🌙 Tema</button>
     </div>
 
-    <!-- DASHBOARD DE MÉTRICAS -->
-    <div class="dashboard">
-        <div class="dash-card">
-            <span>Ativos</span>
-            <strong id="dashTotal">0</strong>
+    <!-- ABA 1: PAINEL & KANBAN -->
+    <div id="abaPainel" class="secao-aba ativa">
+        <!-- DASHBOARD DE MÉTRICAS -->
+        <div class="dashboard">
+            <div class="dash-card">
+                <span>Ativos</span>
+                <strong id="dashTotal">0</strong>
+            </div>
+            <div class="dash-card">
+                <span>🚨 Ligar Hoje</span>
+                <strong id="dashHoje" style="color: var(--alert-color);">0</strong>
+            </div>
+            <div class="dash-card">
+                <span>⭐ VGV Fechado</span>
+                <strong id="dashVGV" style="font-size: 11px;">R$ 0</strong>
+            </div>
         </div>
-        <div class="dash-card">
-            <span>🚨 Ligar Hoje</span>
-            <strong id="dashHoje" style="color: var(--alert-color);">0</strong>
+
+        <!-- FILTRAGEM E BUSCA -->
+        <div class="filtros-rapidos">
+            <button class="filtro-btn ativo" onclick="filtrarStatus('TODOS', this)">Todos</button>
+            <button class="filtro-btn" onclick="filtrarStatus('HOJE', this)">🚨 Ligar Hoje</button>
+            <button class="filtro-btn" onclick="filtrarStatus('OBSTACULO', this)">⚠️ Com Obstáculos</button>
         </div>
-        <div class="dash-card">
-            <span>⭐ VGV Fechado</span>
-            <strong id="dashVGV" style="font-size: 11px;">R$ 0</strong>
+
+        <div class="busca-container">
+            <span class="busca-icon">🔍</span>
+            <input type="text" id="busca" placeholder="Buscar cliente, tel ou empreendimento...">
         </div>
+
+        <!-- KANBAN BOARD -->
+        <div class="kanban-board" id="kanbanBoard"></div>
     </div>
-    
-    <!-- FORMULÁRIO DE CLIENTES -->
-    <form id="formContato">
-        <div style="display: flex; gap: 8px;">
-            <div class="form-group" style="flex: 2;">
-                <label for="data">Data do Contato</label>
-                <input type="date" id="data" required>
+
+    <!-- ABA 2: NOVO CLIENTE -->
+    <div id="abaNovo" class="secao-aba">
+        <h3>Cadastrar Novo Lead</h3>
+        <form id="formContato">
+            <div style="display: flex; gap: 8px;">
+                <div class="form-group" style="flex: 2;">
+                    <label for="data">Data do Contato</label>
+                    <input type="date" id="data" required>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="horario">Horário</label>
+                    <input type="time" id="horario">
+                </div>
             </div>
-            <div class="form-group" style="flex: 1;">
-                <label for="horario">Horário</label>
-                <input type="time" id="horario">
+            
+            <div class="form-group">
+                <label for="nome">Nome do Cliente</label>
+                <input type="text" id="nome" placeholder="Ex: João da Silva" required autocomplete="off">
             </div>
-        </div>
+
+            <div class="form-group">
+                <label for="contato">WhatsApp / Telefone</label>
+                <input type="tel" id="contato" placeholder="(11) 99999-9999" maxlength="15" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="empreendimento">Empreendimento de Interesse</label>
+                <select id="empreendimento" required onchange="mostrarFichaTecnica(this.value)">
+                    <option value="" disabled selected>Carregando empreendimentos...</option>
+                </select>
+                <div class="ficha-tecnica-box" id="fichaTecnicaBox">
+                    <span id="fichaConteudo">Selecione um empreendimento para ver os detalhes.</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="valor">Valor Acordado</label>
+                    <input type="text" id="valor" placeholder="R$ 0,00" required autocomplete="off">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="temperatura">Temperatura 🔥</label>
+                    <select id="temperatura">
+                        <option value="🔥 Quente">🔥 Quente</option>
+                        <option value="🟡 Morno" selected>🟡 Morno</option>
+                        <option value="❄️ Frio">❄️ Frio</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="status">Status do Funil</label>
+                    <select id="status">
+                        <option value="Em Contato">🟡 Em Contato</option>
+                        <option value="Aguardando Documento">🔵 Aguardando Doc</option>
+                        <option value="Crédito Aprovado">🟢 Crédito Aprovado</option>
+                        <option value="Vendido">⭐ Vendido</option>
+                        <option value="Perdido">🔴 Perdido</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="origem">Origem</label>
+                    <select id="origem">
+                        <option value="Instagram">📱 Instagram</option>
+                        <option value="Indicação">🤝 Indicação</option>
+                        <option value="Placa">🏠 Placa</option>
+                        <option value="Plantão">🏢 Plantão</option>
+                        <option value="Outros">📌 Outros</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="obstaculo">Obstáculo Identificado</label>
+                <select id="obstaculo">
+                    <option value="Nenhum">✅ Nenhum obstáculo</option>
+                    <option value="Nome Sujo">⚠️ Nome Sujo (Retorno 30 dias)</option>
+                    <option value="Outros">⚠️ Outros - Renda/Doc (Retorno 15 dias)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="obs">Observação / Detalhe</label>
+                <textarea id="obs" rows="2" placeholder="Detalhes da conversa inicial..."></textarea>
+            </div>
+
+            <button type="submit">Salvar Cliente no CRM</button>
+        </form>
+    </div>
+
+    <!-- ABA 3: GESTÃO & AJUSTES -->
+    <div id="abaGestao" class="secao-aba">
+        <h3>Gerenciar Empreendimentos</h3>
+        <div class="tag-empreendimento-container" id="listaEmpreendimentosChips"></div>
         
-        <div class="form-group">
-            <label for="nome">Nome do Cliente</label>
-            <input type="text" id="nome" placeholder="Ex: João da Silva" required autocomplete="off">
-        </div>
-
-        <div class="form-group">
-            <label for="contato">WhatsApp / Telefone</label>
-            <input type="tel" id="contato" placeholder="(11) 99999-9999" maxlength="15" required autocomplete="off">
-        </div>
-
-        <div class="form-group">
-            <label for="empreendimento">Empreendimento de Interesse</label>
-            <select id="empreendimento" required onchange="mostrarFichaTecnica(this.value)">
-                <option value="" disabled selected>Carregando empreendimentos...</option>
-            </select>
-            <div class="ficha-tecnica-box" id="fichaTecnicaBox">
-                <span id="fichaConteudo">Selecione um empreendimento para ver os detalhes.</span>
+        <form id="formNovoEmpreendimento" style="margin-top: 8px;">
+            <div class="form-group" style="margin-bottom: 8px;">
+                <input type="text" id="novoEmpreendimentoNome" placeholder="Nome do novo empreendimento..." required autocomplete="off">
             </div>
-        </div>
+            <button type="submit" class="btn-secundario">Adicionar Empreendimento</button>
+        </form>
 
-        <div style="display: flex; gap: 8px;">
-            <div class="form-group" style="flex: 1;">
-                <label for="valor">Valor Acordado</label>
-                <input type="text" id="valor" placeholder="R$ 0,00" required autocomplete="off">
-            </div>
-            <div class="form-group" style="flex: 1;">
-                <label for="temperatura">Temperatura 🔥</label>
-                <select id="temperatura">
-                    <option value="🔥 Quente">🔥 Quente</option>
-                    <option value="🟡 Morno" selected>🟡 Morno</option>
-                    <option value="❄️ Frio">❄️ Frio</option>
-                </select>
-            </div>
-        </div>
-
-        <div style="display: flex; gap: 8px;">
-            <div class="form-group" style="flex: 1;">
-                <label for="status">Status do Funil</label>
-                <select id="status">
-                    <option value="Em Contato">🟡 Em Contato</option>
-                    <option value="Aguardando Documento">🔵 Aguardando Doc</option>
-                    <option value="Crédito Aprovado">🟢 Crédito Aprovado</option>
-                    <option value="Vendido">⭐ Vendido</option>
-                    <option value="Perdido">🔴 Perdido</option>
-                </select>
-            </div>
-            <div class="form-group" style="flex: 1;">
-                <label for="origem">Origem</label>
-                <select id="origem">
-                    <option value="Instagram">📱 Instagram</option>
-                    <option value="Indicação">🤝 Indicação</option>
-                    <option value="Placa">🏠 Placa</option>
-                    <option value="Plantão">🏢 Plantão</option>
-                    <option value="Outros">📌 Outros</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="obstaculo">Obstáculo Identificado</label>
-            <select id="obstaculo">
-                <option value="Nenhum">✅ Nenhum obstáculo</option>
-                <option value="Nome Sujo">⚠️ Nome Sujo (Retorno 30 dias)</option>
-                <option value="Outros">⚠️ Outros - Renda/Doc (Retorno 15 dias)</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="obs">Observação / Detalhe</label>
-            <textarea id="obs" rows="2" placeholder="Detalhes da conversa inicial..."></textarea>
-        </div>
-
-        <button type="submit">Salvar Cliente no CRM</button>
-    </form>
-
-    <!-- GERENCIAMENTO DE EMPREENDIMENTOS -->
-    <h3>Gerenciar Empreendimentos</h3>
-    <div class="tag-empreendimento-container" id="listaEmpreendimentosChips"></div>
-    
-    <form id="formNovoEmpreendimento" style="margin-top: 8px;">
-        <div class="form-group" style="margin-bottom: 8px;">
-            <input type="text" id="novoEmpreendimentoNome" placeholder="Nome do novo empreendimento..." required autocomplete="off">
-        </div>
-        <button type="submit" class="btn-secundario">Adicionar Empreendimento</button>
-    </form>
-
-    <!-- FILTRAGEM E BUSCA -->
-    <div class="filtros-rapidos">
-        <button class="filtro-btn ativo" onclick="filtrarStatus('TODOS', this)">Todos</button>
-        <button class="filtro-btn" onclick="filtrarStatus('HOJE', this)">🚨 Ligar Hoje</button>
-        <button class="filtro-btn" onclick="filtrarStatus('OBSTACULO', this)">⚠️ Com Obstáculos</button>
+        <button id="btnSair" class="btn-sair">Sair da Conta</button>
     </div>
-
-    <div class="busca-container">
-        <span class="busca-icon">🔍</span>
-        <input type="text" id="busca" placeholder="Buscar cliente, tel ou empreendimento...">
-    </div>
-
-    <!-- KANBAN BOARD -->
-    <div class="kanban-board" id="kanbanBoard"></div>
-
-    <button id="btnSair" class="btn-sair">Sair da Conta</button>
 </div>
+
+<!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
+<nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item ativo" onclick="mudarAba('abaPainel', this)">
+        <span class="nav-icon">📊</span>
+        <span>Funil</span>
+    </button>
+    <button class="nav-item" onclick="mudarAba('abaNovo', this)">
+        <span class="nav-icon">➕</span>
+        <span>Novo Lead</span>
+    </button>
+    <button class="nav-item" onclick="mudarAba('abaGestao', this)">
+        <span class="nav-icon">🏢</span>
+        <span>Gestão</span>
+    </button>
+</nav>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -675,7 +738,16 @@
     let unsubEmpreendimentos = null;
     let modoCadastro = false;
 
-    // --- ALTERAR ENTRE LOGIN E CADASTRO ---
+    // --- CONTROLE DE ABAS (BOTTOM NAV) ---
+    window.mudarAba = function(idAba, elementoBtn) {
+        document.querySelectorAll('.secao-aba').forEach(aba => aba.classList.remove('ativa'));
+        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('ativo'));
+
+        document.getElementById(idAba).classList.add('ativa');
+        elementoBtn.classList.add('ativo');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     window.alternarModoAuth = function() {
         modoCadastro = !modoCadastro;
         const titulo = document.getElementById('tituloAuth');
@@ -749,6 +821,7 @@
         if (user) {
             document.getElementById('telaLogin').style.display = 'none';
             document.getElementById('telaApp').style.display = 'block';
+            document.getElementById('bottomNav').style.display = 'flex';
             await inicializarEmpreendimentosPadrao();
             carregarDadosDoBanco();
             carregarEmpreendimentos();
@@ -758,6 +831,7 @@
         } else {
             document.getElementById('telaLogin').style.display = 'block';
             document.getElementById('telaApp').style.display = 'none';
+            document.getElementById('bottomNav').style.display = 'none';
             if(unsubContatos) unsubContatos(); 
             if(unsubEmpreendimentos) unsubEmpreendimentos();
         }
@@ -1002,7 +1076,6 @@
         });
     }
 
-    // --- NOVA FUNÇÃO: SIMULADOR RÁPIDO DE FINANCIAMENTO ---
     window.abrirCalculadoraFinanciamento = function() {
         const rendaStr = prompt("Digite a renda bruta familiar mensal (Ex: 4500):");
         if (!rendaStr) return;
@@ -1012,15 +1085,12 @@
             return;
         }
 
-        // Simulação base habitual: A parcela comprometida pode ser até 30% da renda bruta
         const prestacaoMax = renda * 0.30;
-        // Estimativa grosseira de teto de financiamento (fator aproximado para 350 meses a juros MCMV/SBPE)
         const tetoFinanciamento = prestacaoMax * 210; 
 
         alert(`📊 SIMULAÇÃO RÁPIDA DE CRÉDITO:\n\n• Renda Informada: R$ ${renda.toLocaleString('pt-BR', {minimumFractionDigits: 2})}\n• Parcela Máxima Aprox. (30%): R$ ${prestacaoMax.toLocaleString('pt-BR', {minimumFractionDigits: 2})}/mês\n• Potencial Estimado de Financiamento: R$ ${tetoFinanciamento.toLocaleString('pt-BR', {maximumFractionDigits: 0})}\n\n💡 Dica: Valide sempre com o simulador oficial do banco.`);
     };
 
-    // --- NOVA FUNÇÃO: TROCAR O EMPREENDIMENTO DO LEAD ---
     window.trocarEmpreendimento = async function(idClient, empreendimentoAtual) {
         if (listaGlobalEmpreendimentos.length === 0) {
             alert("Nenhum outro empreendimento cadastrado.");
@@ -1192,6 +1262,9 @@
             document.getElementById('horario').value = String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
             document.getElementById('valor').value = ''; 
             document.getElementById('fichaTecnicaBox').style.display = 'none';
+            
+            // Retorna automaticamente para a aba do Funil após salvar com sucesso
+            document.querySelectorAll('.nav-item')[0].click();
         } catch (error) {
             alert("Erro ao salvar: " + error.message);
         } finally {
